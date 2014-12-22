@@ -6,13 +6,6 @@ var path = require('path');
 var cordovaCli = require('cordova');
 var spawn = require('win-spawn');
 
-// Disable use of pc speaker https://github.com/gruntjs/grunt/issues/808
-var oldout = process.stdout.write;
-process.stdout.write = function(msg) {
-  oldout.call(this, msg.replace('\x07', ''));
-};
-
-
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -560,3 +553,4 @@ module.exports = function (grunt) {
     'compress'
   ]);
 };
+

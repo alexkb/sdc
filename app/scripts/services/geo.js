@@ -8,16 +8,18 @@
  * Factory in the sdcApp.
  */
 angular.module('Sdc')
-  .factory('Geo', function () {
-    // Service logic
-    // ...
-
-    var meaningOfLife = 42;
-
-    // Public API here
+  .factory('Geo', function ($q) {
     return {
-      someMethod: function () {
-        return meaningOfLife;
+      getLocation: function() {
+        var q = $q.defer();
+
+        navigator.geolocation.getCurrentPosition(function(position) {
+          q.resolve(position);
+        }, function(error) {
+          q.reject(error);
+        });
+
+        return q.promise;
       }
     };
   });
