@@ -13,3 +13,4 @@ plugins
 .idea
 .editorconfig
 app/scripts/config.js
+resources
