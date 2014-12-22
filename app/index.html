@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>"Sdc"</title>
+    <title>Stamp Duty Calculator</title>
 
     <!-- build:css styles/vendor.css -->
     <!-- <link rel="stylesheet" href="vendor/some.contrib.css"> -->
@@ -20,10 +20,8 @@
   <body ng-app="Sdc">
 
     <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
       <ion-content>
+        <calculator></calculator>
       </ion-content>
     </ion-pane>
 
@@ -47,6 +45,8 @@
         <!-- build:js scripts/scripts.js -->
         <script src="scripts/config.js"></script>
         <script src="scripts/app.js"></script>
+        <script src="scripts/directives/calculator.js"></script>
+        <script src="scripts/services/geo.js"></script>
         <!-- endbuild -->
 </body>
 </html>
