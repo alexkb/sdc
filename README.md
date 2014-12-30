@@ -14,6 +14,6 @@ Code is licensed under the GPL v2.0, please see LICENSE.txt.
 
 ## Help
 
- * Geolocation code courtesy of [github.com/driftyco/ionic-weather/](https://github.com/driftyco/ionic-weather/)
+ * Geolocation code based on [github.com/driftyco/ionic-weather/](https://github.com/driftyco/ionic-weather/)
  * Setup guide: [alexbergin.com/2014/setting-ionic-linux-vm-windows-host](http://alexbergin.com/2014/setting-ionic-linux-vm-windows-host)
 

@@ -15,7 +15,9 @@ angular.module('Sdc')
         Geo.getLocation().then(function(position) {
           var lat = position.coords.latitude;
           var lng = position.coords.longitude;
-          console.log(lat + ' and ' + lng);
+          Geo.reverseGeocode(lat, lng).then(function(locString) {
+            console.log(locString);
+          });
         });
         console.log(attrs);
         element.text('this is the calculator directive');
