@@ -21,15 +21,82 @@
 
     <ion-pane ng-controller="MainCtrl">
       <ion-content>
-        <calculator>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Value of property</span>
+          <input type="number" placeholder="$0.00" ng-model="data.propertyValue">
+        </label>
+
+        <label class="item item-input item-select">
+          <div class="input-label">
+            State
+          </div>
+          <select ng-model="data.state">
+            <option>ACT</option>
+            <option>NSW</option>
+            <option>NT</option>
+            <option>QLD</option>
+            <option>SA</option>
+            <option>TAS</option>
+            <option>VIC</option>
+            <option>WA</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Property type
+          </div>
+          <select ng-model="data.purpose">
+            <option value="residential">Primary Residence</option>
+            <option value="investment">Investment</option>
+          </select>
+        </label>
+
+        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-calm">First Home Buyer?</ion-toggle>
+
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Are you purchasing
+          </div>
+          <select ng-value="type">
+            <option selected>An established property</option>
+            <option>A newly constructed home</option>
+            <option ng-if="data.state != 'TAS'">Vacant Land</option>
+          </select>
+        </label>
+
+        <div ng-if="data.state == 'ACT'">
+
           <label class="item item-input item-stacked-label">
-            <span class="input-label">Value of property</span>
-            <input type="number" placeholder="$0.00" ng-model="data.propertyValue">
+            <span class="input-label">Total income of purchase(s):</span>
+            <input type="number" placeholder="$0.00" ng-model="data.income">
           </label>
-        </calculator>
+
+
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Number of dependent children:
+            </div>
+            <select ng-model="data.state">
+              <option>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5 or more</option>
+            </select>
+          </label>
+
+        </div>
+
+
+
+
+
+
       </ion-content>
       <div class="bar bar-footer bar-assertive">
-        <div class="title">Stamp Duty due: {{ calculateDutyDue() | currency }}</div>
+        <div class="title">Stamp Duty due: {{ data.dutyDue | currency }}</div>
       </div>
     </ion-pane>
 
