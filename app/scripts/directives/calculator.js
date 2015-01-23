@@ -9,7 +9,6 @@
 angular.module('Sdc')
   .directive('calculator', function (Geo) {
     return {
-      template: '<div></div>',
       restrict: 'E',
       link: function postLink($scope, element, attrs) {
         Geo.getLocation().then(function(position) {
@@ -21,7 +20,10 @@ angular.module('Sdc')
           });
         });
         console.log(attrs);
-        element.text('this is the calculator directive' + $scope.locString);
+        //console.log(appData);
+        //appData = $scope.data;
+        //$scope.data = appData;
+        //element.text('this is the calculator directive' + $scope.locString);
       }
     };
   });

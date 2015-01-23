@@ -19,12 +19,18 @@
 
   <body ng-app="Sdc">
 
-    <ion-pane>
+    <ion-pane ng-controller="MainCtrl">
       <ion-content>
         <calculator>
-          <div ng-include="getSOptions()"></div>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Value of property</span>
+            <input type="number" placeholder="$0.00" ng-model="data.propertyValue">
+          </label>
         </calculator>
       </ion-content>
+      <div class="bar bar-footer bar-assertive">
+        <div class="title">Stamp Duty due: {{ calculateDutyDue() | currency }}</div>
+      </div>
     </ion-pane>
 
     <!-- build:js scripts/vendor.js -->
@@ -51,6 +57,8 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/directives/calculator.js"></script>
         <script src="scripts/services/geo.js"></script>
+        <script src="scripts/services/appdata.js"></script>
+        <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->
 </body>
 </html>
