@@ -16,6 +16,8 @@ angular.module('Sdc', ['ionic', 'config'])
     if(window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+      // Disable app sitting behind status bar.
+      StatusBar.overlaysWebView(false);
     }
   });
 });
