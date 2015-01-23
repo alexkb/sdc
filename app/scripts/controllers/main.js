@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name sdcApp.controller:MainctrlCtrl
+ * @name Sdc.controller:MainCtrl
  * @description
- * # MainctrlCtrl
- * Controller of the sdcApp
+ * # MainCtrl
+ * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, Geo) {
+  .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
 
@@ -24,9 +24,20 @@ angular.module('Sdc')
     // Set more defaults:
     $scope.data.purpose = 'residential';
     $scope.data.propertyStatus = 'established';
+    $scope.data.dutyDue = 0.00;
+    $scope.data.propertyLocation = 'south';
 
     // If we see changes on the model, lets recalculate the stamp duty.
-    $scope.$watch('data', function(newValue) {
-      console.log(newValue);
+    $scope.$watch('data', function(data) {
+      // Get out of here if we don't have the absolute essentials
+      if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.state)) {
+        console.log('The important data is not set.');
+        return;
+      }
+
+      data.dutyDue = Calculator.process(data.state, data);
+
+      console.log(data.propertyValue);
+      console.log(data.state);
     }, function() {});
   });
