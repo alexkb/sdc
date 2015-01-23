@@ -66,12 +66,10 @@
         </label>
 
         <div ng-if="data.state == 'ACT'">
-
           <label class="item item-input item-stacked-label">
             <span class="input-label">Total income of purchase(s):</span>
             <input type="number" placeholder="$0.00" ng-model="data.income">
           </label>
-
 
           <label class="item item-input item-select">
             <div class="input-label">
@@ -86,13 +84,35 @@
               <option>5 or more</option>
             </select>
           </label>
-
         </div>
 
+        <div ng-if="data.state == 'ACT' || data.state == 'NT' || data.state == 'VIC'">
+          <ion-toggle ng-model="data.firstHome" toggle-class="toggle-calm">Eligible Pensioner</ion-toggle>
+        </div>
 
+        <div ng-if="data.state == 'VIC'">
+          <div class="item item-input item-select">
+            <div class="input-label">
+              Payment method:
+            </div>
+            <select ng-model="data.paymentMethod">
+              <option>Paper transaction</option>
+              <option>Electronic transaction</option>
+            </select>
+          </div>
+        </div>
 
-
-
+        <div ng-if="data.state == 'WA'">
+          <div class="item item-input item-select">
+            <div class="input-label">
+              Property Location:
+            </div>
+            <select ng-model="data.propertyLocation">
+              <option value="south">South of the 26th parallel (from Kalbarri 6536)</option>
+              <option value="north">North of the 26th parallel (from Denham 6537)</option>
+            </select>
+          </div>
+        </div>
 
       </ion-content>
       <div class="bar bar-footer bar-assertive">
