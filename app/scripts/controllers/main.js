@@ -9,10 +9,10 @@
  */
 angular.module('Sdc')
   .controller('MainCtrl', function ($scope, Geo) {
-    //$scope.data = appData;
+    // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
 
-    // Set default State on load based on geolocation service.
+    // Set default state value based on geolocation service.
     Geo.getLocation().then(function(position) {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
@@ -21,9 +21,12 @@ angular.module('Sdc')
       });
     });
 
-    $scope.calculateDutyDue = function() {
-      //console.log(appData);
-      //return appData.propertyValue + 10;
+    // Set more defaults:
+    $scope.data.purpose = 'residential';
+    $scope.data.propertyStatus = 'established';
 
-    };
+    // If we see changes on the model, lets recalculate the stamp duty.
+    $scope.$watch('data', function(newValue) {
+      console.log(newValue);
+    }, function() {});
   });
