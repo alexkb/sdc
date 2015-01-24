@@ -14,3 +14,4 @@ plugins
 .editorconfig
 app/scripts/config.js
 resources
+app/app.iml
