@@ -31,13 +31,9 @@ angular.module('Sdc')
     $scope.$watch('data', function(data) {
       // Get out of here if we don't have the absolute essentials
       if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.state)) {
-        console.log('The important data is not set.');
         return;
       }
-
+      // Set the model's total due. @todo: display itemised list of fees etc.
       data.dutyDue = Calculator.calculate(data.state, data);
-
-      console.log(data.propertyValue);
-      console.log(data.state);
     }, function() {});
   });
