@@ -35,7 +35,7 @@ angular.module('Sdc')
         return;
       }
 
-      data.dutyDue = Calculator.process(data.state, data);
+      data.dutyDue = Calculator.calculate(data.state, data);
 
       console.log(data.propertyValue);
       console.log(data.state);

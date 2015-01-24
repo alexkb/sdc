@@ -5,7 +5,7 @@
  * @name sdcApp.Geo
  * @description
  * # Geo
- * Factory in the sdcApp. Loosly based on https://github.com/driftyco/ionic-weather/blob/master/www/js/services.js
+ * Factory in the sdcApp. Loosely based on https://github.com/driftyco/ionic-weather/blob/master/www/js/services.js
  */
 angular.module('Sdc')
   .factory('Geo', function ($q) {

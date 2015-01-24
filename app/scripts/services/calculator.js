@@ -5,71 +5,133 @@
  * @name Sdc.calculator
  * @description
  * # calculator
- * Service in the Sdc.
+ * Performs all the state specific duty calculations.
  */
 angular.module('Sdc')
   .factory('Calculator', function () {
     return {
-      process: function(propertyState, data) {
+      calculate: function(propertyState, options) {
+        // results.grant is an object that has optional properties.
+        var results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
+
         switch (propertyState) {
           case 'ACT':
-            return this.calcAct(data);
+            this.processAct(options, results);
+            break;
           case 'NSW':
-            return this.calcNsw(data);
+            this.processNsw(options, results);
+            break;
           case 'NT':
-            return this.calcNt(data);
+            this.processNt(options, results);
+            break;
           case 'QLD':
-            return this.calcQld(data);
+            this.processQld(options, results);
+            break;
           case 'SA':
-            return this.calcSa(data);
+            this.processSa(options, results);
+            break;
           case 'TAS':
-            return this.calcTas(data);
+            this.processTas(options, results);
+            break;
           case 'VIC':
-            return this.calcVic(data);
+            this.processVic(options, results);
+            break;
           case 'WA':
-            return this.calcWa(data);
+            this.processWa(options, results);
+            break;
+          default:
+            break;
+        }
+
+        if (results.total !== undefined) {
+          return results.total;
+        }
+        else {
+          return 0;
         }
       },
-      calcAct: function(options) {
+
+      /**
+       * ACT
+       */
+      processAct: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 100;
+        results.total = options.propertyValue + 100;
       },
-      calcNsw: function(options) {
+
+      /**
+       * NSW
+       */
+      processNsw: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 200;
+        results.total = options.propertyValue + 200;
       },
-      calcNt: function(options) {
+
+      /**
+       * NT
+       */
+      processNt: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 300;
+        results.total = options.propertyValue + 300;
       },
-      calcQld: function(options) {
+
+      /**
+       * QLD
+       */
+      processQld: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 400;
+        results.total = options.propertyValue + 400;
       },
-      calcSa: function(options) {
+
+      /**
+       * SA
+       */
+      processSa: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 500;
+        results.total = options.propertyValue + 500;
       },
-      calcTas: function(options) {
+
+      /**
+       * TAS
+       */
+      processTas: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 600;
+        results.total = options.propertyValue + 600;
       },
-      calcVic: function(options) {
+
+      /**
+       * VIC
+       */
+      processVic: function(options, results) {
         if (options.purpose === 'residential') {
         }
-        return options.propertyValue + 700;
+        results.total = options.propertyValue + 700;
       },
-      calcWa: function(options) {
+
+      /**
+       * WA
+       */
+      processWa: function(options, results) {
+        results.mortgage_fee = 160;
+        results.transfer_fee = 160;
+        results.duty = 0;
+
         if (options.purpose === 'residential') {
+          if (options.propertyValue) {
+
+          }
         }
-        return options.propertyValue + 800;
-      },
+        else {
+        }
+
+        results.total = results.duty + results.mortgage_fee + results.transfer_fee;
+
+      }
     };
-    // AngularJS will instantiate a singleton by calling "new" on this function
   });
