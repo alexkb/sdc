@@ -23,7 +23,7 @@
       <ion-content>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Value of property</span>
-          <input type="number" placeholder="$0.00" ng-model="data.propertyValue">
+          <input type="number" placeholder="$0" ng-model="data.propertyValue">
         </label>
 
         <label class="item item-input item-select">
@@ -121,7 +121,7 @@
 
       </ion-content>
       <div class="bar bar-footer bar-assertive">
-        <div class="title">Stamp Duty due: {{ data.dutyDue | currency }} *</div>
+        <div class="title">Total Government Fees: {{ data.dutyDue | currency }} *</div>
       </div>
     </ion-pane>
 
