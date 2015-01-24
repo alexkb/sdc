@@ -26,6 +26,7 @@ angular.module('Sdc')
     $scope.data.propertyStatus = 'established';
     $scope.data.dutyDue = 0.00;
     $scope.data.propertyLocation = 'south';
+    $scope.data.firstHome = false;
 
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
