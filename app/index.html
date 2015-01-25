@@ -30,7 +30,7 @@
           <div class="input-label">
             State
           </div>
-          <select ng-model="data.state">
+          <select ng-model="data.propertyState">
             <option>ACT</option>
             <option>NSW</option>
             <option>NT</option>
@@ -61,11 +61,11 @@
           <select ng-model="data.propertyStatus">
             <option value="established">An established property</option>
             <option value="newbuild">A newly constructed home</option>
-            <option value="vacant" ng-if="data.state != 'SA'">Vacant Land</option>
+            <option value="vacant" ng-if="data.propertyState != 'SA'">Vacant Land</option>
           </select>
         </label>
 
-        <div ng-if="data.state == 'ACT'">
+        <div ng-if="data.propertyState == 'ACT'">
           <label class="item item-input item-stacked-label">
             <span class="input-label">Total income of purchase(s):</span>
             <input type="number" placeholder="$0.00" ng-model="data.income">
@@ -75,7 +75,7 @@
             <div class="input-label">
               Number of dependent children:
             </div>
-            <select ng-model="data.state">
+            <select ng-model="data.propertyState">
               <option>0</option>
               <option>1</option>
               <option>2</option>
@@ -86,11 +86,11 @@
           </label>
         </div>
 
-        <div ng-if="data.state == 'ACT' || data.state == 'NT' || data.state == 'VIC'">
+        <div ng-if="data.propertyState == 'ACT' || data.propertyState == 'NT' || data.propertyState == 'VIC'">
           <ion-toggle ng-model="data.pensioner" toggle-class="toggle-calm">Eligible Pensioner</ion-toggle>
         </div>
 
-        <div ng-if="data.state == 'VIC'">
+        <div ng-if="data.propertyState == 'VIC'">
           <div class="item item-input item-select">
             <div class="input-label">
               Payment method:
@@ -102,7 +102,7 @@
           </div>
         </div>
 
-        <div ng-if="data.state == 'WA'">
+        <div ng-if="data.propertyState == 'WA'">
           <div class="item item-input item-select">
             <div class="input-label">
               Property Location:
