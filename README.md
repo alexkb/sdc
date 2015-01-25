@@ -8,6 +8,10 @@ Please note, that the information provided by the calculator is intended to prov
 
 This code is an educational project for learning Ionic, Angular, JS and mobile application development in general. It relies on google's geolocation service to automatically select the correct state or territory that the user resides in.
 
+The calculations are based on published duty data such as:
+
+  * [http://www.homeloanadvicecentre.com.au/tools/fhogandstampduty.php](http://www.homeloanadvicecentre.com.au/tools/fhogandstampduty.php)
+
 It was originally written by [Alex Bergin](http://alexbergin.com) in 2014/15.
 
 Any peer review and criticisms of this code is very much welcome. Feel free to either open an issue on github.com, fork and merge request, etc.
