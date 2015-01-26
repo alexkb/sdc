@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.example.Sdc" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Sdc</name>
+  <name>Stamp Duty AU</name>
   <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+    A calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.
     </description>
-  <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+  <author email="info@akb.com.au" href="http://akb.com.au">
+        AKB Web Services
     </author>
   <content src="index.html"/>
   <access origin="*"/>

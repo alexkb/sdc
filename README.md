@@ -1,11 +1,12 @@
 # Stamp duty calculator for Australian real estate
 
-## Purpose
-This mobile application is a calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations.
+## Use
+This mobile application is a calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.
 
+## Disclaimer
 Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances. It should be noted that the application is licensed under the GPL and therefore (among other things) does not come with any warranty.
 
-## About
+## Motivation
 
 This code is an educational project for learning the hybrid mobile framework [Ionic](http://ionicframework.com) and the modern JS framework [Angular](http://angularjs.org).
 

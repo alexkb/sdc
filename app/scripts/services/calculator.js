@@ -4,7 +4,7 @@
  * @ngdoc service
  * @name Sdc.calculator
  * @description
- * # calculator
+ * # Calculator
  * Utils - custom utilities factory
  * $window - so we can use Math functions.
  * Performs all the state specific duty calculations.
@@ -12,60 +12,14 @@
 angular.module('Sdc')
   .factory('Calculator', function (Utils, $window) {
     var THRESHOLD_INF = -1; // temporary constant
-    var MESSAGES = {
-      incompleted: 'This feature is currently in development'
-    };
     return {
-      calculate: function(data) {
-        // results.grant is an object that has optional properties.
-        var results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
-
-        switch (data.propertyState) {
-          case 'ACT':
-            this.processAct(data, results);
-            break;
-          case 'NSW':
-            this.processNsw(data, results);
-            break;
-          case 'NT':
-            this.processNt(data, results);
-            break;
-          case 'QLD':
-            this.processQld(data, results);
-            break;
-          case 'SA':
-            this.processSa(data, results);
-            break;
-          case 'TAS':
-            this.processTas(data, results);
-            break;
-          case 'VIC':
-            this.processVic(data, results);
-            break;
-          case 'WA':
-            this.processWa(data, results);
-            break;
-          default:
-            console.log('No valid property state selected.');
-            break;
-        }
-
-        if (results.total !== undefined) {
-          return $window.Math.round(results.total);
-        }
-        else {
-          return 0;
-        }
-      },
-
       /**
        * Process ACT fees.
        * @param data
        * @param results
        */
       processAct: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -74,8 +28,7 @@ angular.module('Sdc')
        * @param results
        */
       processNsw: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -84,8 +37,7 @@ angular.module('Sdc')
        * @param results
        */
       processNt: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -94,8 +46,7 @@ angular.module('Sdc')
        * @param results
        */
       processQld: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -104,8 +55,7 @@ angular.module('Sdc')
        * @param results
        */
       processSa: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -114,8 +64,7 @@ angular.module('Sdc')
        * @param results
        */
       processTas: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -124,8 +73,7 @@ angular.module('Sdc')
        * @param results
        */
       processVic: function(data, results) {
-        results = {};
-        $window.alert(MESSAGES.incompleted);
+        var results = {};
       },
 
       /**
@@ -133,7 +81,8 @@ angular.module('Sdc')
        * @param data
        * @param results
        */
-      processWa: function(data, results) {
+      processWa: function(data) {
+        var results = {};
         results.mortgageFee = 160;
         results.transferFee = this.calcTransferFeeWA(data.propertyValue);
         var thresholds = [];
@@ -163,7 +112,7 @@ angular.module('Sdc')
               {min: 120001, max: 150000, init: 2280, plus: 2.85},
               {min: 150001, max: 360000, init: 3135, plus: 3.80},
               {min: 360001, max: 725000, init: 11115, plus: 4.75},
-              {min: 725001, max: THRESHOLD_INF, init: 19665, plus: 5.15},
+              {min: 725001, max: THRESHOLD_INF, init: 28453, plus: 5.15},
             ];
           }
           else { // Investment
@@ -179,7 +128,9 @@ angular.module('Sdc')
 
         results.propertyDuty = this.dutyByThreshold(data.propertyValue, thresholds);
         results.total = results.propertyDuty + results.mortgageFee + results.transferFee;
-        console.log(results);
+        results.total = $window.Math.round(results.total);
+
+        return results;
       },
 
       /**

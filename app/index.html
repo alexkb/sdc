@@ -21,6 +21,10 @@
 
     <ion-pane ng-controller="MainCtrl">
       <ion-content>
+        <div class="item item-divider">
+          Inputs
+        </div>
+
         <label class="item item-input item-stacked-label">
           <span class="input-label">Value of property</span>
           <input type="number" placeholder="$0" ng-model="data.propertyValue">
@@ -28,17 +32,10 @@
 
         <label class="item item-input item-select">
           <div class="input-label">
-            State
+            State / Territory
           </div>
           <select ng-model="data.propertyState">
-            <option>ACT</option>
-            <option>NSW</option>
-            <option>NT</option>
-            <option>QLD</option>
-            <option>SA</option>
-            <option>TAS</option>
-            <option>VIC</option>
-            <option>WA</option>
+            <option ng-repeat="state in stateOptions" value="{{state.name}}">{{state.name}}</option>
           </select>
         </label>
 
@@ -115,14 +112,29 @@
         </div>
 
 
+        <div class="item item-divider">
+          Results
+        </div>
+
+        <div class="item bar-assertive">
+          Stamp duty on Property: <span class="item-note">{{data.results.propertyDuty | currency}}</span>
+        </div>
+        <div class="item bar-assertive">
+          Mortgage registration fee: <span class="item-note">{{data.results.mortgageFee | currency}}</span>
+        </div>
+        <div class="item bar-assertive">
+          Transfer fee: <span class="item-note">{{data.results.transferFee | currency}}</span>
+        </div>
+
+        <div class="item bar-assertive">
+          Total Government Fees: <span class="item-note item-note-result-mark">{{ data.results.total | currency }} *</span>
+        </div>
+
         <div class="item item-text-wrap">
-        <p>* Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
+          <p>* Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
         </div>
 
       </ion-content>
-      <div class="bar bar-footer bar-assertive">
-        <div class="title">Total Government Fees: {{ data.dutyDue | currency }} *</div>
-      </div>
     </ion-pane>
 
     <!-- build:js scripts/vendor.js -->

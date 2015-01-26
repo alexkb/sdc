@@ -1,12 +1,6 @@
 'use strict';
 
 /**
- * Presets a few things to help with development.
- * @type {boolean}
- */
-var DEV_MODE = true;
-
-/**
  * @todo
  * - Write tests for calculator output
  * - Directive or some kind of formatter for the property value (show as currency, but edit as number).
@@ -25,6 +19,18 @@ angular.module('Sdc')
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
 
+    // Set defaults:
+    $scope.data.purpose = 'residential';
+    $scope.data.propertyStatus = 'established';
+    $scope.data.propertyLocation = 'south';
+    $scope.data.firstHome = false;
+    $scope.data.propertyValue = 500000;
+    $scope.data.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
+    // results.grant is an object that has optional properties.
+
+    // Set form options
+    $scope.stateOptions = [{name: 'WA'}];
+
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function(position) {
       var lat = position.coords.latitude;
@@ -34,15 +40,6 @@ angular.module('Sdc')
       });
     });
 
-    // Set more defaults:
-    $scope.data.purpose = 'residential';
-    $scope.data.propertyStatus = 'established';
-    $scope.data.propertyLocation = 'south';
-    $scope.data.firstHome = false;
-    if (DEV_MODE) {
-      $scope.data.propertyValue = 500000;
-    }
-
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
       // Get out of here if we don't have the absolute essentials
@@ -50,7 +47,22 @@ angular.module('Sdc')
         console.log('No property value or state provided.');
         return;
       }
-      // Set the model's total due. @todo: display itemised list of fees etc.
-      data.dutyDue = Calculator.calculate(data);
+
+      $scope.calculate();
+
     }, function() {});
+
+    /**
+     * Performs stamp duty calculation using calculator service.
+     */
+    $scope.calculate = function() {
+      switch ($scope.data.propertyState) {
+        case 'WA':
+          $scope.data.results = Calculator.processWa($scope.data);
+          break;
+        default:
+          console.log('No valid property state selected.');
+          break;
+      }
+    };
   });
