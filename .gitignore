@@ -13,6 +13,7 @@ plugins
 .idea
 .editorconfig
 app/scripts/config.js
-resources
-!resources/screenshot.png
+resources/*.psd
+resources/android
+resources/ios
 app/app.iml

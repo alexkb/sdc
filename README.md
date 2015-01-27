@@ -3,6 +3,8 @@
 ## Use
 This mobile application is a calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.
 
+![Screen shot of SDC AU](https://github.com/alexkb/sdc/raw/master/resources/screenshot.png "Screen shot of SDC AU")
+
 ## Disclaimer
 Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances. It should be noted that the application is licensed under the GPL and therefore (among other things) does not come with any warranty.
 
