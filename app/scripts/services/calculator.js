@@ -87,10 +87,46 @@ angular.module('Sdc')
 
       /**
        * Process VIC fees.
+       * @param propertyValue
+       * @param propertyStatus
+       * @param purpose
+       * @param firstHome
+       * @param paymentMethod
        * @returns results
        */
-      processVic: function() {
+      processVic: function(propertyValue, propertyStatus, purpose, firstHome, paymentMethod) {
+        var thresholds = [];
         var results = {};
+        results.mortgageFee = paymentMethod === 'paper' ? 110 : 87.60;
+        results.transferFee = this.calcTransferFeeVic(propertyValue, paymentMethod);
+
+        if (firstHome === true && propertyValue < 600000 && purpose === 'residential') {
+          thresholds = [
+            {min: 0, max: 25000, init: 0, plus: 1.4, discount: 0.5},
+            {min: 25001, max: 130000, init: 350, plus: 2.4, discount: 0.5},
+            {min: 130001, max: 440000, init: 2870, plus: 5, discount: 0.5},
+            {min: 440001, max: 550000, init: 18370, plus: 6, discount: 0.5},
+            {min: 550001, max: 600000, init: 28070, plus: 6, discount: 0.5},
+          ];
+        }
+        else if (propertyValue > 130000 && propertyValue < 550000 && propertyStatus === 'residential') {
+          thresholds = [
+            {min: 130001, max: 440000, init: 2870, plus: 5},
+            {min: 440001, max: 550000, init: 18370, plus: 6},
+          ];
+        }
+        else {
+          thresholds = [
+            {min: 0, max: 25000, init: 0, plus: 1.4},
+            {min: 25001, max: 130000, init: 350, plus: 2.4},
+            {min: 130001, max: 960000, init: 2870, plus: 6},
+            {min: 960001, max: THRESHOLD_INF, init: 0, plus: 5.5},
+          ];
+        }
+
+        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
+
         return results;
       },
 
@@ -103,10 +139,10 @@ angular.module('Sdc')
        * @returns results
        */
       processWa: function(propertyValue, propertyStatus, purpose, firstHome) {
+        var thresholds = [];
         var results = {};
         results.mortgageFee = 160;
-        results.transferFee = this.calcTransferFeeWA(propertyValue);
-        var thresholds = [];
+        results.transferFee = this.calcTransferFeeWa(propertyValue);
 
         if (propertyValue <= 200000) {
           thresholds = [
@@ -148,8 +184,7 @@ angular.module('Sdc')
         }
 
         results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
-        results.total = results.propertyDuty + results.mortgageFee + results.transferFee;
-        results.total = $window.Math.round(results.total);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
       },
@@ -158,7 +193,7 @@ angular.module('Sdc')
        * Calculate the transfer fee for WA
        * @param propertyValue
        */
-      calcTransferFeeWA: function(propertyValue) {
+      calcTransferFeeWa: function(propertyValue) {
         var thresholds = [
           {min: 0, max: 85000, init: 160, plus: 0},
           {min: 85001, max: 120000, init: 170, plus: 0},
@@ -188,16 +223,52 @@ angular.module('Sdc')
       },
 
       /**
+       * Calculate the transfer fee for VIC
+       * @param propertyValue
+       * @param paymentMethod
+       * @returns {*}
+       */
+      calcTransferFeeVic: function(propertyValue, paymentMethod) {
+        var thresholds = [];
+
+        if (paymentMethod === 'paper') {
+          thresholds = [
+            {min: 0, max: THRESHOLD_INF, init: 135.20, plus: 2.46, denomination: 1000, limit: 1366}
+          ];
+        }
+        else {
+          thresholds = [
+            {min: 0, max: THRESHOLD_INF, init: 111.70, plus: 2.46, denomination: 1000, limit: 1342}
+          ];
+        }
+
+        return this.dutyByThreshold(propertyValue, thresholds);
+      },
+
+      /**
        * Calculate fee using a threshold table.
        * @param propertyValue
-       * @param thresholds
+       * @param thresholds - array of threshold objects like so:
+       *  {min: 0, max: 0, init: 0, plus: 0, denomination: 0, limit 0, discount: 0.0},
        */
       dutyByThreshold: function(propertyValue, thresholds) {
         for (var i = 0; i < thresholds.length; i++) {
           if (propertyValue <= thresholds[i].max || thresholds[i].max === THRESHOLD_INF) {
             var remainder = propertyValue - thresholds[i].min;
             var denomination = Utils.isUndefinedOrNull(thresholds[i].denomination) ? 100 : thresholds[i].denomination;
-            return thresholds[i].init + ((remainder / denomination) * thresholds[i].plus);
+            var duty = thresholds[i].init + ((remainder / denomination) * thresholds[i].plus);
+
+            if (!Utils.isUndefinedOrNull(thresholds[i].limit) && duty > thresholds[i].limit) {
+              return thresholds[i].limit;
+            }
+            else {
+              if (!Utils.isUndefinedOrNull(thresholds[i].discount)) {
+                return (duty * thresholds[i].discount);
+              }
+              else {
+                return duty;
+              }
+            }
           }
         }
       }

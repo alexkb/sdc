@@ -25,6 +25,7 @@ angular.module('Sdc')
     $scope.data.propertyLocation = 'south';
     $scope.data.firstHome = false;
     $scope.data.propertyValue = 500000;
+    $scope.data.paymentMethod = 'paper';
     $scope.data.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
     // results.grant is an object that has optional properties.
 
@@ -57,6 +58,9 @@ angular.module('Sdc')
      */
     $scope.calculate = function() {
       switch ($scope.data.propertyState) {
+        case 'VIC':
+          $scope.data.results = Calculator.processVic($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
+          break;
         case 'WA':
           $scope.data.results = Calculator.processWa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
