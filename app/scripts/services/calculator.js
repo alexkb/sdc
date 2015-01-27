@@ -15,98 +15,119 @@ angular.module('Sdc')
     return {
       /**
        * Process ACT fees.
-       * @param data
-       * @param results
+       * @returns results
        */
-      processAct: function(data, results) {
+      processAct: function() {
         var results = {};
+        return results;
       },
 
       /**
        * Process NSW fees.
-       * @param data
-       * @param results
+       * @returns results
        */
-      processNsw: function(data, results) {
+      processNsw: function() {
         var results = {};
+        return results;
       },
 
       /**
        * Process NT fees.
-       * @param data
-       * @param results
+       * @returns results
        */
-      processNt: function(data, results) {
+      processNt: function() {
         var results = {};
+        return results;
       },
 
       /**
        * Process QLD fees.
-       * @param data
-       * @param results
+       * @returns results
        */
-      processQld: function(data, results) {
+      processQld: function() {
         var results = {};
+        return results;
       },
 
       /**
        * Process SA fees.
-       * @param data
-       * @param results
+       * @returns results
        */
-      processSa: function(data, results) {
+      processSa: function() {
         var results = {};
+        return results;
       },
 
       /**
        * Process TAS fees.
-       * @param data
-       * @param results
+       * @param propertyValue
+       * @returns results
        */
-      processTas: function(data, results) {
+      processTas: function(propertyValue) {
         var results = {};
+        results.mortgageFee = 126.54;
+        results.transferFee = 192.88;
+
+        var thresholds = [
+          {min: 0, max: 3000, init: 50, plus: 0},
+          {min: 3001, max: 25000, init: 50, plus: 1.75},
+          {min: 25001, max: 75000, init: 435, plus: 2.25},
+          {min: 75001, max: 200000, init: 1536, plus: 3.50},
+          {min: 200001, max: 375000, init: 5935, plus: 4.35},
+          {min: 375001, max: 725000, init: 12935, plus: 4.25},
+          {min: 725001, max: THRESHOLD_INF, init: 27810, plus: 4.5},
+        ];
+
+        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.total = results.propertyDuty + results.mortgageFee + results.transferFee;
+        results.total = $window.Math.round(results.total);
+
+        return results;
       },
 
       /**
        * Process VIC fees.
-       * @param data
-       * @param results
+       * @returns results
        */
-      processVic: function(data, results) {
+      processVic: function() {
         var results = {};
+        return results;
       },
 
       /**
        * Process WA fees.
-       * @param data
-       * @param results
+       * @param propertyValue
+       * @param propertyStatus
+       * @param purpose
+       * @param firstHome
+       * @returns results
        */
-      processWa: function(data) {
+      processWa: function(propertyValue, propertyStatus, purpose, firstHome) {
         var results = {};
         results.mortgageFee = 160;
-        results.transferFee = this.calcTransferFeeWA(data.propertyValue);
+        results.transferFee = this.calcTransferFeeWA(propertyValue);
         var thresholds = [];
 
-        if (data.propertyValue <= 200000) {
+        if (propertyValue <= 200000) {
           thresholds = [
             {min: 0, max: 100000, init: 0, plus: 1.50},
             {min: 100001, max: 200000, init: 1500, plus: 4.39}
           ];
         }
-        if (data.firstHome === true && data.propertyValue <= 530000 && data.propertyStatus === 'established' && data.purpose === 'residential') {
+        if (firstHome === true && propertyValue <= 530000 && propertyStatus === 'established' && purpose === 'residential') {
           thresholds = [
             {min: 0, max: 430000, init: 0, plus: 0},
             {min: 430001, max: 530000, init: 0, plus: 19.19}
           ];
         }
-        else if (data.firstHome === true && data.propertyValue <= 400000 && data.propertyStatus === 'vacant' && data.purpose === 'residential') {
+        else if (firstHome === true && propertyValue <= 400000 && propertyStatus === 'vacant' && purpose === 'residential') {
           thresholds = [
             {min: 0, max: 300000, init: 0, plus: 0},
             {min: 300001, max: 400000, init: 0, plus: 13.01}
           ];
         }
         else {
-          if (data.purpose === 'residential') {
+          if (purpose === 'residential') {
             thresholds = [
               {min: 0, max: 120000, init: 0, plus: 1.90},
               {min: 120001, max: 150000, init: 2280, plus: 2.85},
@@ -126,7 +147,7 @@ angular.module('Sdc')
           }
         }
 
-        results.propertyDuty = this.dutyByThreshold(data.propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
         results.total = results.propertyDuty + results.mortgageFee + results.transferFee;
         results.total = $window.Math.round(results.total);
 
