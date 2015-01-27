@@ -14,7 +14,7 @@ It uses google's geolocation service to automatically select the correct state o
 
 It was originally written by [Alex Bergin](http://alexbergin.com) in the summer of 2014/15.
 
-Any peer review and criticisms of this code is very much welcome. Feel free to either open an issue on github.com, fork and/or merge request, etc.
+Any feedback on the code, concepts or ideas, are very much welcome. Feel free to either open an [issue on github.com,](https://github.com/alexkb/sdc/issues), [fork/merge request](https://github.com/alexkb/sdc/fork) or [tweet me on @alexkbergin](https://twitter.com/alexbergin).
 
 ## Help & Resources
 

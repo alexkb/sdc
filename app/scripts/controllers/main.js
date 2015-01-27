@@ -5,6 +5,7 @@
  * - Write tests for calculator output
  * - Directive or some kind of formatter for the property value (show as currency, but edit as number).
  * - Display itemised fees.
+ * - Calculate grants and add it to the results.
  */
 
 /**
