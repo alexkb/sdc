@@ -53,8 +53,25 @@ angular.module('Sdc')
        * Process SA fees.
        * @returns results
        */
-      processSa: function() {
+      processSa: function(propertyValue, firstHome) {
         var results = {};
+        results.mortgageFee = 152;
+        results.transferFee = this.calcTransferFeeSa(propertyValue);
+
+        var thresholds = [
+          {min: 0, max: 12000, init: 0, plus: 1},
+          {min: 12001, max: 30000, init: 120, plus: 2},
+          {min: 30001, max: 50000, init: 480, plus: 3},
+          {min: 50001, max: 100000, init: 1080, plus: 3.5},
+          {min: 200001, max: 250000, init: 6830, plus: 4.25},
+          {min: 250001, max: 300000, init: 8955, plus: 4.75},
+          {min: 300001, max: 500000, init: 11330, plus: 5},
+          {min: 500001, max: THRESHOLD_INF, init: 21330, plus: 5.5},
+        ];
+
+        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
+
         return results;
       },
 
@@ -79,8 +96,7 @@ angular.module('Sdc')
         ];
 
         results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
-        results.total = results.propertyDuty + results.mortgageFee + results.transferFee;
-        results.total = $window.Math.round(results.total);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
       },
@@ -246,6 +262,23 @@ angular.module('Sdc')
       },
 
       /**
+       * Calculate the transfer fee for SA.
+       * @param propertyValue
+       * @returns float
+       */
+      calcTransferFeeSa: function(propertyValue) {
+        var thresholds = [
+          {min: 0, max: 5000, init: 152, plus: 0},
+          {min: 5001, max: 20000, init: 167, plus: 0},
+          {min: 20001, max: 40000, init: 184, plus: 0},
+          {min: 40001, max: 50000, init: 285, plus: 0},
+          {min: 50001, max: THRESHOLD_INF, init: 285, plus: 75.5, denomination: 10000}
+        ];
+
+        return this.dutyByThreshold(propertyValue, thresholds);
+      },
+
+      /**
        * Calculate fee using a threshold table.
        * @param propertyValue
        * @param thresholds - array of threshold objects like so:
@@ -269,8 +302,8 @@ angular.module('Sdc')
                 return duty;
               }
             }
-          }
-        }
-      }
+          } // if propertyValue in range
+        } // for()
+      } // dutyByThreshold
     };
   });
