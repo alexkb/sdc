@@ -26,8 +26,39 @@ angular.module('Sdc')
        * Process NSW fees.
        * @returns results
        */
-      processNsw: function() {
+      processNsw: function(propertyValue, propertyStatus, purpose, firstHome) {
         var results = {};
+        results.mortgageFee = 107;
+        results.transferFee = 214;
+        var thresholds = [];
+
+        if (firstHome === true && propertyStatus === 'newbuild' && purpose === 'residential' && propertyValue < 650000) {
+          thresholds = [
+            {min: 0, max: 550000, init: 0, plus: 0},
+            {min: 550001, max:650000, sliding: {rate: 0.2474, subtract: 136070}}
+          ];
+        }
+        else if (firstHome === true && propertyStatus === 'vacant' && purpose === 'residential' && propertyValue < 450000) {
+          thresholds = [
+            {min: 0, max: 350000, init: 0, plus: 0},
+            {min: 350001, max: 450000, sliding: {rate: 0.1574, subtract: 55090}}
+          ];
+        }
+        else {
+          thresholds = [
+            {min: 0, max: 14000, init: 0, plus: 1.25},
+            {min: 14001, max: 30000, init: 175, plus: 1.5},
+            {min: 30001, max: 80000, init: 415, plus: 1.75},
+            {min: 80001, max: 300000, init: 1290, plus: 3.50},
+            {min: 300001, max: 1000000, init: 8990, plus: 4.50},
+            {min: 1000001, max: 3000000, init: 40490, plus: 5.50},
+            {min: 3000001, max: THRESHOLD_INF, init: 150490, plus: 7}
+          ];
+        }
+
+        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
+
         return results;
       },
 
@@ -53,7 +84,7 @@ angular.module('Sdc')
        * Process SA fees.
        * @returns results
        */
-      processSa: function(propertyValue, firstHome) {
+      processSa: function(propertyValue, propertyStatus, purpose, firstHome) {
         var results = {};
         results.mortgageFee = 152;
         results.transferFee = this.calcTransferFeeSa(propertyValue);
@@ -71,6 +102,10 @@ angular.module('Sdc')
 
         results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
+
+        if (firstHome === true && propertyStatus !== 'established' && purpose === 'residential') {
+          results.grant.fhog = 15000;
+        }
 
         return results;
       },
@@ -287,6 +322,10 @@ angular.module('Sdc')
       dutyByThreshold: function(propertyValue, thresholds) {
         for (var i = 0; i < thresholds.length; i++) {
           if (propertyValue <= thresholds[i].max || thresholds[i].max === THRESHOLD_INF) {
+            if (!Utils.isUndefinedOrNull(thresholds[i].sliding)) {
+              return propertyValue * thresholds[i].sliding.rate - thresholds[i].sliding.subtract;
+            }
+
             var remainder = propertyValue - thresholds[i].min;
             var denomination = Utils.isUndefinedOrNull(thresholds[i].denomination) ? 100 : thresholds[i].denomination;
             var duty = thresholds[i].init + ((remainder / denomination) * thresholds[i].plus);
@@ -294,15 +333,13 @@ angular.module('Sdc')
             if (!Utils.isUndefinedOrNull(thresholds[i].limit) && duty > thresholds[i].limit) {
               return thresholds[i].limit;
             }
-            else {
-              if (!Utils.isUndefinedOrNull(thresholds[i].discount)) {
-                return (duty * thresholds[i].discount);
-              }
-              else {
-                return duty;
-              }
+
+            if (!Utils.isUndefinedOrNull(thresholds[i].discount)) {
+              return (duty * thresholds[i].discount);
             }
-          } // if propertyValue in range
+
+            return duty;
+          } // if propertyValue is in range
         } // for()
       } // dutyByThreshold
     };
