@@ -3,7 +3,7 @@
 /**
  * @todo
  * - Write tests for calculator output
- * - Directive or some kind of formatter for the property value (show as currency, but edit as number).
+ * - Directive or some kind of formatter for the property value (show as currency, but edit as number). Or perhaps just a tweak to the current input field.
  * - Display itemised fees.
  * - Calculate grants and add it to the results.
  */
@@ -25,7 +25,6 @@ angular.module('Sdc')
     $scope.data.propertyStatus = 'established';
     $scope.data.propertyLocation = 'south';
     $scope.data.firstHome = false;
-    $scope.data.propertyValue = 500000;
     $scope.data.paymentMethod = 'paper';
     $scope.data.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
     // results.grant is an object that has optional properties.
@@ -45,7 +44,7 @@ angular.module('Sdc')
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
       // Get out of here if we don't have the absolute essentials
-      if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
+      if (Utils.isUndefinedOrNull(data.propertyValue) || isNaN(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('No property value or state provided.');
         return;
       }
