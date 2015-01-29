@@ -3,7 +3,7 @@
 /**
  * @todo
  * - Write tests for calculator output
- * - Directive or some kind of formatter for the property value (show as currency, but edit as number). Or perhaps just a tweak to the current input field.
+ * - Convert propertyValue field to a directive to encapsulate the formatting rules.
  * - Display itemised fees.
  * - Calculate grants and add it to the results.
  */
@@ -89,7 +89,13 @@ angular.module('Sdc')
      */
     $scope.propertyValueFormatted = function() {
       var formattedValue = $scope.propertyValueCleansed().toLocaleString('en');
-      if (formattedValue !== $scope.data.propertyValue) {
+
+      // If the formatted value equates to zero (number or string), then lets set the model to an empty string so the user sees the placeholder again.
+      if (formattedValue === 0 || formattedValue === '0') {
+        $scope.data.propertyValue = '';
+      }
+      // Buf if the value isn't 0 and has changed since our last digest, then lets set it to the nicely formatted value :)
+      else if (formattedValue !== $scope.data.propertyValue) {
         $scope.data.propertyValue = formattedValue;
       }
     };
