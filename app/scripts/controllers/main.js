@@ -22,6 +22,7 @@ angular.module('Sdc')
     $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
 
     // Set defaults:
+    $scope.data.propertyValue = '';
     $scope.data.purpose = 'residential';
     $scope.data.propertyStatus = 'established';
     $scope.data.propertyLocation = 'south';
@@ -44,12 +45,12 @@ angular.module('Sdc')
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
       // Get out of here if we don't have the absolute essentials
-      if (Utils.isUndefinedOrNull(data.propertyValue) || isNaN(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
-        console.log('No property value or state provided.');
+      if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
+        console.log('Missing required inputs: property value or state');
         return;
       }
 
-      console.log("Watch about to call calculate()");
+      console.log('Watch about to call calculate()');
       $scope.calculate();
 
     }, function() {});
@@ -58,25 +59,46 @@ angular.module('Sdc')
      * Performs stamp duty calculation using calculator service.
      */
     $scope.calculate = function() {
+
       switch ($scope.data.propertyState) {
         case 'NSW':
-          $scope.results = Calculator.processNsw($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processNsw($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'SA':
-          $scope.results = Calculator.processSa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processSa($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'VIC':
-          $scope.results = Calculator.processVic($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
+          $scope.results = Calculator.processVic($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
           break;
         case 'WA':
-          $scope.results = Calculator.processWa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processWa($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'TAS':
-          $scope.results = Calculator.processTas($scope.data.propertyValue);
+          $scope.results = Calculator.processTas($scope.propertyValueCleansed());
           break;
         default:
           console.log('No valid property state selected.');
           break;
       }
+    };
+
+    /**
+     * Called from view to format the property value into a more readable value, e.g. 500,000.
+     * Help from:
+     * http://stackoverflow.com/questions/9311258/how-do-i-replace-special-characters-with-regex-in-javascript
+     */
+    $scope.propertyValueFormatted = function() {
+      var formattedValue = $scope.propertyValueCleansed().toLocaleString('en');
+      if (formattedValue !== $scope.data.propertyValue) {
+        $scope.data.propertyValue = formattedValue;
+      }
+    };
+
+    /**
+     * Helper function to remove formatted characters in property Value.
+     * @returns {string}
+     */
+    $scope.propertyValueCleansed = function() {
+      return Number(String($scope.data.propertyValue).replace(/[^0-9.]/g, '')); // remove the crud
     };
   });

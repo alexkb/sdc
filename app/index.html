@@ -28,7 +28,7 @@
         <div class="item">
           <label class="item item-input">
             <i class="icon ion-social-usd placeholder-icon"></i>
-            <input class="property-value" type="number" ng-model="data.propertyValue" placeholder="Enter property value">
+            <input class="property-value" type="text" pattern="[0-9,.]*" ng-change="propertyValueFormatted()" ng-model="data.propertyValue" placeholder="Enter property value">
           </label>
         </div>
 
