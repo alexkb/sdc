@@ -3,11 +3,10 @@
 /**
  * @ngdoc service
  * @name Sdc.calculator
- * @description
+ * @description Performs all the state specific duty calculations.
  * # Calculator
  * Utils - custom utilities factory
  * $window - so we can use Math functions.
- * Performs all the state specific duty calculations.
  */
 angular.module('Sdc')
   .factory('Calculator', function (Utils, $window) {
@@ -72,17 +71,101 @@ angular.module('Sdc')
       },
 
       /**
-       * Process QLD fees.
-       * @returns results
+       * Process QLD fees. Note: due to unique sliding scale for first home buyers, the logic is slightly different to other states.
+       * @param propertyValue
+       * @param propertyStatus
+       * @param purpose
+       * @param firstHome
+       * @returns results.
        */
-      processQld: function() {
+      processQld: function(propertyValue, propertyStatus, purpose, firstHome) {
         var results = {};
+        results.mortgageFee = 162.9;
+        results.transferFee = this.calcTransferFeeQld(propertyValue);
+        var thresholds = [];
+
+        if (firstHome === true && propertyValue <= 500000 && propertyStatus !== 'vacant' && purpose === 'residential') {
+          results.propertyDuty = 0;
+        }
+        else if (firstHome === true && propertyValue <= 250000 && propertyStatus === 'vacant' && purpose === 'residential') {
+          results.propertyDuty = 0;
+        }
+        else if (purpose === 'residential') {
+          var concession = 0;
+          var concessionThresholds = [];
+
+          if (firstHome === true && propertyStatus !== 'vacant') {
+            concessionThresholds = [
+              {max: 505000, discount: 8750},
+              {max: 510000, discount: 7875},
+              {max: 515000, discount: 7000},
+              {max: 520000, discount: 6125},
+              {max: 525000, discount: 5250},
+              {max: 530000, discount: 4735},
+              {max: 535000, discount: 3500},
+              {max: 540000, discount: 2625},
+              {max: 545000, discount: 1750},
+              {max: 550000, discount: 875},
+            ];
+          }
+          else if (firstHome === true && propertyStatus === 'vacant') {
+            concessionThresholds = [
+              {max: 260000, discount: 7175},
+              {max: 270000, discount: 6700},
+              {max: 280000, discount: 6225},
+              {max: 290000, discount: 5750},
+              {max: 300000, discount: 5275},
+              {max: 310000, discount: 4800},
+              {max: 320000, discount: 4325},
+              {max: 330000, discount: 3850},
+              {max: 340000, discount: 3375},
+              {max: 350000, discount: 2900},
+              {max: 360000, discount: 2425},
+              {max: 370000, discount: 1950},
+              {max: 380000, discount: 1475},
+              {max: 390000, discount: 1000},
+              {max: 400000, discount: 525},
+            ];
+          }
+
+          if (concessionThresholds.length > 0) {
+            concession = this.concessionByThreshold(propertyValue, concessionThresholds);
+          }
+
+          thresholds = [
+            {min: 0, max: 350000, init: 0, plus: 1},
+            {min: 350001, max: 540000, init: 3500, plus: 3.5},
+            {min: 540001, max: 1000000, init: 10150, plus: 4.5},
+            {min: 1000001, max: THRESHOLD_INF, init: 30850, plus: 5.75}
+          ];
+
+          results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds) - concession;
+        }
+        else {
+          thresholds = [
+            {min: 0, max: 5000, init: 0},
+            {min: 5001, max: 75000, init: 0, plus: 1.50},
+            {min: 75001, max: 540000, init: 1050, plus: 3.5},
+            {min: 540001, max: 1000000, init: 17325, plus: 4.5},
+            {min: 1000000, max: THRESHOLD_INF, init: 38025, plus: 5.75}
+          ];
+
+          results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        }
+
+        results.propertyDuty = results.propertyDuty;
+        results.total =  results.propertyDuty + results.mortgageFee + results.transferFee;
+
         return results;
       },
 
       /**
        * Process SA fees.
-       * @returns results
+       * @param propertyValue
+       * @param propertyStatus
+       * @param purpose
+       * @param firstHome
+       * @returns result
        */
       processSa: function(propertyValue, propertyStatus, purpose, firstHome) {
         var results = {};
@@ -299,7 +382,7 @@ angular.module('Sdc')
       /**
        * Calculate the transfer fee for SA.
        * @param propertyValue
-       * @returns float
+       * @returns Number
        */
       calcTransferFeeSa: function(propertyValue) {
         var thresholds = [
@@ -308,6 +391,20 @@ angular.module('Sdc')
           {min: 20001, max: 40000, init: 184, plus: 0},
           {min: 40001, max: 50000, init: 285, plus: 0},
           {min: 50001, max: THRESHOLD_INF, init: 285, plus: 75.5, denomination: 10000}
+        ];
+
+        return this.dutyByThreshold(propertyValue, thresholds);
+      },
+
+      /**
+       * Calculate the transfer fee for QLD.
+       * @param propertyValue
+       * @returns Number
+       */
+      calcTransferFeeQld: function(propertyValue) {
+        var thresholds = [
+          {min: 0, max: 180000, init: 162.9},
+          {min: 180001, max: THRESHOLD_INF, init: 162.9, plus: 30.80, denomination: 10000}
         ];
 
         return this.dutyByThreshold(propertyValue, thresholds);
@@ -326,9 +423,17 @@ angular.module('Sdc')
               return propertyValue * thresholds[i].sliding.rate - thresholds[i].sliding.subtract;
             }
 
-            var remainder = propertyValue - thresholds[i].min;
+            // We take an extra 1 off the threshold[i].min (if it's not 0), as regs specify its for every denomination over the min INCLUSIVE.
+            var remainder = propertyValue - thresholds[i].min - (thresholds[i].min > 0 ? 1 : 0);
+
+            // Denominations are every 100's, but some regs are 1,000 and others are 10,000.
             var denomination = Utils.isUndefinedOrNull(thresholds[i].denomination) ? 100 : thresholds[i].denomination;
-            var duty = thresholds[i].init + ((remainder / denomination) * thresholds[i].plus);
+
+            // Set the plus value even if it hasn't been set, to make the duty calculation fail safe.
+            var plus = Utils.isUndefinedOrNull(thresholds[i].plus) ? 0 : thresholds[i].plus;
+
+            // The typical calculation for calculating duty. If the plus value isn't specified then the duty is essentially the initial value.
+            var duty = thresholds[i].init + ((remainder / denomination) * plus);
 
             if (!Utils.isUndefinedOrNull(thresholds[i].limit) && duty > thresholds[i].limit) {
               return thresholds[i].limit;
@@ -341,6 +446,22 @@ angular.module('Sdc')
             return duty;
           } // if propertyValue is in range
         } // for()
-      } // dutyByThreshold
+      }, // dutyByThreshold
+
+      /**
+       * Basic function to return a discount value if propertyValue is within a certain range.
+       * @param propertyValue
+       * @param thresholds
+       * @returns {number}
+       */
+      concessionByThreshold: function(propertyValue, thresholds) {
+        for(var i = 0; i < thresholds.length; i++) {
+          if (propertyValue < thresholds[i].max || thresholds[i].max === THRESHOLD_INF) {
+            return thresholds[i].discount;
+          }
+        }
+
+        return 0;
+      }
     };
   });

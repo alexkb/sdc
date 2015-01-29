@@ -2,10 +2,12 @@
 
 /**
  * @todo
+ * - Finish off calculating duty on other states.
  * - Write tests for calculator output
  * - Convert propertyValue field to a directive to encapsulate the formatting rules.
  * - Display itemised fees.
  * - Calculate grants and add it to the results.
+ * - And as always, make more angular-like as feedback comes in or I learn more in other projects (hopefully).
  */
 
 /**
@@ -31,7 +33,7 @@ angular.module('Sdc')
     // results.grant is an object that has optional properties.
 
     // Set form options
-    $scope.stateOptions = [{name: 'NSW'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
+    $scope.stateOptions = [{name: 'NSW'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function(position) {
@@ -59,22 +61,26 @@ angular.module('Sdc')
      * Performs stamp duty calculation using calculator service.
      */
     $scope.calculate = function() {
+      var cleansedPropertyValue = $scope.getPropertyValueCleansed();
 
       switch ($scope.data.propertyState) {
         case 'NSW':
-          $scope.results = Calculator.processNsw($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processNsw(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          break;
+        case 'QLD':
+          $scope.results = Calculator.processQld(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'SA':
-          $scope.results = Calculator.processSa($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
-          break;
-        case 'VIC':
-          $scope.results = Calculator.processVic($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
-          break;
-        case 'WA':
-          $scope.results = Calculator.processWa($scope.propertyValueCleansed(), $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processSa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'TAS':
-          $scope.results = Calculator.processTas($scope.propertyValueCleansed());
+          $scope.results = Calculator.processTas(cleansedPropertyValue);
+          break;
+        case 'VIC':
+          $scope.results = Calculator.processVic(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
+          break;
+        case 'WA':
+          $scope.results = Calculator.processWa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         default:
           console.log('No valid property state selected.');
@@ -88,7 +94,7 @@ angular.module('Sdc')
      * http://stackoverflow.com/questions/9311258/how-do-i-replace-special-characters-with-regex-in-javascript
      */
     $scope.propertyValueFormatted = function() {
-      var formattedValue = $scope.propertyValueCleansed().toLocaleString('en');
+      var formattedValue = $scope.getPropertyValueCleansed().toLocaleString('en');
 
       // If the formatted value equates to zero (number or string), then lets set the model to an empty string so the user sees the placeholder again.
       if (formattedValue === 0 || formattedValue === '0') {
@@ -104,7 +110,7 @@ angular.module('Sdc')
      * Helper function to remove formatted characters in property Value.
      * @returns {string}
      */
-    $scope.propertyValueCleansed = function() {
+    $scope.getPropertyValueCleansed = function() {
       return Number(String($scope.data.propertyValue).replace(/[^0-9.]/g, '')); // remove the crud
     };
   });
