@@ -19,6 +19,7 @@ angular.module('Sdc')
   .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
+    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
 
     // Set defaults:
     $scope.data.purpose = 'residential';
@@ -26,7 +27,6 @@ angular.module('Sdc')
     $scope.data.propertyLocation = 'south';
     $scope.data.firstHome = false;
     $scope.data.paymentMethod = 'paper';
-    $scope.data.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
     // results.grant is an object that has optional properties.
 
     // Set form options
@@ -49,6 +49,7 @@ angular.module('Sdc')
         return;
       }
 
+      console.log("Watch about to call calculate()");
       $scope.calculate();
 
     }, function() {});
@@ -59,19 +60,19 @@ angular.module('Sdc')
     $scope.calculate = function() {
       switch ($scope.data.propertyState) {
         case 'NSW':
-          $scope.data.results = Calculator.processNsw($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processNsw($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'SA':
-          $scope.data.results = Calculator.processSa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processSa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'VIC':
-          $scope.data.results = Calculator.processVic($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
+          $scope.results = Calculator.processVic($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
           break;
         case 'WA':
-          $scope.data.results = Calculator.processWa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processWa($scope.data.propertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'TAS':
-          $scope.data.results = Calculator.processTas($scope.data.propertyValue);
+          $scope.results = Calculator.processTas($scope.data.propertyValue);
           break;
         default:
           console.log('No valid property state selected.');
