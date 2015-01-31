@@ -5,9 +5,9 @@
  * - Finish off calculating duty on other states.
  * - Write tests for calculator output
  * - Convert propertyValue field to a directive to encapsulate the formatting rules.
- * - Display itemised fees.
  * - Calculate grants and add it to the results.
  * - And as always, make more angular-like as feedback comes in or I learn more in other projects (hopefully).
+ * - email results or support storage of results.
  */
 
 /**
