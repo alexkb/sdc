@@ -111,6 +111,6 @@ angular.module('Sdc')
      * @returns {string}
      */
     $scope.getPropertyValueCleansed = function() {
-      return Number(String($scope.data.propertyValue).replace(/[^0-9.]/g, '')); // remove the crud
+      return Number(String($scope.data.propertyValue).replace(/[^0-9]/g, '')); // remove the crud
     };
   });
