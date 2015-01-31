@@ -65,8 +65,39 @@ angular.module('Sdc')
        * Process NT fees.
        * @returns results
        */
-      processNt: function() {
+      processNt: function(propertyValue, propertyStatus, purpose, firstHome, pensioner) {
         var results = {};
+        results.mortgageFee = 137;
+        results.transferFee = 137;
+        var thresholds = 0;
+        var concession = 0;
+
+        if (propertyValue < 525000) {
+
+          var v = propertyValue/1000;
+          results.propertyDuty = (0.06571441 * (v * v)) + (15 * v);
+        }
+        else {
+          thresholds = [
+            {min: 525000, max: 3000000, init: 0, plus: 4.95},
+            {min: 3000001, max: THRESHOLD_INF, init: 0, plus: 5.45}
+          ];
+
+          results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        }
+
+        if (pensioner === true) {
+          concession = 8500;
+        }
+        else if (firstHome === false && purpose === 'residential' && propertyStatus !== 'established') {
+          concession = 7000;
+        }
+        else if (firstHome === true && purpose === 'residential' && propertyStatus === 'established') {
+          concession = 7000;
+        }
+
+        results.propertyDuty = results.propertyDuty <= concession ? 0 : (results.propertyDuty - concession);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
         return results;
       },
 
