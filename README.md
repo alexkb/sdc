@@ -1,7 +1,6 @@
-# Stamp duty calculator for Australian real estate
+# Stamp duty calculator for real estate in AUS
 
-## Use
-This mobile application is a calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.
+This mobile application is a calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required to operate the application, but if internet access is available, your geolocation is geocoded (via google) to pre-set the State or Territory you reside in.
 
 [![Android app on Google Play](https://github.com/alexkb/sdc/raw/master/resources/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.akbweb.sdc)
 
@@ -10,19 +9,14 @@ Please note, that the information provided by the calculator is intended to prov
 
 ## Motivation
 
-This code is an educational project for learning the hybrid mobile framework [Ionic](http://ionicframework.com) and the modern JS framework [AngularJS](http://angularjs.org).
+This code is an educational project for learning the hybrid mobile framework [Ionic](http://ionicframework.com) and the modern JS framework [AngularJS](http://angularjs.org). It was originally written by [Alex Bergin](http://alexbergin.com) in the summer of 2014/15.
 
-It uses google's geolocation service to automatically select the correct state or territory that the user resides in.
-
-It was originally written by [Alex Bergin](http://alexbergin.com) in the summer of 2014/15.
-
-Any feedback on the code, concepts or ideas, are very much welcome. Feel free to either open an [issue on github.com](https://github.com/alexkb/sdc/issues), [fork/merge request](https://github.com/alexkb/sdc/fork) or [tweet me on @alexkbergin](https://twitter.com/alexbergin).
+Any feedback on the code, concepts or ideas, are very much welcome  - either open an [issue on github.com](https://github.com/alexkb/sdc/issues), [fork/merge request](https://github.com/alexkb/sdc/fork) or [tweet me on @alexkbergin](https://twitter.com/alexbergin).
 
 ## Help & Resources
 
  * Geolocation code based on [github.com/driftyco/ionic-weather/](https://github.com/driftyco/ionic-weather/).
  * Ionic development setup guide: [alexbergin.com/2014/setting-ionic-linux-vm-windows-host](http://alexbergin.com/2014/setting-ionic-linux-vm-windows-host).
- * Calculator icon used in app icon and splash screen courtesy of [fontawesome.io](http://fortawesome.github.io/Font-Awesome/).
  * Calculations are based on freely published duty data such as [those found on homeloanadvicecentre](http://www.homeloanadvicecentre.com.au/tools/fhogandstampduty.php).
 
 ## License
