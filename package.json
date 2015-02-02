@@ -50,6 +50,11 @@
   "cordovaPlugins": [
     "https://github.com/driftyco/ionic-plugins-keyboard.git",
     "org.apache.cordova.statusbar",
-    "org.apache.cordova.geolocation"
+    "org.apache.cordova.geolocation",
+    "org.apache.cordova.device",
+    "com.ionic.keyboard",
+    "org.apache.cordova.console",
+    "org.apache.cordova.inappbrowser",
+    "org.apache.cordova.splashscreen"
   ]
 }
