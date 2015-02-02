@@ -98,7 +98,7 @@ angular.module('Sdc')
      * http://stackoverflow.com/questions/9311258/how-do-i-replace-special-characters-with-regex-in-javascript
      */
     $scope.propertyValueFormatted = function() {
-      var formattedValue = $scope.getPropertyValueCleansed().toLocaleString('en');
+      var formattedValue = Utils.localeString($scope.getPropertyValueCleansed());
 
       // If the formatted value equates to zero (number or string), then lets set the model to an empty string so the user sees the placeholder again.
       if (formattedValue === 0 || formattedValue === '0') {
