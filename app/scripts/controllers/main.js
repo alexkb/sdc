@@ -34,7 +34,7 @@ angular.module('Sdc')
     // results.grant is an object that has optional properties.
 
     // Set form options
-    $scope.stateOptions = [{name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
+    $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function(position) {
@@ -65,6 +65,9 @@ angular.module('Sdc')
       var cleansedPropertyValue = $scope.getPropertyValueCleansed();
 
       switch ($scope.data.propertyState) {
+        case 'ACT':
+          $scope.results = Calculator.processAct(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.pensioner, $scope.data.income, $scope.data.propertyDependents);
+          break;
         case 'NSW':
           $scope.results = Calculator.processNsw(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;

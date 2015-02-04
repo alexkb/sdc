@@ -14,11 +14,68 @@ angular.module('Sdc')
     return {
       /**
        * Process ACT fees.
-       * @returns results
+       * @param propertyValue
+       * @param propertyStatus
+       * @param purpose
+       * @param firstHome
+       * @param pensioner
+       * @param income
+       * @param dependents
+       * @returns {{}}
        */
-      processAct: function() {
+      processAct: function(propertyValue, propertyStatus, purpose, firstHome, pensioner, income, propertyDependents) {
         var results = {};
+        results.mortgageFee = 125;
+        results.transferFee = 243;
+        var thresholds = [];
+
+        if (propertyValue <  550000 && propertyStatus === 'newbuild' && purpose === 'residential' && this.actConcessionMeansTest(income, propertyDependents)) {
+          thresholds = [
+            {min: 0, max: 446100, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
+            {min: 446101, max: 550000, init: 0, plus: 17.55}
+          ];
+        }
+        else if (propertyValue <  298300 && propertyStatus === 'land' && purpose === 'residential' && this.actConcessionMeansTest(income, propertyDependents)) {
+          thresholds = [
+            {min: 0, max: 266800, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
+            {min: 266800, max: 298300, init: 0, plus: 23.50}
+          ];
+        }
+        else {
+          thresholds = [
+            {min: 0, max: 1000, init: 20, plus: 0},
+            {min: 1001, max: 200000, init: 0, plus: 2},
+            {min: 200001, max: 300001, init: 4000, plus: 3.5},
+            {min: 300001, max: 500000, init: 7500, plus: 4.15},
+            {min: 500001, max: 750001, init: 15600, plus: 5},
+            {min: 750001, max: 1000000, init: 28300, plus: 6.5},
+            {min: 1000001, max: 1455000, init: 44550, plus: 7},
+            {min: 1455001, max: THRESHOLD_INF, init: 0, plus: 5.25}
+          ];
+        }
+
+        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
+
         return results;
+      },
+
+      /**
+       * Mean tests the buyer for a concession in ACT
+       * @param income
+       * @param propertyDependents
+       * @returns {boolean}
+       */
+      actConcessionMeansTest: function(income, propertyDependents) {
+        if (propertyDependents === 0 && income > 160000 ||
+        propertyDependents === 1 && income > 163330 ||
+        propertyDependents === 2 && income > 166660 ||
+        propertyDependents === 3 && income > 169990 ||
+        propertyDependents === 4 && income > 173320 ||
+        propertyDependents >= 5 && income > 176650) {
+          return false;
+        }
+        return true;
       },
 
       /**
