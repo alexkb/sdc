@@ -18,10 +18,10 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
+  .controller('MainCtrl', function ($scope, Geo, Utils, Calculator, constants) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
-    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {}, total: 0};
+    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: 0}, total: 0};
 
     // Set defaults:
     $scope.data.propertyValue = '';
@@ -31,19 +31,25 @@ angular.module('Sdc')
     $scope.data.firstHome = false;
     $scope.data.pensioner = false;
     $scope.data.paymentMethod = 'paper';
-    // results.grant is an object that has optional properties.
+    // results.grants is an object that has optional properties.
 
     // Set form options
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
     // Set default state value based on geolocation service.
-    Geo.getLocation().then(function(position) {
-      var lat = position.coords.latitude;
-      var lng = position.coords.longitude;
-      Geo.reverseGeocode(lat, lng).then(function(locString) {
-        $scope.data.propertyState = locString;
+
+    if (constants.env !== 'dev') {
+      Geo.getLocation().then(function (position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        Geo.reverseGeocode(lat, lng).then(function (locString) {
+          $scope.data.propertyState = locString;
+        });
       });
-    });
+    }
+    else {
+      $scope.data.propertyState = 'ACT';
+    }
 
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
@@ -87,7 +93,7 @@ angular.module('Sdc')
           $scope.results = Calculator.processVic(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
           break;
         case 'WA':
-          $scope.results = Calculator.processWa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processWa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.propertyLocation);
           break;
         default:
           console.log('No valid property state selected.');

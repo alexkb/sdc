@@ -51,8 +51,6 @@
           </select>
         </label>
 
-        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-calm">First Home Buyer?</ion-toggle>
-
         <label class="item item-input item-select">
           <div class="input-label">
             Are you purchasing
@@ -64,16 +62,26 @@
           </select>
         </label>
 
-        <div ng-show="data.propertyState == 'ACT'">
-          <label class="item item-input item-stacked-label">
-            <span class="input-label">Total income of purchase(s):</span>
-            <input type="number" placeholder="$0.00" ng-model="data.income">
+        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-calm">First Home Buyer</ion-toggle>
+
+        <div ng-show="data.propertyState == 'ACT' && data.purpose == 'residential'">
+          <div class="item item-divider note">The following questions determine if you're eligible for a concessional rate.</div>
+
+          <label class="item item-input item-select">
+            <div class="input-label">Total income of purchase(s):</div>
+            <select ng-model="data.income">
+              <option value="0">less than $160,000</option>
+              <option value="160001">$160,001 to $163,330</option>
+              <option value="163331">$163,331 to $166,660</option>
+              <option value="166661">$166,661 to $169,990</option>
+              <option value="169991">$169,991 to $173,320</option>
+              <option value="173321">$173,321 to $176,650</option>
+              <option value="176650">more than $176,650</option>
+            </select>
           </label>
 
           <label class="item item-input item-select">
-            <div class="input-label">
-              Number of dependent children:
-            </div>
+            <div class="input-label">Number of dependent children:</div>
             <select ng-model="data.propertyDependents">
               <option>0</option>
               <option>1</option>
@@ -101,14 +109,14 @@
           </div>
         </div>
 
-        <div ng-show="data.propertyState == 'WA'">
+        <div ng-show="data.propertyState == 'WA' && data.firstHome">
           <div class="item item-input item-select">
             <div class="input-label">
-              Property Location:
+              Location:
             </div>
             <select ng-model="data.propertyLocation">
-              <option value="south">South of the 26th parallel (from Kalbarri 6536)</option>
-              <option value="north">North of the 26th parallel (from Denham 6537)</option>
+              <option value="south">South of Kalbarri (26th parallel)</option>
+              <option value="north">North of Denham (26th parallel</option>
             </select>
           </div>
         </div>
@@ -130,6 +138,12 @@
 
         <div class="item bar-assertive">
           Total Government Fees: <span class="item-note item-note-result-mark">{{ results.total | currency }} *</span>
+        </div>
+
+        <div ng-show="results.grants.fhog > 0">
+          <div class="item bar-assertive">
+            First Home Owners Grant: <span class="item-note">{{results.grants.fhog | currency}}</span>
+          </div>
         </div>
 
         <div class="item item-text-wrap">

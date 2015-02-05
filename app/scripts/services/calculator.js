@@ -275,7 +275,7 @@ angular.module('Sdc')
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         if (firstHome === true && propertyStatus !== 'established' && purpose === 'residential') {
-          results.grant.fhog = 15000;
+          results.grants.fhog = 15000;
         }
 
         return results;
@@ -360,9 +360,10 @@ angular.module('Sdc')
        * @param firstHome
        * @returns results
        */
-      processWa: function(propertyValue, propertyStatus, purpose, firstHome) {
+      processWa: function(propertyValue, propertyStatus, purpose, firstHome, propertyLocation) {
         var thresholds = [];
         var results = {};
+        results.grants = {};
         results.mortgageFee = 160;
         results.transferFee = this.calcTransferFeeWa(propertyValue);
 
@@ -402,6 +403,17 @@ angular.module('Sdc')
               {min: 250001, max: 500000, init: 7790, plus: 4.75},
               {min: 500001, max: THRESHOLD_INF, init: 19665, plus: 5.15},
             ];
+          }
+        }
+
+        if (firstHome) {
+          results.grants.fhog = (propertyStatus === 'established') ? 3000 : 10000;
+
+          if (propertyLocation == "south" && propertyValue > 750000) {
+            results.grants.fhog = 0;
+          }
+          else if (propertyLocation == "north" && propertyValue > 1000000) {
+            results.grants.fhog = 0;
           }
         }
 
