@@ -24,18 +24,18 @@ angular.module('Sdc')
        * @returns {{}}
        */
       processAct: function(propertyValue, propertyStatus, purpose, firstHome, pensioner, income, propertyDependents) {
-        var results = {};
+        var results = {grants: {}};
         results.mortgageFee = 125;
         results.transferFee = 243;
         var thresholds = [];
 
-        if (propertyValue <  550000 && propertyStatus === 'newbuild' && purpose === 'residential' && this.actConcessionMeansTestPass(income, propertyDependents)) {
+        if (propertyValue < 550000 && propertyStatus === 'newbuild' && purpose === 'residential' && this.actConcessionMeansTestPass(income, propertyDependents)) {
           thresholds = [
             {min: 0, max: 446100, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
             {min: 446101, max: 550000, init: 0, plus: 17.55}
           ];
         }
-        else if (propertyValue <  298300 && propertyStatus === 'land' && purpose === 'residential' && this.actConcessionMeansTestPass(income, propertyDependents)) {
+        else if (propertyValue < 298300 && propertyStatus === 'land' && purpose === 'residential' && this.actConcessionMeansTestPass(income, propertyDependents)) {
           thresholds = [
             {min: 0, max: 266800, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
             {min: 266800, max: 298300, init: 0, plus: 23.50}
@@ -52,6 +52,15 @@ angular.module('Sdc')
             {min: 1000001, max: 1455000, init: 44550, plus: 7},
             {min: 1455001, max: THRESHOLD_INF, init: 0, plus: 5.25}
           ];
+        }
+
+        if (firstHome) {
+          if (propertyStatus !== 'established') {
+            results.grants.fhog = 12500;
+          }
+          else {
+            results.grants.fhog = 0;
+          }
         }
 
         results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);

@@ -139,7 +139,7 @@
           Total Government Fees: <span class="item-note item-note-result-mark">{{ results.total | currency }}</span>
         </div>
 
-        <div ng-show="results.grants.fhog > 0">
+        <div ng-show="results.grants.fhog >= 0">
           <div class="item bar-assertive">
             First Home Owners Grant: <span class="item-note item-note-result">{{results.grants.fhog | currency}}</span>
           </div>

@@ -21,7 +21,7 @@ angular.module('Sdc')
   .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
-    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: 0}, total: 0};
+    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: -1}, total: 0};
 
     // Set defaults:
     $scope.data.propertyValue = '';
