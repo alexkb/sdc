@@ -29,13 +29,13 @@ angular.module('Sdc')
         results.transferFee = 243;
         var thresholds = [];
 
-        if (propertyValue <  550000 && propertyStatus === 'newbuild' && purpose === 'residential' && this.actConcessionMeansTest(income, propertyDependents)) {
+        if (propertyValue <  550000 && propertyStatus === 'newbuild' && purpose === 'residential' && this.actConcessionMeansTestPass(income, propertyDependents)) {
           thresholds = [
             {min: 0, max: 446100, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
             {min: 446101, max: 550000, init: 0, plus: 17.55}
           ];
         }
-        else if (propertyValue <  298300 && propertyStatus === 'land' && purpose === 'residential' && this.actConcessionMeansTest(income, propertyDependents)) {
+        else if (propertyValue <  298300 && propertyStatus === 'land' && purpose === 'residential' && this.actConcessionMeansTestPass(income, propertyDependents)) {
           thresholds = [
             {min: 0, max: 266800, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
             {min: 266800, max: 298300, init: 0, plus: 23.50}
@@ -66,16 +66,23 @@ angular.module('Sdc')
        * @param propertyDependents
        * @returns {boolean}
        */
-      actConcessionMeansTest: function(income, propertyDependents) {
-        if (propertyDependents === 0 && income > 160000 ||
-        propertyDependents === 1 && income > 163330 ||
-        propertyDependents === 2 && income > 166660 ||
-        propertyDependents === 3 && income > 169990 ||
-        propertyDependents === 4 && income > 173320 ||
-        propertyDependents >= 5 && income > 176650) {
+      actConcessionMeansTestPass: function(income, propertyDependents) {
+        if (Utils.isUndefinedOrNull(income) || Utils.isUndefinedOrNull(propertyDependents)) {
           return false;
         }
-        return true;
+
+        income = parseInt(income);
+        propertyDependents = parseInt(propertyDependents);
+
+        if ((propertyDependents === 0 && income <= 160000) ||
+          (propertyDependents === 1 && income <= 163330) ||
+          (propertyDependents === 2 && income <= 166660) ||
+          (propertyDependents === 3 && income <= 169990) ||
+          (propertyDependents === 4 && income <= 173320) ||
+          (propertyDependents >= 5 && income < 176650)) {
+          return true;
+        }
+        return false;
       },
 
       /**
