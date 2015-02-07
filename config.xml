@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.akbweb.sdc" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.akbweb.sdc" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Stamp Duty AU</name>
   <description>
-    A calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.
+    A calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.&#xD;
     </description>
   <author email="info@akb.com.au" href="http://akb.com.au">
         AKB Web Services
@@ -56,11 +56,11 @@
     <splash src="resources/ios/splash/Default@2x~iphone.png" width="640" height="960"/>
     <splash src="resources/ios/splash/Default~iphone.png" width="320" height="480"/>
   </platform>
-    <preference name="SplashScreen" value="screen"/>
-    <preference name="SplashScreenDelay" value="3000"/>
-    <preference name="StatusBarOverlaysWebView" value="false"/>
-  <icon src="resources/ios/icon/icon-40@2x.png"/>
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
-    </feature>
+  <preference name="SplashScreen" value="screen"/>
+  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="StatusBarOverlaysWebView" value="false"/>
+  <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
+  <feature name="Device">
+    <param name="ios-package" value="CDVDevice"/>
+  </feature>
 </widget>
