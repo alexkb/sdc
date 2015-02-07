@@ -53,12 +53,12 @@
 
         <label class="item item-input item-select">
           <div class="input-label">
-            Are you purchasing
+            Purchasing
           </div>
           <select ng-model="data.propertyStatus">
-            <option value="established">An established property</option>
-            <option value="newbuild">A newly constructed home</option>
-            <option value="vacant" ng-show="data.propertyState != 'SA'">Vacant Land</option>
+            <option value="established">an established property</option>
+            <option value="newbuild">a newly constructed home</option>
+            <option value="vacant" ng-show="data.propertyState != 'SA'">vacant lßand</option>
           </select>
         </label>
 
@@ -68,7 +68,7 @@
           <div class="item item-divider note">The following questions determine if you're eligible for a concessional rate.</div>
 
           <label class="item item-input item-select">
-            <div class="input-label">Total income of purchase(s):</div>
+            <div class="input-label">Total income</div>
             <select ng-model="data.income">
               <option value="0">less than $160,000</option>
               <option value="160001">$160,001 to $163,330</option>
@@ -81,7 +81,7 @@
           </label>
 
           <label class="item item-input item-select">
-            <div class="input-label">Number of dependent children:</div>
+            <div class="input-label">Dependents</div>
             <select ng-model="data.propertyDependents">
               <option>0</option>
               <option>1</option>
@@ -126,34 +126,34 @@
         </div>
 
         <div class="item bar-assertive">
-          Stamp duty on Property: <span class="item-note">{{results.propertyDuty | currency}}</span>
+          Stamp duty on Property<span class="item-note">{{results.propertyDuty | currency}}</span>
         </div>
         <div class="item bar-assertive">
-          Mortgage registration fee: <span class="item-note">{{results.mortgageFee | currency}}</span>
+          Mortgage registration fee<span class="item-note">{{results.mortgageFee | currency}}</span>
         </div>
         <div class="item bar-assertive">
-          Transfer fee: <span class="item-note">{{results.transferFee | currency}}</span>
+          Transfer fee<span class="item-note">{{results.transferFee | currency}}</span>
         </div>
 
         <div class="item bar-assertive">
-          Total Government Fees: <span class="item-note item-note-result-mark">{{ results.total | currency }}</span>
+          Total Government Fees<span class="item-note item-note-result-mark">{{ results.total | currency }}</span>
         </div>
 
         <div ng-show="results.grants.fhog >= 0">
           <div class="item bar-assertive">
-            First Home Owners Grant: <span class="item-note item-note-result">{{results.grants.fhog | currency}}</span>
+            First Home Owners Grant<span class="item-note item-note-result">{{results.grants.fhog | currency}}</span>
           </div>
         </div>
 
         <div ng-show="results.grants.nhg >= 0">
           <div class="item bar-assertive">
-            New Home Grant: <span class="item-note item-note-result">{{results.grants.nhg | currency}}</span>
+            New Home Grant<span class="item-note item-note-result">{{results.grants.nhg | currency}}</span>
           </div>
         </div>
 
         <div ng-show="results.grants.fhbb >= 0">
           <div class="item bar-assertive">
-            First Home Builder Boost: <span class="item-note item-note-result">{{results.grants.fhbb | currency}}</span>
+            First Home Builder Boost<span class="item-note item-note-result">{{results.grants.fhbb | currency}}</span>
           </div>
         </div>
 
@@ -171,6 +171,7 @@
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="lib/collide/collide.js"></script>
     <script src="lib/ionic/release/js/ionic.js"></script>
     <script src="lib/ionic/release/js/ionic-angular.js"></script>
     <!-- endbower -->

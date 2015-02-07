@@ -18,6 +18,10 @@ input.property-value {
   font-size: 1.2em;
 }
 
+.platform-ios input.property-value {
+  line-height: 1.8em;
+}
+
 .toggle.toggle-calm input:checked + .track {
   border-color: #e1ae0b;
   background-color: #e1ae0b;
