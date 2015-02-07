@@ -99,7 +99,7 @@ angular.module('Sdc')
        * @returns results
        */
       processNsw: function(propertyValue, propertyStatus, purpose, firstHome) {
-        var results = {};
+        var results = {grants: {}};
         results.mortgageFee = 107;
         results.transferFee = 214;
         var thresholds = [];
@@ -128,6 +128,17 @@ angular.module('Sdc')
           ];
         }
 
+        if (firstHome) {
+          if (propertyStatus !== 'established') {
+            results.grants.fhog = propertyValue <= 750000 ? 15000 : 0;
+            results.grants.nhg = ((propertyStatus === 'land' && propertyValue < 450000) || (propertyStatus === 'newbuild' && propertyValue < 650000)) ? 5000 : 0;
+          }
+          else {
+            results.grants.fhog = 0;
+            results.grants.nhg = 0;
+          }
+        }
+
         results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
@@ -139,7 +150,7 @@ angular.module('Sdc')
        * @returns results
        */
       processNt: function(propertyValue, propertyStatus, purpose, firstHome, pensioner) {
-        var results = {};
+        var results = {grants: {}};
         results.mortgageFee = 137;
         results.transferFee = 137;
         var thresholds = 0;
@@ -183,7 +194,7 @@ angular.module('Sdc')
        * @returns results.
        */
       processQld: function(propertyValue, propertyStatus, purpose, firstHome) {
-        var results = {};
+        var results = {grants: {}};
         results.mortgageFee = 162.9;
         results.transferFee = this.calcTransferFeeQld(propertyValue);
         var thresholds = [];
@@ -272,7 +283,7 @@ angular.module('Sdc')
        * @returns result
        */
       processSa: function(propertyValue, propertyStatus, purpose, firstHome) {
-        var results = {};
+        var results = {grants: {}};
         results.mortgageFee = 152;
         results.transferFee = this.calcTransferFeeSa(propertyValue);
 
@@ -303,7 +314,7 @@ angular.module('Sdc')
        * @returns results
        */
       processTas: function(propertyValue) {
-        var results = {};
+        var results = {grants: {}};
         results.mortgageFee = 126.54;
         results.transferFee = 192.88;
 
@@ -333,8 +344,8 @@ angular.module('Sdc')
        * @returns results
        */
       processVic: function(propertyValue, propertyStatus, purpose, firstHome, paymentMethod) {
+        var results = {grants: {}};
         var thresholds = [];
-        var results = {};
         results.mortgageFee = paymentMethod === 'paper' ? 110 : 87.60;
         results.transferFee = this.calcTransferFeeVic(propertyValue, paymentMethod);
 
@@ -377,8 +388,8 @@ angular.module('Sdc')
        * @returns results
        */
       processWa: function(propertyValue, propertyStatus, purpose, firstHome, propertyLocation) {
+        var results = {grants: {}};
         var thresholds = [];
-        var results = {};
         results.grants = {};
         results.mortgageFee = 160;
         results.transferFee = this.calcTransferFeeWa(propertyValue);

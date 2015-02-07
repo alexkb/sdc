@@ -145,6 +145,12 @@
           </div>
         </div>
 
+        <div ng-show="results.grants.nhg >= 0">
+          <div class="item bar-assertive">
+            New Home Grant: <span class="item-note item-note-result">{{results.grants.nhg | currency}}</span>
+          </div>
+        </div>
+
         <div class="item item-text-wrap">
           <p>Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
         </div>
