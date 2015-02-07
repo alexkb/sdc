@@ -20,7 +20,7 @@ angular.module('Sdc')
   .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
-    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: -1, nhg: -1}, total: 0};
+    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: -1, nhg: -1, fhbb: -1}, total: 0};
 
     // Set defaults:
     $scope.data.propertyValue = '';
@@ -80,7 +80,7 @@ angular.module('Sdc')
           $scope.results = Calculator.processSa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'TAS':
-          $scope.results = Calculator.processTas(cleansedPropertyValue);
+          $scope.results = Calculator.processTas(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
           break;
         case 'VIC':
           $scope.results = Calculator.processVic(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
