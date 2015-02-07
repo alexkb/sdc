@@ -18,7 +18,7 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, Geo, Utils, Calculator, constants) {
+  .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
     $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: 0}, total: 0};
@@ -37,19 +37,13 @@ angular.module('Sdc')
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
     // Set default state value based on geolocation service.
-
-    if (constants.env !== 'dev') {
-      Geo.getLocation().then(function (position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        Geo.reverseGeocode(lat, lng).then(function (locString) {
-          $scope.data.propertyState = locString;
-        });
+    Geo.getLocation().then(function (position) {
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      Geo.reverseGeocode(lat, lng).then(function (locString) {
+        $scope.data.propertyState = locString;
       });
-    }
-    else {
-      $scope.data.propertyState = 'ACT';
-    }
+    });
 
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
