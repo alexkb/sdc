@@ -2,7 +2,7 @@
 
 This mobile application is a calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required to operate the application, but if internet access is available, your geolocation is geocoded (via google) to pre-set the State or Territory you reside in.
 
-[![Android app on Google Play](https://github.com/alexkb/sdc/raw/master/resources/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.akbweb.sdc)
+[![Android app on Google Play](https://github.com/alexkb/sdc/raw/master/resources/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.akbweb.sdc) [![iOS app on iTunes](https://github.com/alexkb/sdc/raw/master/resources/ios_app_store.png)](https://itunes.apple.com/au/app/stamp-duty-calculator-au/id963714259)
 
 ## Disclaimer
 Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances. It should be noted that the application is licensed under the GPL and therefore (among other things) does not come with any warranty.
@@ -21,5 +21,5 @@ Any feedback on the code, concepts or ideas, are very much welcome  - either ope
 
 ## License
 
-Code is licensed under the GPL v2.0, please see LICENSE.txt.
+Code is licensed under the GPL v2.0, please see [LICENSE.txt](https://github.com/alexkb/sdc/blob/master/LICENSE.txt). Please note that the compiled iOS version of the app is licensed under the [Apples Standard License Agreement](http://www.apple.com/legal/internet-services/itunes/appstore/dev/stdeula/).
 
