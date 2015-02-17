@@ -119,4 +119,17 @@ angular.module('Sdc')
     $scope.getPropertyValueCleansed = function() {
       return Number(String($scope.data.propertyValue).replace(/[^0-9]/g, '')); // remove the crud
     };
+
+    $scope.emailResults = function() {
+      if (window.cordova && window.cordova.plugins.email) {
+        window.cordova.plugins.email.open({
+          to: '',
+          subject: 'Stamp Duty calculations', // @todo add date into subject.
+          body: 'coming..' // @todo add the data from $scope!
+        });
+      }
+      else {
+        console.log('Email plugin not available.');
+      }
+    };
   });
