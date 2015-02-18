@@ -17,7 +17,7 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, Geo, Utils, Calculator) {
+  .controller('MainCtrl', function ($scope, $filter, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
     $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: -1, nhg: -1, fhbb: -1}, total: 0};
@@ -120,16 +120,35 @@ angular.module('Sdc')
       return Number(String($scope.data.propertyValue).replace(/[^0-9]/g, '')); // remove the crud
     };
 
+    /**
+     * Function triggered by view to build an email of the results and send to the mail composer plugin.
+     * @param $filter
+     */
     $scope.emailResults = function() {
+      var currentDateTime = new Date();
+      var resultStr = '';
+
+      resultStr += 'Property Value: $' + $scope.data.propertyValue + '\n';
+      resultStr += 'Compiled on: ' + $filter('date')(currentDateTime, 'd/M/yy h:mm a') + '\n';
+      console.log(resultStr);
+
       if (window.cordova && window.cordova.plugins.email) {
         window.cordova.plugins.email.open({
           to: '',
-          subject: 'Stamp Duty calculations', // @todo add date into subject.
-          body: 'coming..' // @todo add the data from $scope!
+          subject: 'Stamp duty estimate for $' + $scope.data.propertyValue,
+          body: resultStr,
+          isHtml: true
         });
       }
       else {
         console.log('Email plugin not available.');
       }
+    };
+
+    /**
+     * Displays a model of the previous calculations for selection.
+     */
+    $scope.loadResults = function() {
+
     };
   });
