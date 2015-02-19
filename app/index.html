@@ -6,7 +6,7 @@
     <title>Stamp Duty Calculator</title>
 
     <!-- build:css styles/vendor.css -->
-    <!-- <link rel="stylesheet" href="vendor/some.contrib.css"> -->
+    <link rel="stylesheet" href="styles/app.css">
     <!-- bower:css -->
     <link rel="stylesheet" href="lib/ionic/release/css/ionic.css" />
     <!-- endbower -->
@@ -157,21 +157,14 @@
           </div>
         </div>
 
-        <div class="item item-divider">
-          Actions
+        <div class="row">
+          <div class="col col-50">
+            <button class="button button-block button-energized icon-left ion-email" ng-click="emailResults()">Email results</button>
+          </div>
+          <div class="col col-50">
+            <button class="button button-block icon-left ion-archive" ng-click="loadResults()">Load previous</button>
+          </div>
         </div>
-
-        <a class="item item-icon-left item-icon-right" ng-click="emailResults()">
-          <i class="icon ion-email"></i>
-          Email current results
-          <i class="icon ion-ios7-arrow-right"></i>
-        </a>
-
-        <a class="item item-icon-left item-icon-right" ng-click="loadResults()">
-          <i class="icon ion-archive"></i>
-          Load previous entries
-          <i class="icon ion-ios7-arrow-right"></i>
-        </a>
 
         <div class="item item-text-wrap">
           <p>Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>

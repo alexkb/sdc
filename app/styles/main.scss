@@ -1,4 +1,5 @@
 // Your application styles go here
+@import "../lib/ionic/scss/ionic";
 
 .item-note-result {
   color: #444;
@@ -23,8 +24,8 @@ input.property-value {
 }
 
 .toggle.toggle-calm input:checked + .track {
-  border-color: #e1ae0b;
-  background-color: #e1ae0b;
+  border-color: $energized;
+  background-color: $energized;
 }
 
 .item-divider.note {
@@ -32,3 +33,4 @@ input.property-value {
   font-weight: normal;
   font-size: 0.9em;
 }
+
