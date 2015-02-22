@@ -20,7 +20,18 @@ angular.module('Sdc')
   .controller('MainCtrl', function ($scope, $filter, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
-    $scope.results = {mortgageFee: 0, transferFee: 0, propertyDuty: 0, grants: {fhog: -1, nhg: -1, fhbb: -1}, total: 0};
+    $scope.results = {
+      mortgageFee: 0,
+      transferFee: 0,
+      propertyDuty: 0,
+      grants: {
+        fhog: -1,
+        nhg: -1,
+        fhbb: -1
+      },
+      total: 0,
+      calculateTime: 0
+    };
 
     // Set defaults:
     $scope.data.propertyValue = '';
@@ -54,7 +65,6 @@ angular.module('Sdc')
 
       console.log('Watch about to call calculate()');
       $scope.calculate();
-
     }, function() {});
 
     /**
@@ -92,6 +102,8 @@ angular.module('Sdc')
           console.log('No valid property state selected.');
           break;
       }
+
+      $scope.results.calculateTime = new Date();
     };
 
     /**
@@ -122,26 +134,22 @@ angular.module('Sdc')
 
     /**
      * Function triggered by view to build an email of the results and send to the mail composer plugin.
-     * @param $filter
      */
     $scope.emailResults = function() {
-      var currentDateTime = new Date();
-      var resultStr = '';
-
-      resultStr += 'Property Value: $' + $scope.data.propertyValue + '\n';
-      resultStr += 'Compiled on: ' + $filter('date')(currentDateTime, 'd/M/yy h:mm a') + '\n';
-      console.log(resultStr);
-
       if (window.cordova && window.cordova.plugins.email) {
+        // Have tried a few different ways to do this better, but none succedd. Have asked here:
+        // http://stackoverflow.com/questions/28646040/passing-an-angular-view-to-a-cordova-plugin-method
+        var email = '<h1>Stamp Duty Calculator Results</h1><p><strong>Property Value:</strong> $' + $scope.data.propertyValue + '</p><p>Stamp duty on Property: ' +  $filter('currency')($scope.results.propertyDuty) + '<br />Mortgage registration fee: ' + $filter('currency')($scope.results.mortgageFee) + '<br />Transfer fee: ' + $filter('currency')($scope.results.transferFee) + '<br />Total Government Fees: ' +  $filter('currency')($scope.results.total) + '</p><p>Compiled on: ' + $filter('date')($scope.results.calculateTime, 'd/M/yy h:mm a') + '.</p>';
+
         window.cordova.plugins.email.open({
           to: '',
           subject: 'Stamp duty estimate for $' + $scope.data.propertyValue,
-          body: resultStr,
+          body: email,
           isHtml: true
         });
       }
       else {
-        console.log('Email plugin not available.');
+        console.log('Email plugin not available');
       }
     };
 
