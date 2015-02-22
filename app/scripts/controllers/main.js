@@ -17,7 +17,7 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, $filter, Geo, Utils, Calculator) {
+  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
     $scope.results = {
@@ -46,6 +46,13 @@ angular.module('Sdc')
     // Set form options
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
+    $ionicModal.fromTemplateUrl('previous-results.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function (position) {
       var lat = position.coords.latitude;
@@ -56,14 +63,20 @@ angular.module('Sdc')
     });
 
     // If we see changes on the model, lets recalculate the stamp duty.
-    $scope.$watch('data', function(data) {
+    $scope.$watch('data', function(data, oldData) {
       // Get out of here if we don't have the absolute essentials
       if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('Missing required inputs: property value or state');
         return;
       }
 
-      console.log('Watch about to call calculate()');
+      // If the state hasn't been set before then this is probably the geocoding run, so we don't want to store it away
+      // in this case. Additionally, only run if a change to the model was made other than the price. This is because the
+      // user might still be typing the value in, which we don't want to store.
+      if (!Utils.isUndefinedOrNull(oldData.propertyState) && data.propertyValue === oldData.propertyValue) {
+        $scope.storeHistory();
+      }
+
       $scope.calculate();
     }, function() {});
 
@@ -71,6 +84,7 @@ angular.module('Sdc')
      * Performs stamp duty calculation using calculator service.
      */
     $scope.calculate = function() {
+      console.log('Running calculate().');
       var cleansedPropertyValue = $scope.getPropertyValueCleansed();
 
       switch ($scope.data.propertyState) {
@@ -154,9 +168,33 @@ angular.module('Sdc')
     };
 
     /**
+     * Store the model in localStorage for the purposes of allowing users to load them back in later.
+     */
+    $scope.storeHistory = function() {
+      console.log('calling storeHistory().');
+      var myHistory = $localstorage.getObject('history');
+      if (Utils.isUndefinedOrNull(myHistory.items)) {
+        myHistory.items = [];
+      }
+      myHistory.items.push({data: $scope.data, results: $scope.results});
+      $localstorage.setObject('history', myHistory);
+    };
+
+    /**
      * Displays a model of the previous calculations for selection.
      */
     $scope.loadResults = function() {
-
+      var history = $localstorage.get('history');
+      console.log(history);
+      $scope.modal.show();
     };
+
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+
   });
