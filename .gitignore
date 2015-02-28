@@ -4,7 +4,7 @@ www
 .sass-cache
 app/lib/*
 !app/lib/ionic/scss/ionicons
-!app/lib/ionic/scss/ionicons/**
+!app/lib/ionic/scss/ionicons/*
 coverage
 platforms
 plugins
