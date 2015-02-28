@@ -3,8 +3,8 @@ www
 .tmp
 .sass-cache
 app/lib/*
-!app/lib/ionic/scss/ionicons
-!app/lib/ionic/scss/ionicons/*
+!app/lib/ionic/
+!app/lib/ionic/*
 coverage
 platforms
 plugins
