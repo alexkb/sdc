@@ -2,9 +2,7 @@ node_modules
 www
 .tmp
 .sass-cache
-app/lib/*
-!app/lib/ionic/
-!app/lib/ionic/*
+app/lib
 coverage
 platforms
 plugins
