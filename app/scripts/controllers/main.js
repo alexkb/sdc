@@ -17,7 +17,7 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, Geo, Utils, Calculator) {
+  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
     $scope.data = {};
     $scope.results = {
@@ -196,5 +196,36 @@ angular.module('Sdc')
     $scope.$on('$destroy', function() {
       $scope.modal.remove();
     });
+
+
+    $ionicPopover.fromTemplateUrl('menu.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.popover = popover;
+    });
+
+    /**
+     * Menu for other operations.
+     * @param event
+     */
+    $scope.openMenu = function($event) {
+      $scope.popover.show($event);
+    };
+
+    $scope.closePopover = function() {
+      $scope.popover.hide();
+    };
+    //Cleanup the popover when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.popover.remove();
+    });
+
+    $scope.reset = function() {
+
+    };
+
+    $scope.about = function() {
+
+    };
 
   });
