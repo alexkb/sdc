@@ -21,9 +21,10 @@ input.property-value {
   line-height: 1.8em;
 }
 
-.toggle.toggle-calm input:checked + .track {
+.toggle.toggle-custom input:checked + .track {
   border-color: #FFAD00;
   background-color: #FFAD00;
+
 }
 
 .item-divider.note {
