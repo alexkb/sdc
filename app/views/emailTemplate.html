@@ -1,0 +1,18 @@
+<h1>Stamp Duty Calculator Results</h1>
+
+<p><strong>Property Value:</strong> {{ data.propertyValue }}</p>
+
+<p>
+  Stamp duty on Property: {{results.propertyDuty | currency}}<br />
+  Mortgage registration fee: {{results.mortgageFee | currency}}<br />
+  Transfer fee: {{results.transferFee | currency}}
+</p>
+<p><strong>Total Government Fees:</strong>strong> {{ results.total | currency }}</p>
+
+<p>
+  <div ng-show="results.grants.fhog >= 0">First Home Owners Grant: {{results.grants.fhog | currency}}<br /></div>
+  <div ng-show="results.grants.nhg >= 0">New Home Grant: {{results.grants.nhg | currency}}<br /></div>
+  <div ng-show="results.grants.fhbb >= 0">First Home Builder Boost: {{results.grants.fhbb | currency}}</div>
+</p>
+
+<p>Calculated on: {{ results.calculateTime }} {{ results.calculateTime | date : 'd/M/yy h:mm a' }}.</p>

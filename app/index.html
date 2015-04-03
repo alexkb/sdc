@@ -6,7 +6,6 @@
     <title>Stamp Duty Calculator</title>
 
     <!-- build:css styles/vendor.css -->
-    <!-- <link rel="stylesheet" href="vendor/some.contrib.css"> -->
     <!-- bower:css -->
     <link rel="stylesheet" href="lib/ionic/release/css/ionic.css" />
     <!-- endbower -->
@@ -18,8 +17,14 @@
   </head>
 
   <body ng-app="Sdc">
-
     <ion-pane ng-controller="MainCtrl">
+      <ion-header-bar class="bar-darkish">
+        <h1 class="title">Stamp Duty AU</h1>
+        <div class="buttons">
+          <button class="button button-icon icon ion-android-more-vertical" ng-click="openMenuPopover($event)"></button>
+        </div>
+      </ion-header-bar>
+
       <ion-content>
         <div class="item item-divider">
           Enter your details
@@ -62,7 +67,7 @@
           </select>
         </label>
 
-        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-calm">First Home Buyer</ion-toggle>
+        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-energized">First Home Buyer</ion-toggle>
 
         <div ng-show="data.propertyState == 'ACT' && data.purpose == 'residential'">
           <div class="item item-divider note">The following questions determine if you're eligible for a concessional rate.</div>
@@ -160,7 +165,6 @@
         <div class="item item-text-wrap">
           <p>Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
         </div>
-
       </ion-content>
     </ion-pane>
 
@@ -181,7 +185,6 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-
         <!-- build:js scripts/scripts.js -->
         <script src="scripts/config.js"></script>
         <script src="scripts/app.js"></script>
@@ -189,6 +192,7 @@
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/services/utils.js"></script>
         <script src="scripts/services/calculator.js"></script>
+        <script src="scripts/directives/emailtemplate.js"></script>
         <!-- endbuild -->
 </body>
 </html>

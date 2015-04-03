@@ -1,5 +1,4 @@
 // Your application styles go here
-
 .item-note-result {
   color: #444;
 }
@@ -13,6 +12,10 @@
   font-weight: bold;
 }
 
+.navigation {
+  margin-top: 2em;
+}
+
 input.property-value {
   line-height: 1em;
   font-size: 1.2em;
@@ -22,13 +25,25 @@ input.property-value {
   line-height: 1.8em;
 }
 
-.toggle.toggle-calm input:checked + .track {
-  border-color: #e1ae0b;
-  background-color: #e1ae0b;
+.toggle.toggle-custom input:checked + .track {
+  //border-color: #FFAD00;
+  //background-color: #FFAD00;
 }
 
 .item-divider.note {
   color: #444;
   font-weight: normal;
   font-size: 0.9em;
+}
+
+.bar-darkish {
+  background-color: #555555;
+  h1.title {
+    color: #EEEEEE;
+    font-weight: bold;
+  }
+
+  .icon {
+    color: #EEEEEE;
+  }
 }

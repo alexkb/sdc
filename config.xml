@@ -63,4 +63,5 @@
   <feature name="Device">
     <param name="ios-package" value="CDVDevice"/>
   </feature>
+  <preference name="BackupWebStorage" value="none" /> <!-- Explained here: http://learn.ionicframework.com/formulas/localstorage/ -->
 </widget>
