@@ -17,12 +17,13 @@
   </head>
 
   <body ng-app="Sdc">
-
     <ion-pane ng-controller="MainCtrl">
-      <div class="bar bar-darkish">
-        <h1 class="title title-left">Stamp Duty AU</h1>
-        <button class="button button-icon icon ion-android-more-vertical" ng-click="openMenu($event)"></button>
-      </div>
+      <ion-header-bar class="bar-darkish">
+        <h1 class="title">Stamp Duty AU</h1>
+        <div class="buttons">
+          <button class="button button-icon icon ion-android-more-vertical" ng-click="openMenu($event)"></button>
+        </div>
+      </ion-header-bar>
 
       <ion-content>
         <div class="item item-divider">
@@ -165,40 +166,6 @@
           <p>Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
         </div>
       </ion-content>
-
-      <script id="previous-results.html" type="text/ng-template">
-        <div class="modal">
-          <ion-header-bar>
-            <h1 class="title">Previous entries</h1>
-          </ion-header-bar>
-          <ion-content>
-            <div class="list">
-
-              <div ng-repeat="(key, value) in items">
-                {{ key }}
-                {{ value }}
-              </div>
-
-            </div>
-
-            <button class="button button-full button-energized" ng-click="closeModal()">Done</button>
-          </ion-content>
-        </div>
-      </script>
-
-      <script id="menu.html" type="text/ng-template">
-        <ion-popover-view>
-          <ion-content>
-            <div class="list">
-              <a class="item item-icon-left" ng-click="emailResults()"><i class="icon ion-email"></i> Email results</a>
-              <a class="item item-icon-left" ng-click="loadResults()"><i class="icon ion-archive"></i> Load previous</a>
-              <a class="item item-icon-left" ng-click="reset()"><i class="icon ion-trash-a"></i> Reset calculator</a>
-              <a class="item item-icon-left" ng-click="about()"><i class="icon ion-ios-information"></i> About</a>
-            </div>
-          </ion-content>
-        </ion-popover-view>
-      </script
-
     </ion-pane>
 
     <!-- build:js scripts/vendor.js -->
@@ -217,7 +184,6 @@
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-
 
         <!-- build:js scripts/scripts.js -->
         <script src="scripts/config.js"></script>

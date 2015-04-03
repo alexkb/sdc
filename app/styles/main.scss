@@ -12,6 +12,10 @@
   font-weight: bold;
 }
 
+.navigation {
+  margin-top: 2em;
+}
+
 input.property-value {
   line-height: 1em;
   font-size: 1.2em;
@@ -22,9 +26,8 @@ input.property-value {
 }
 
 .toggle.toggle-custom input:checked + .track {
-  border-color: #FFAD00;
-  background-color: #FFAD00;
-
+  //border-color: #FFAD00;
+  //background-color: #FFAD00;
 }
 
 .item-divider.note {

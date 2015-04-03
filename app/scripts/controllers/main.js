@@ -19,6 +19,7 @@
 angular.module('Sdc')
   .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator) {
     // initialise, so we don't get errors referring to it later on.
+    $scope.version = "0.0.3";
     $scope.data = {};
     $scope.results = {
       mortgageFee: 0,
@@ -45,13 +46,6 @@ angular.module('Sdc')
 
     // Set form options
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
-
-    $ionicModal.fromTemplateUrl('previous-results.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
 
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function (position) {
@@ -147,6 +141,42 @@ angular.module('Sdc')
     };
 
     /**
+     * Store the model in localStorage for the purposes of allowing users to load them back in later.
+     */
+    $scope.storeHistory = function() {
+      console.log('calling storeHistory().');
+      var myHistory = $localstorage.getObject('history');
+      if (Utils.isUndefinedOrNull(myHistory.items)) {
+        myHistory.items = [];
+      }
+      myHistory.items.push({data: $scope.data, results: $scope.results});
+      $localstorage.setObject('history', myHistory);
+    };
+
+    /**
+     * Menu for other operations.
+     * @param event
+     */
+    $ionicPopover.fromTemplateUrl('views/menu.html', {
+      scope: $scope
+    }).then(function(popover) {
+      $scope.menuPopover = popover;
+    });
+
+    $scope.openMenu = function($event) {
+      $scope.menuPopover.show($event);
+    };
+
+    $scope.closePopover = function() {
+      $scope.menuPopover.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.menuPopover.remove();
+    });
+
+    /**
+     * Menu operation: 'Email results'
      * Function triggered by view to build an email of the results and send to the mail composer plugin.
      */
     $scope.emailResults = function() {
@@ -168,64 +198,61 @@ angular.module('Sdc')
     };
 
     /**
-     * Store the model in localStorage for the purposes of allowing users to load them back in later.
-     */
-    $scope.storeHistory = function() {
-      console.log('calling storeHistory().');
-      var myHistory = $localstorage.getObject('history');
-      if (Utils.isUndefinedOrNull(myHistory.items)) {
-        myHistory.items = [];
-      }
-      myHistory.items.push({data: $scope.data, results: $scope.results});
-      $localstorage.setObject('history', myHistory);
-    };
-
-    /**
+     * Menu Operation: 'Load previous'
      * Displays a model of the previous calculations for selection.
      */
+    $ionicModal.fromTemplateUrl('views/previous-results.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.prevResultsModal = modal;
+    });
+
     $scope.loadResults = function() {
+      $scope.menuPopover.hide();
       var history = $localstorage.get('history');
       console.log(history);
-      $scope.modal.show();
+      $scope.prevResultsModal.show();
     };
 
-    $scope.closeModal = function() {
-      $scope.modal.hide();
+    $scope.closePrevResultsModal = function() {
+      $scope.prevResultsModal.hide();
     };
 
     $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
-
-
-    $ionicPopover.fromTemplateUrl('menu.html', {
-      scope: $scope
-    }).then(function(popover) {
-      $scope.popover = popover;
+      $scope.prevResultsModal.remove();
     });
 
     /**
-     * Menu for other operations.
-     * @param event
+     * Menu operation: 'Reset'
+     * Clears the form for a fresh start.
      */
-    $scope.openMenu = function($event) {
-      $scope.popover.show($event);
+    $scope.reset = function() {
+      $scope.menuPopover.hide();
     };
 
-    $scope.closePopover = function() {
-      $scope.popover.hide();
-    };
-    //Cleanup the popover when we're done with it!
-    $scope.$on('$destroy', function() {
-      $scope.popover.remove();
+    /**
+     * Meny operation: 'About;
+     * Shows an about pane.
+     */
+    $ionicModal.fromTemplateUrl('views/about.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.aboutModal = modal;
     });
 
-    $scope.reset = function() {
-
-    };
-
     $scope.about = function() {
-
+      $scope.menuPopover.hide();
+      $scope.aboutModal.show();
     };
+
+    $scope.closeAboutModal = function() {
+      $scope.aboutModal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.aboutModal.remove();
+    });
 
   });
