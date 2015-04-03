@@ -7,12 +7,11 @@
   </ion-header-bar>
   <ion-content>
     <div class="list">
-      <div ng-repeat="(key, value) in items">
-        {{ key }}
-        {{ value }}
+      <div ng-repeat="(key, value) in history">
+        <a class="item item-icon-right" ng-click="loadHistory(key)">
+          {{ value.results.calculateTime }} <i class="icon ion-ios-arrow-right"></i>
+        </a>
       </div>
     </div>
-
-    <button class="button button-full button-energized" ng-click="closePrevResultsModal()">Done</button>
   </ion-content>
 </div>

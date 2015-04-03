@@ -16,7 +16,7 @@
  */
 angular.module('Sdc')
   .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator) {
-    $scope.version = "0.0.3";
+    $scope.version = '0.0.3';
 
     // Set defaults:
     $scope.data = {};
@@ -29,9 +29,16 @@ angular.module('Sdc')
     $scope.data.pensioner = false;
     $scope.data.paymentMethod = 'paper';
 
+    $scope.flags = {};
+    $scope.flags.storeHistory = true; // We use this flag on a different object so we can toggle it as needed without triggering further watches.
+
     // Save the default for resetting when requested.
     $scope.dataDefaults = angular.copy($scope.data);
 
+    // Initial History Array
+    $scope.history = [];
+
+    // Initial results Object
     $scope.results = {
       mortgageFee: 0,
       transferFee: 0,
@@ -65,14 +72,18 @@ angular.module('Sdc')
         return;
       }
 
+      $scope.calculate();
+
       // If the state hasn't been set before then this is probably the geocoding run, so we don't want to store it away
       // in this case. Additionally, only run if a change to the model was made other than the price. This is because the
       // user might still be typing the value in, which we don't want to store.
-      if (!Utils.isUndefinedOrNull(oldData.propertyState) && data.propertyValue === oldData.propertyValue) {
+      if (!Utils.isUndefinedOrNull(oldData.propertyState) && data.propertyValue !== '' && data.propertyValue === oldData.propertyValue && $scope.flags.storeHistory === true) {
+        console.log('Storing history');
         $scope.storeHistory();
       }
 
-      $scope.calculate();
+      // Now that we've run calculate and (if it made sense) stored history, lets turn the history storing flag back on for future changes.
+      $scope.flags.storeHistory = true;
     }, function() {});
 
     /**
@@ -155,6 +166,19 @@ angular.module('Sdc')
     };
 
     /**
+     * Load the historical data into the modal.
+     * @param index
+     */
+    $scope.loadHistory = function(index) {
+      if ($scope.history[index]) {
+        $scope.flags.storeHistory = false;
+        $scope.data = $scope.history[index].data;
+      }
+
+      $scope.prevResultsModal.hide();
+    };
+
+    /**
      * Menu for other operations.
      * @param event
      */
@@ -199,7 +223,7 @@ angular.module('Sdc')
     };
 
     /**
-     * Menu Operation: 'Load previous'
+     * Menu operation: 'Load previous'
      * Displays a model of the previous calculations for selection.
      */
     $ionicModal.fromTemplateUrl('views/previous-results.html', {
@@ -209,10 +233,19 @@ angular.module('Sdc')
       $scope.prevResultsModal = modal;
     });
 
-    $scope.loadResults = function() {
+    /**
+     * Loads the history and shows the prev results popup modal.
+     */
+    $scope.loadHistoryOptions = function() {
       $scope.menuPopover.hide();
-      var history = $localstorage.get('history');
-      console.log(history);
+      var history = $localstorage.getObject('history');
+
+      // Get up to the 10 latest recent changes to history
+      console.log(history.items.length);
+      $scope.history = [];
+      for(var i = 0; i < history.items.length && i < 10; i++) {
+        $scope.history[i] = history.items.pop();
+      }
       $scope.prevResultsModal.show();
     };
 
@@ -228,13 +261,14 @@ angular.module('Sdc')
      * Menu operation: 'Reset'
      * Clears the form for a fresh start.
      */
-    $scope.reset = function() {
-      $scope.menuPopover.hide();
+    $scope.clearInputs = function() {
+      $scope.flags.storeHistory = false;
       $scope.data = angular.copy($scope.dataDefaults);
+      $scope.menuPopover.hide();
     };
 
     /**
-     * Meny operation: 'About;
+     * Menu operation: 'About;
      * Shows an about pane.
      */
     $ionicModal.fromTemplateUrl('views/about.html', {
