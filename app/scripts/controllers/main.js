@@ -4,9 +4,7 @@
  * @todo
  * - Write tests for calculator output
  * - Convert propertyValue field to a directive to encapsulate the formatting rules.
- * - Calculate grants and add it to the results.
  * - And as always, make more angular-like as feedback comes in or I learn more in other projects (hopefully).
- * - email results or support storage of results.
  */
 
 /**
@@ -18,9 +16,22 @@
  */
 angular.module('Sdc')
   .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator) {
-    // initialise, so we don't get errors referring to it later on.
     $scope.version = "0.0.3";
+
+    // Set defaults:
     $scope.data = {};
+    $scope.data.propertyState = '';
+    $scope.data.propertyValue = '';
+    $scope.data.purpose = 'residential';
+    $scope.data.propertyStatus = 'established';
+    $scope.data.propertyLocation = 'south';
+    $scope.data.firstHome = false;
+    $scope.data.pensioner = false;
+    $scope.data.paymentMethod = 'paper';
+
+    // Save the default for resetting when requested.
+    $scope.dataDefaults = angular.copy($scope.data);
+
     $scope.results = {
       mortgageFee: 0,
       transferFee: 0,
@@ -33,16 +44,6 @@ angular.module('Sdc')
       total: 0,
       calculateTime: 0
     };
-
-    // Set defaults:
-    $scope.data.propertyValue = '';
-    $scope.data.purpose = 'residential';
-    $scope.data.propertyStatus = 'established';
-    $scope.data.propertyLocation = 'south';
-    $scope.data.firstHome = false;
-    $scope.data.pensioner = false;
-    $scope.data.paymentMethod = 'paper';
-    // results.grants is an object that has optional properties.
 
     // Set form options
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
@@ -163,7 +164,7 @@ angular.module('Sdc')
       $scope.menuPopover = popover;
     });
 
-    $scope.openMenu = function($event) {
+    $scope.openMenuPopover = function($event) {
       $scope.menuPopover.show($event);
     };
 
@@ -229,6 +230,7 @@ angular.module('Sdc')
      */
     $scope.reset = function() {
       $scope.menuPopover.hide();
+      $scope.data = angular.copy($scope.dataDefaults);
     };
 
     /**
