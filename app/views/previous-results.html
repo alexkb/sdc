@@ -9,7 +9,7 @@
     <div class="list">
       <div ng-repeat="(key, value) in history">
         <a class="item item-icon-right" ng-click="loadHistory(key)">
-          {{ value.results.calculateTime }} <i class="icon ion-ios-arrow-right"></i>
+          {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>
         </a>
       </div>
     </div>
