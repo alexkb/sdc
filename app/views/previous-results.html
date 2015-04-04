@@ -7,6 +7,9 @@
   </ion-header-bar>
   <ion-content>
     <div class="list">
+      <div ng-if="history.length === 0">
+        <div class="item-body item-text-wrap">No previous results are available at this time.</div>
+      </div>
       <div ng-repeat="(key, value) in history">
         <a class="item item-icon-right" ng-click="loadHistory(key)">
           {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>

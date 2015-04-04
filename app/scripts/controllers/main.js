@@ -242,10 +242,12 @@ angular.module('Sdc')
       var history = $localstorage.getObject('history');
 
       // Get up to the 10 latest recent changes to history
-      console.log(history.items.length);
-      $scope.history = [];
-      for(var i = 0; i < history.items.length && i < 10; i++) {
-        $scope.history[i] = history.items.pop();
+      if (history.items !== undefined) {
+        $scope.history = [];
+
+        for (var i = 0; i < history.items.length && i < 10; i++) {
+          $scope.history[i] = history.items.pop();
+        }
       }
       $scope.prevResultsModal.show();
     };
