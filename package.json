@@ -57,5 +57,8 @@
     "org.apache.cordova.inappbrowser",
     "org.apache.cordova.splashscreen",
     "https://github.com/katzer/cordova-plugin-email-composer.git"
+  ],
+  "cordovaPlatforms": [
+    "ios"
   ]
 }
