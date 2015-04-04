@@ -26,8 +26,24 @@ input.property-value {
   font-size: 1.2em;
 }
 
-.platform-ios input.property-value {
-  line-height: 1.8em;
+.platform-ios {
+
+  // Issue discussed here: http://forum.ionicframework.com/t/ionicmodal-not-full-screen-ion-header-bar-behave-differently/17240
+  .bar-header-ionic-fix {
+    height: 44px !important;
+
+    > * {
+      margin-top: 0 !important;
+    }
+  }
+
+  .has-header {
+    top: 44px !important;
+  }
+
+  input.property-value {
+    line-height: 1.8em;
+  }
 }
 
 .toggle.toggle-custom input:checked + .track {
