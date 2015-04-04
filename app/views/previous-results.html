@@ -12,6 +12,12 @@
           {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>
         </a>
       </div>
+
+      <div class="row">
+        <div class="col col-center-close">
+          <button class="button button-light icon-left ion-ios-close-empty" ng-click="closePrevResultsModal()">Close</button>
+        </div>
+      </div>
     </div>
   </ion-content>
 </div>
