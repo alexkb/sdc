@@ -61,6 +61,7 @@ angular.module('Sdc')
       var lng = position.coords.longitude;
       Geo.reverseGeocode(lat, lng).then(function (locString) {
         $scope.data.propertyState = locString;
+        $scope.dataDefaults.propertyState = locString;
       });
     });
 
