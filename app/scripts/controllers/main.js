@@ -227,7 +227,7 @@ angular.module('Sdc')
      * Menu operation: 'Load previous'
      * Displays a model of the previous calculations for selection.
      */
-    $ionicModal.fromTemplateUrl('views/previous-results.html', {
+    $ionicModal.fromTemplateUrl('views/previousResults.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function(modal) {
