@@ -30,7 +30,7 @@ angular.module('Sdc')
     $scope.data.paymentMethod = 'paper';
 
     $scope.flags = {};
-    $scope.flags.storeHistory = true; // We use this flag on a different object so we can toggle it as needed without triggering further watches.
+    $scope.flags.changesMade = false; // Used to determine which button is shown in the footer.
 
     // Save the default for resetting when requested.
     $scope.dataDefaults = angular.copy($scope.data);
@@ -66,7 +66,7 @@ angular.module('Sdc')
     });
 
     // If we see changes on the model, lets recalculate the stamp duty.
-    $scope.$watch('data', function(data, oldData) {
+    $scope.$watch('data', function(data) {
       // Get out of here if we don't have the absolute essentials
       if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('Missing required inputs: property value or state');
@@ -74,17 +74,6 @@ angular.module('Sdc')
       }
 
       $scope.calculate();
-
-      // If the state hasn't been set before then this is probably the geocoding run, so we don't want to store it away
-      // in this case. Additionally, only run if a change to the model was made other than the price. This is because the
-      // user might still be typing the value in, which we don't want to store.
-      if (!Utils.isUndefinedOrNull(oldData.propertyState) && data.propertyValue !== '' && data.propertyValue === oldData.propertyValue && $scope.flags.storeHistory === true) {
-        console.log('Storing history');
-        $scope.storeHistory();
-      }
-
-      // Now that we've run calculate and (if it made sense) stored history, lets turn the history storing flag back on for future changes.
-      $scope.flags.storeHistory = true;
     }, function() {});
 
     /**
@@ -125,6 +114,7 @@ angular.module('Sdc')
       }
 
       $scope.results.calculateTime = new Date();
+      $scope.flags.changesMade = true;
     };
 
     /**
@@ -164,6 +154,7 @@ angular.module('Sdc')
       }
       myHistory.items.push({data: $scope.data, results: $scope.results});
       $localstorage.setObject('history', myHistory);
+      $scope.flags.changesMade = false;
     };
 
     /**
@@ -172,8 +163,8 @@ angular.module('Sdc')
      */
     $scope.loadHistory = function(index) {
       if ($scope.history[index]) {
-        $scope.flags.storeHistory = false;
         $scope.data = $scope.history[index].data;
+        $scope.flags.changesMade = false;
       }
 
       $scope.prevResultsModal.hide();
@@ -245,7 +236,7 @@ angular.module('Sdc')
       if (history.items !== undefined) {
         $scope.history = [];
 
-        for (var i = 0; i < history.items.length && i < 10; i++) {
+        for (var i = 0; i < history.items.length && i < 20; i++) {
           $scope.history[i] = history.items.pop();
         }
       }
@@ -265,8 +256,8 @@ angular.module('Sdc')
      * Clears the form for a fresh start.
      */
     $scope.clearInputs = function() {
-      $scope.flags.storeHistory = false;
       $scope.data = angular.copy($scope.dataDefaults);
+      $scope.flags.changesMade = false;
       $scope.menuPopover.hide();
     };
 

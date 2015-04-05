@@ -162,6 +162,14 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col col-center-close">
+            <button class="button button-light icon-left ion-ios-email-outline" ng-click="emailResults()">Email</button>
+            <button class="button button-light icon-left ion-ios-download-outline" ng-click="storeHistory()" ng-if="flags.changesMade">Save</button>
+            <button disabled class="button button-light icon-left ion-ios-download-outline" ng-if="!flags.changesMade">Saved</button>
+          </div>
+        </div>
+
         <div class="item item-text-wrap">
           <p>Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
         </div>

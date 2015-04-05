@@ -17,6 +17,10 @@ ion-header-bar h1.title {
   font-weight: bold;
 }
 
+.item-disabled {
+  color: #999 !important;
+}
+
 .navigation {
   margin-top: 2em;
 }
@@ -55,6 +59,13 @@ input.property-value {
   color: #444;
   font-weight: normal;
   font-size: 0.9em;
+}
+
+p.note {
+  padding-top: 2px;
+  color: #444;
+  font-weight: normal;
+  font-size: 0.8em;
 }
 
 .bar-darkish {

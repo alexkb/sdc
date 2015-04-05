@@ -1,6 +1,6 @@
 <div class="modal">
   <ion-header-bar>
-    <h1 class="title">Previous entries</h1>
+    <h1 class="title">Saved entries</h1>
     <div class="buttons">
       <button class="button button-clear icon ion-ios-close-empty" ng-click="closePrevResultsModal()"></button>
     </div>
@@ -12,7 +12,7 @@
       </div>
       <div ng-repeat="(key, value) in history">
         <a class="item item-icon-right" ng-click="loadHistory(key)">
-          {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>
+          ${{ value.data.propertyValue || '0' }} at {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>
         </a>
       </div>
 
