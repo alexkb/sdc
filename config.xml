@@ -59,9 +59,9 @@
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
   <preference name="StatusBarOverlaysWebView" value="false"/>
+  <preference name="BackupWebStorage" value="none"/>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
   <feature name="Device">
     <param name="ios-package" value="CDVDevice"/>
   </feature>
-  <preference name="BackupWebStorage" value="none" /> <!-- Explained here: http://learn.ionicframework.com/formulas/localstorage/ -->
 </widget>
