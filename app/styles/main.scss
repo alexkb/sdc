@@ -54,6 +54,10 @@ input.property-value {
   }
 }
 
+.no-border {
+  border: 0;
+}
+
 .toggle.toggle-custom input:checked + .track {
   //border-color: #FFAD00;
   //background-color: #FFAD00;
