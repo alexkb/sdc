@@ -17,7 +17,7 @@
   </head>
 
   <body ng-app="Sdc">
-    <ion-pane ng-controller="MainCtrl">
+    <ion-pane ng-controller="MainCtrl" ng-cloak class="ng-cloak">
       <ion-header-bar class="bar-darkish bar-header-ionic-fix">
         <h1 class="title">Stamp Duty AU</h1>
         <div class="buttons">
@@ -48,26 +48,26 @@
 
         <label class="item item-input item-select">
           <div class="input-label">
-            Property type
+            Property usage
           </div>
           <select ng-model="data.purpose">
-            <option value="residential">Primary Residence</option>
-            <option value="investment">Investment</option>
+            <option value="residential">primary residence</option>
+            <option value="investment">investment</option>
           </select>
         </label>
 
         <label class="item item-input item-select">
           <div class="input-label">
-            Purchasing
+            Property type
           </div>
           <select ng-model="data.propertyStatus">
-            <option value="established">an established property</option>
-            <option value="newbuild">a newly constructed home</option>
+            <option value="established">established property</option>
+            <option value="newbuild">newly constructed home</option>
             <option value="vacant" ng-show="data.propertyState != 'SA'">vacant land</option>
           </select>
         </label>
 
-        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-energized">First Home Buyer</ion-toggle>
+        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-energized">First home buyer</ion-toggle>
 
         <div ng-show="data.propertyState == 'ACT' && data.purpose == 'residential'">
           <div class="item item-divider item-text-wrap note">The following questions determine if you're eligible for a concessional rate.</div>
@@ -105,11 +105,11 @@
         <div ng-show="data.propertyState == 'VIC'">
           <div class="item item-input item-select">
             <div class="input-label">
-              Payment method:
+              Payment method
             </div>
             <select ng-model="data.paymentMethod">
-              <option value="paper">Paper transaction</option>
-              <option value="electronic">Electronic transaction</option>
+              <option value="paper">Paper</option>
+              <option value="electronic">Electronic</option>
             </select>
           </div>
         </div>
@@ -117,7 +117,7 @@
         <div ng-show="data.propertyState == 'WA' && data.firstHome">
           <div class="item item-input item-select">
             <div class="input-label">
-              Location:
+              Location
             </div>
             <select ng-model="data.propertyLocation">
               <option value="south">South of Kalbarri (26&deg;)</option>
