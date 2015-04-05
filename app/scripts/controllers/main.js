@@ -209,7 +209,7 @@ angular.module('Sdc')
       if (window.cordova && window.cordova.plugins.email) {
         // Have tried a few different ways to do this better, but none succedd. Have asked here:
         // http://stackoverflow.com/questions/28646040/passing-an-angular-view-to-a-cordova-plugin-method
-        var email = '<h1>Stamp Duty Calculator Results</h1><p><strong>Property Value:</strong> $' + $scope.data.propertyValue + '</p><p>Stamp duty on Property: ' +  $filter('currency')($scope.results.propertyDuty) + '<br />Mortgage registration fee: ' + $filter('currency')($scope.results.mortgageFee) + '<br />Transfer fee: ' + $filter('currency')($scope.results.transferFee) + '</p><p><strong>Total Government Fees:</strong> ' +  $filter('currency')($scope.results.total) + '</p><p>Calculated on: ' + $filter('date')($scope.results.calculateTime, 'd/M/yy h:mm a') + '.</p>';
+        var email = '<h1>Stamp Duty Calculator Results for ' + $scope.data.propertyState + '</h1><p><strong>Property Value:</strong> $' + $scope.data.propertyValue + '</p><p>Stamp duty on Property: ' +  $filter('currency')($scope.results.propertyDuty) + '<br />Mortgage registration fee: ' + $filter('currency')($scope.results.mortgageFee) + '<br />Transfer fee: ' + $filter('currency')($scope.results.transferFee) + '</p><p><strong>Total Government Fees:</strong> ' +  $filter('currency')($scope.results.total) + '</p><p>Calculated on: ' + $filter('date')($scope.results.calculateTime, 'd/M/yy h:mm a') + '.</p>';
 
         window.cordova.plugins.email.open({
           to: '',

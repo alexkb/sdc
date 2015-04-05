@@ -8,9 +8,8 @@ rm -rf plugins/ platforms/ www/
 
 mkdir www
 
-cordova plugin add com.ionic.keyboard org.apache.cordova.device org.apache.cordova.statusbar
-
-// org.apache.cordova.inappbrowser org.apache.cordova.console
+cordova plugin add com.ionic.keyboard org.apache.cordova.device org.apache.cordova.statusbar org.apache.cordova.inappbrowser
+# org.apache.cordova.console
 
 ionic platform add ios
 
