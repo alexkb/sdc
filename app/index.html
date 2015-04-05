@@ -99,7 +99,7 @@
         </div>
 
         <div ng-show="data.propertyState == 'ACT' || data.propertyState == 'NT' || data.propertyState == 'VIC'">
-          <ion-toggle ng-model="data.pensioner" toggle-class="toggle-calm">Eligible Pensioner</ion-toggle>
+          <ion-toggle ng-model="data.pensioner" toggle-class="toggle-energized">Eligible Pensioner</ion-toggle>
         </div>
 
         <div ng-show="data.propertyState == 'VIC'">
@@ -164,9 +164,9 @@
 
         <div class="row">
           <div class="col col-center-close">
-            <button class="button button-light icon-left ion-ios-email-outline" ng-click="emailResults()">Email</button>
-            <button class="button button-light icon-left ion-ios-download-outline" ng-click="storeHistory()" ng-if="flags.changesMade">Save</button>
+            <button class="button button-light icon-left ion-ios-download" ng-click="storeHistory()" ng-if="flags.changesMade">Save</button>
             <button disabled class="button button-light icon-left ion-ios-download-outline" ng-if="!flags.changesMade">Saved</button>
+            <button class="button button-light icon-left ion-forward" ng-click="emailResults()">Email results</button>
           </div>
         </div>
 
