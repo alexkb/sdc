@@ -26,105 +26,108 @@
       </ion-header-bar>
 
       <ion-content>
-        <div class="item item-divider">
-          Enter your details
-        </div>
-
-        <div class="item">
-          <label class="item item-input">
-            <i class="icon ion-social-usd placeholder-icon"></i>
-            <input class="property-value" type="text" ng-change="propertyValueFormatted()" ng-model="data.propertyValue" placeholder="Enter property value">
-          </label>
-        </div>
-
-        <label class="item item-input item-select">
-          <div class="input-label">
-            State / Territory
+        <form>
+          <div class="item item-divider">
+            Enter your details
           </div>
-          <select ng-model="data.propertyState">
-            <option ng-repeat="state in stateOptions" value="{{state.name}}">{{state.name}}</option>
-          </select>
-        </label>
 
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Property usage
+          <div class="item">
+            <label class="item item-input">
+              <i class="icon ion-social-usd placeholder-icon"></i>
+              <input class="property-value" type="text" ng-change="propertyValueFormatted()" ng-model="data.propertyValue" placeholder="Enter property value">
+            </label>
           </div>
-          <select ng-model="data.purpose">
-            <option value="residential">primary residence</option>
-            <option value="investment">investment</option>
-          </select>
-        </label>
-
-        <label class="item item-input item-select">
-          <div class="input-label">
-            Property type
-          </div>
-          <select ng-model="data.propertyStatus">
-            <option value="established">established property</option>
-            <option value="newbuild">newly constructed home</option>
-            <option value="vacant" ng-show="data.propertyState != 'SA'">vacant land</option>
-          </select>
-        </label>
-
-        <ion-toggle ng-model="data.firstHome" toggle-class="toggle-energized">First home buyer</ion-toggle>
-
-        <div ng-show="data.propertyState == 'ACT' && data.purpose == 'residential'">
-          <div class="item item-divider item-text-wrap note">The following questions determine if you're eligible for a concessional rate.</div>
 
           <label class="item item-input item-select">
-            <div class="input-label">Total income</div>
-            <select ng-model="data.income">
-              <option value="0">less than $160,000</option>
-              <option value="160001">$160,001 to $163,330</option>
-              <option value="163331">$163,331 to $166,660</option>
-              <option value="166661">$166,661 to $169,990</option>
-              <option value="169991">$169,991 to $173,320</option>
-              <option value="173321">$173,321 to $176,650</option>
-              <option value="176650">more than $176,650</option>
+            <div class="input-label">
+              State / Territory
+            </div>
+            <select ng-model="data.propertyState">
+              <option ng-repeat="state in stateOptions" value="{{state.name}}">{{state.name}}</option>
             </select>
           </label>
 
           <label class="item item-input item-select">
-            <div class="input-label">Dependents</div>
-            <select ng-model="data.propertyDependents">
-              <option>0</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5 or more</option>
+            <div class="input-label">
+              Property usage
+            </div>
+            <select ng-model="data.purpose">
+              <option value="residential">primary residence</option>
+              <option value="investment">investment</option>
             </select>
           </label>
-        </div>
 
-        <div ng-show="data.propertyState == 'ACT' || data.propertyState == 'NT' || data.propertyState == 'VIC'">
-          <ion-toggle ng-model="data.pensioner" toggle-class="toggle-energized">Eligible Pensioner</ion-toggle>
-        </div>
-
-        <div ng-show="data.propertyState == 'VIC'">
-          <div class="item item-input item-select">
+          <label class="item item-input item-select">
             <div class="input-label">
-              Payment method
+              Property type
             </div>
-            <select ng-model="data.paymentMethod">
-              <option value="paper">Paper</option>
-              <option value="electronic">Electronic</option>
+            <select ng-model="data.propertyStatus">
+              <option value="established">established property</option>
+              <option value="newbuild">newly constructed home</option>
+              <option value="vacant" ng-show="data.propertyState != 'SA'">vacant land</option>
             </select>
-          </div>
-        </div>
+          </label>
 
-        <div ng-show="data.propertyState == 'WA' && data.firstHome">
-          <div class="item item-input item-select">
-            <div class="input-label">
-              Location
-            </div>
-            <select ng-model="data.propertyLocation">
-              <option value="south">South of Kalbarri (26&deg;)</option>
-              <option value="north">North of Denham (26&deg;)</option>
-            </select>
+          <ion-toggle ng-model="data.firstHome" toggle-class="toggle-energized">First home buyer</ion-toggle>
+
+          <div ng-show="data.propertyState == 'ACT' && data.purpose == 'residential'">
+            <div class="item item-divider item-text-wrap note">The following questions determine if you're eligible for a concessional rate.</div>
+
+            <label class="item item-input item-select">
+              <div class="input-label">Total income</div>
+              <select ng-model="data.income">
+                <option value="0">less than $160,000</option>
+                <option value="160001">$160,001 to $163,330</option>
+                <option value="163331">$163,331 to $166,660</option>
+                <option value="166661">$166,661 to $169,990</option>
+                <option value="169991">$169,991 to $173,320</option>
+                <option value="173321">$173,321 to $176,650</option>
+                <option value="176650">more than $176,650</option>
+              </select>
+            </label>
+
+            <label class="item item-input item-select">
+              <div class="input-label">Dependents</div>
+              <select ng-model="data.propertyDependents">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5 or more</option>
+              </select>
+            </label>
           </div>
-        </div>
+
+          <div ng-show="data.propertyState == 'ACT' || data.propertyState == 'NT' || data.propertyState == 'VIC'">
+            <ion-toggle ng-model="data.pensioner" toggle-class="toggle-energized">Eligible Pensioner</ion-toggle>
+          </div>
+
+          <div ng-show="data.propertyState == 'VIC'">
+            <div class="item item-input item-select">
+              <div class="input-label">
+                Payment method
+              </div>
+              <select ng-model="data.paymentMethod">
+                <option value="paper">Paper</option>
+                <option value="electronic">Electronic</option>
+              </select>
+            </div>
+          </div>
+
+          <div ng-show="data.propertyState == 'WA' && data.firstHome">
+            <div class="item item-input item-select">
+              <div class="input-label">
+                Location
+              </div>
+              <select ng-model="data.propertyLocation">
+                <option value="south">South of Kalbarri (26&deg;)</option>
+                <option value="north">North of Denham (26&deg;)</option>
+              </select>
+            </div>
+          </div>
+          <button class="fauxSubmit" ng-click="fauxSubmit()"></button>
+        </form>
 
         <div class="item item-divider">
           Results

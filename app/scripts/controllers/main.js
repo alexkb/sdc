@@ -76,6 +76,15 @@ angular.module('Sdc')
       $scope.calculate();
     }, function() {});
 
+
+    $scope.fauxSubmit = function() {
+      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      // for form inputs)
+      if(window.cordova && window.cordova.plugins.Keyboard) {
+        cordova.plugins.Keyboard.close();
+      }
+    };
+
     /**
      * Performs stamp duty calculation using calculator service.
      */
