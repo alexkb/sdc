@@ -34,7 +34,7 @@
           <div class="item">
             <label class="item item-input">
               <i class="icon ion-social-usd placeholder-icon"></i>
-              <input class="property-value" type="text" ng-change="propertyValueFormatted()" ng-model="data.propertyValue" placeholder="Enter property value">
+              <input class="property-value" type="text" ng-change="propertyValueFormatted()" on-return="closeKeyboard();" ng-model="data.propertyValue" placeholder="Enter property value">
             </label>
           </div>
 
@@ -126,7 +126,7 @@
               </select>
             </div>
           </div>
-          <button class="fauxSubmit" ng-click="fauxSubmit()"></button>
+          <!--button class="fauxSubmit" ng-click="fauxSubmit()"></button-->
         </form>
 
         <div class="item item-divider">
@@ -204,6 +204,7 @@
         <script src="scripts/services/utils.js"></script>
         <script src="scripts/services/calculator.js"></script>
         <script src="scripts/directives/emailtemplate.js"></script>
+        <script src="scripts/directives/input.js"></script>
         <!-- endbuild -->
 </body>
 </html>
