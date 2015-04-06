@@ -14,6 +14,7 @@ org.apache.cordova.inappbrowser org.apache.cordova.console org.apache.cordova.ge
 
 cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 
+
 ionic platform add ios
 
 grunt build

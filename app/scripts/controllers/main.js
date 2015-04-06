@@ -16,7 +16,6 @@
  */
 angular.module('Sdc')
   .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator) {
-    $scope.version = '0.0.3';
 
     // Set defaults:
     $scope.data = {};
@@ -55,6 +54,9 @@ angular.module('Sdc')
     // Set form options
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
+    // Version variable used in about us view.
+    $scope.version = '0.0.4';
+
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function (position) {
       var lat = position.coords.latitude;
@@ -76,10 +78,10 @@ angular.module('Sdc')
       $scope.calculate();
     }, function() {});
 
-
+    /**
+     * closeKeyboard helper function that makes sure the keyboard plugin is available before closing.
+     */
     $scope.closeKeyboard = function() {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
       if(window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.close();
       }
