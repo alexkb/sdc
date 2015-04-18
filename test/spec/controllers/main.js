@@ -1,22 +1,22 @@
 'use strict';
 
-describe('Controller: MainctrlCtrl', function () {
+describe('Controller: MainCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('sdcApp'));
+  beforeEach(module('Sdc'));
 
-  var MainctrlCtrl,
+  var MainCtrl,
     scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
-    MainctrlCtrl = $controller('MainctrlCtrl', {
+    MainCtrl = $controller('MainCtrl', {
       $scope: scope
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(scope.awesomeThings.length).toBe(3);
+  it('there should be a certain number of state options in the scope', function () {
+    expect(scope.stateOptions.length).toEqual(8);
   });
 });

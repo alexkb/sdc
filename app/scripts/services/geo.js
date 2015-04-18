@@ -39,11 +39,13 @@ angular.module('Sdc')
       getLocation: function() {
         var q = $q.defer();
 
-        navigator.geolocation.getCurrentPosition(function(position) {
-          q.resolve(position);
-        }, function(error) {
-          q.reject(error);
-        });
+        if (navigator !== undefined && navigator.geolocation !== undefined) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            q.resolve(position);
+          }, function (error) {
+            q.reject(error);
+          });
+        }
 
         return q.promise;
       }

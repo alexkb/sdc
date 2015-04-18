@@ -3,7 +3,7 @@
 describe('Service: Utils', function () {
 
   // load the service's module
-  beforeEach(module('sdcApp'));
+  beforeEach(module('Sdc'));
 
   // instantiate service
   var Utils;
@@ -11,8 +11,10 @@ describe('Service: Utils', function () {
     Utils = _Utils_;
   }));
 
-  it('should do something', function () {
-    expect(!!Utils).toBe(true);
+  it('isUndefinedOrNull should return results as expected', function () {
+    expect(Utils.isUndefinedOrNull('')).toEqual(false);
+    expect(Utils.isUndefinedOrNull(undefined)).toEqual(true);
+    expect(Utils.isUndefinedOrNull(null)).toEqual(true);
   });
 
 });

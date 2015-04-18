@@ -63,7 +63,7 @@ angular.module('Sdc')
           }
         }
 
-        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
@@ -139,7 +139,7 @@ angular.module('Sdc')
           }
         }
 
-        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
@@ -167,7 +167,7 @@ angular.module('Sdc')
             {min: 3000001, max: THRESHOLD_INF, init: 0, plus: 5.45}
           ];
 
-          results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+          results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         }
 
         if (pensioner) {
@@ -256,7 +256,7 @@ angular.module('Sdc')
             {min: 1000001, max: THRESHOLD_INF, init: 30850, plus: 5.75}
           ];
 
-          results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds) - concession;
+          results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds) - concession;
         }
         else {
           thresholds = [
@@ -267,7 +267,7 @@ angular.module('Sdc')
             {min: 1000000, max: THRESHOLD_INF, init: 38025, plus: 5.75}
           ];
 
-          results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+          results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         }
 
         results.grants.fhog = firstHome && propertyValue <= 750000 && purpose === 'residential' && propertyStatus === 'newhome' ? 15000 : 0;
@@ -302,7 +302,7 @@ angular.module('Sdc')
         ];
 
         results.grants.fhog = firstHome && propertyStatus !== 'established' && purpose === 'residential' ? 15000 : 0;
-        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
@@ -330,7 +330,7 @@ angular.module('Sdc')
 
         results.grants.fhog = firstHome && propertyStatus !== 'established' && purpose === 'residential' ? 7000 : 0;
         results.grants.fhbb = firstHome && propertyStatus === 'newhome' && purpose === 'residential' ? 20000 : 0;
-        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
@@ -376,7 +376,7 @@ angular.module('Sdc')
         }
 
         results.grants.fhog = firstHome && propertyStatus !== 'established' && purpose === 'residential' ? 10000 : 0;
-        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
@@ -447,7 +447,7 @@ angular.module('Sdc')
           }
         }
 
-        results.propertyDuty = this.dutyByThreshold(propertyValue, thresholds);
+        results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
         return results;
@@ -483,7 +483,7 @@ angular.module('Sdc')
           {min: 2000001, max: THRESHOLD_INF, init: 550, plus: 20, denomination: 100000},
         ];
 
-        return this.dutyByThreshold(propertyValue, thresholds);
+        return this.dutyByThresholdRounded(propertyValue, thresholds);
       },
 
       /**
@@ -506,7 +506,7 @@ angular.module('Sdc')
           ];
         }
 
-        return this.dutyByThreshold(propertyValue, thresholds);
+        return this.dutyByThresholdRounded(propertyValue, thresholds);
       },
 
       /**
@@ -523,7 +523,7 @@ angular.module('Sdc')
           {min: 50001, max: THRESHOLD_INF, init: 285, plus: 75.5, denomination: 10000}
         ];
 
-        return this.dutyByThreshold(propertyValue, thresholds);
+        return this.dutyByThresholdRounded(propertyValue, thresholds);
       },
 
       /**
@@ -537,7 +537,7 @@ angular.module('Sdc')
           {min: 180001, max: THRESHOLD_INF, init: 162.9, plus: 30.80, denomination: 10000}
         ];
 
-        return this.dutyByThreshold(propertyValue, thresholds);
+        return this.dutyByThresholdRounded(propertyValue, thresholds);
       },
 
       /**
@@ -577,6 +577,16 @@ angular.module('Sdc')
           } // if propertyValue is in range
         } // for()
       }, // dutyByThreshold
+
+      /**
+       * Wrapper for dutyByThresholdRounded().
+       * @param propertyValue
+       * @param thresholds
+       * @returns {number}
+       */
+      dutyByThresholdRounded: function(propertyValue, thresholds) {
+        return $window.Math.round(this.dutyByThreshold(propertyValue, thresholds));
+      },
 
       /**
        * Basic function to return a discount value if propertyValue is within a certain range.
