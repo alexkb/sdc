@@ -64,6 +64,8 @@ describe('Service: calculator', function () {
   it('should calculate VIC duty accurately', function () {
     expect(calculator.processVic(300000, 'established', 'residential', true, 'electronic').propertyDuty).toEqual(5685);
     expect(calculator.processVic(300000, 'established', 'residential', false, 'electronic').propertyDuty).toEqual(11370);
+    expect(calculator.processVic(500000, 'established', 'residential', true, 'electronic').propertyDuty).toEqual(10985);
+    expect(calculator.processVic(500000, 'established', 'residential', false, 'electronic').propertyDuty).toEqual(21970);
     expect(calculator.processVic(600000, 'established', 'residential', true, 'electronic').propertyDuty).toEqual(15535);
     expect(calculator.processVic(600000, 'established', 'residential', false, 'electronic').propertyDuty).toEqual(31070);
     expect(calculator.processVic(1000000, 'established', 'residential', false, 'electronic').propertyDuty).toEqual(55000);
