@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.akbweb.sdc" version="0.0.4" android-versionCode="4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Stamp Duty AU</name>
-  <description>&#xD;
-    A calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.&#xD;&#xD;
+  <description>&#xD;&#xD;
+    A calculator for estimating stamp duty due on Australian real estate. Each state in Australia calculates its stamp duty differently and therefore requires different questions and calculations. No internet connection is required for the application to work.&#xD;&#xD;&#xD;
     </description>
-  <author email="info@akb.com.au" href="http://akb.com.au">&#xD;
-        AKB Web Services&#xD;
+  <author email="info@akb.com.au" href="http://akb.com.au">&#xD;&#xD;
+        AKB Web Services&#xD;&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>

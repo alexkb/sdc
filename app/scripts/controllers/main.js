@@ -55,7 +55,7 @@ angular.module('Sdc')
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
     // Version variable used in about us view.
-    $scope.version = '0.0.4';
+    $scope.version = '0.0.5';
 
     // Set default state value based on geolocation service.
     Geo.getLocation().then(function (position) {
