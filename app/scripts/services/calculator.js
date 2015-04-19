@@ -47,7 +47,7 @@ angular.module('Sdc')
             {min: 1001, max: 200000, init: 0, plus: 2},
             {min: 200001, max: 300001, init: 4000, plus: 3.5},
             {min: 300001, max: 500000, init: 7500, plus: 4.15},
-            {min: 500001, max: 750001, init: 15600, plus: 5},
+            {min: 500001, max: 750001, init: 15800, plus: 5},
             {min: 750001, max: 1000000, init: 28300, plus: 6.5},
             {min: 1000001, max: 1455000, init: 44550, plus: 7},
             {min: 1455001, max: THRESHOLD_INF, init: 0, plus: 5.25}
@@ -157,14 +157,13 @@ angular.module('Sdc')
         var concession = 0;
 
         if (propertyValue < 525000) {
-
           var v = propertyValue/1000;
-          results.propertyDuty = (0.06571441 * (v * v)) + (15 * v);
+          results.propertyDuty = $window.Math.round( (0.06571441 * (v * v)) + (15 * v) );
         }
         else {
           thresholds = [
-            {min: 525000, max: 3000000, init: 0, plus: 4.95},
-            {min: 3000001, max: THRESHOLD_INF, init: 0, plus: 5.45}
+            {min: 525000, max: 3000000, init: 25988, plus: 4.95},
+            {min: 3000001, max: THRESHOLD_INF, init: 163500, plus: 5.45}
           ];
 
           results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
@@ -177,7 +176,7 @@ angular.module('Sdc')
           concession = 7000;
         }
         else if (firstHome && purpose === 'residential' && propertyStatus === 'established') {
-          concession = 7000;
+          concession = 0;
         }
 
         results.grants.fhog = firstHome && purpose === 'residential' && propertyStatus !== 'established' ? 26000 : 0;
@@ -322,8 +321,8 @@ angular.module('Sdc')
           {min: 0, max: 3000, init: 50, plus: 0},
           {min: 3001, max: 25000, init: 50, plus: 1.75},
           {min: 25001, max: 75000, init: 435, plus: 2.25},
-          {min: 75001, max: 200000, init: 1536, plus: 3.50},
-          {min: 200001, max: 375000, init: 5935, plus: 4.35},
+          {min: 75001, max: 200000, init: 1560, plus: 3.50},
+          {min: 200001, max: 375000, init: 5935, plus: 4},
           {min: 375001, max: 725000, init: 12935, plus: 4.25},
           {min: 725001, max: THRESHOLD_INF, init: 27810, plus: 4.5},
         ];
@@ -351,7 +350,7 @@ angular.module('Sdc')
         results.mortgageFee = paymentMethod === 'paper' ? 110 : 87.60;
         results.transferFee = this.calcTransferFeeVic(propertyValue, paymentMethod);
 
-        if (firstHome && propertyValue < 600000 && purpose === 'residential') {
+        if (firstHome && propertyValue <= 600000 && purpose === 'residential') {
           thresholds = [
             {min: 0, max: 25000, init: 0, plus: 1.4, discount: 0.5},
             {min: 25001, max: 130000, init: 350, plus: 2.4, discount: 0.5},
@@ -360,7 +359,7 @@ angular.module('Sdc')
             {min: 550001, max: 600000, init: 28070, plus: 6, discount: 0.5},
           ];
         }
-        else if (propertyValue > 130000 && propertyValue < 550000 && propertyStatus === 'residential') {
+        else if (propertyValue > 130000 && propertyValue <= 550000 && purpose === 'residential') {
           thresholds = [
             {min: 130001, max: 440000, init: 2870, plus: 5},
             {min: 440001, max: 550000, init: 18370, plus: 6},
@@ -371,7 +370,7 @@ angular.module('Sdc')
             {min: 0, max: 25000, init: 0, plus: 1.4},
             {min: 25001, max: 130000, init: 350, plus: 2.4},
             {min: 130001, max: 960000, init: 2870, plus: 6},
-            {min: 960001, max: THRESHOLD_INF, init: 0, plus: 5.5},
+            {min: 960001, max: THRESHOLD_INF, init: 52800, plus: 5.5},
           ];
         }
 
