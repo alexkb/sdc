@@ -57,7 +57,8 @@
     "com.ionic.keyboard",
     "org.apache.cordova.inappbrowser",
     "org.apache.cordova.splashscreen",
-    "https://github.com/katzer/cordova-plugin-email-composer.git"
+    "https://github.com/katzer/cordova-plugin-email-composer.git",
+    "org.apache.cordova.console"
   ],
   "cordovaPlatforms": [
     "ios"
