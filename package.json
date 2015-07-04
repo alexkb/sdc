@@ -1,6 +1,7 @@
 {
   "name": "Sdc",
   "version": "0.1.0",
+  "main" : "main.js",
   "private": true,
   "dependencies": {},
   "devDependencies": {
@@ -61,6 +62,7 @@
     "org.apache.cordova.console"
   ],
   "cordovaPlatforms": [
-    "ios"
+    "ios",
+    "android"
   ]
 }
