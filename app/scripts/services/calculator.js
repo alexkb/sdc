@@ -374,7 +374,7 @@ angular.module('Sdc')
           ];
         }
 
-        results.grants.fhog = firstHome && propertyStatus !== 'established' && purpose === 'residential' ? 10000 : 0;
+        results.grants.fhog = (firstHome && propertyStatus !== 'established' && purpose === 'residential' && properetyValue <= 750000) ? 10000 : 0;
         results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
