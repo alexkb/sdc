@@ -21,6 +21,7 @@ angular.module('Sdc')
             if(results.length > 1) {
               var r = results[1];
               var foundState = false;
+
               for(var i = 0; i < r.address_components.length && !foundState; i++) {
                 if (r.address_components[i].types.indexOf('administrative_area_level_1') !== -1) {
                   foundState = r.address_components[i].short_name;

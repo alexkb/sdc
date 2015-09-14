@@ -62,7 +62,7 @@
     "org.apache.cordova.console"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

@@ -55,17 +55,21 @@ angular.module('Sdc')
     $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
 
     // Version variable used in about us view.
-    $scope.version = '0.0.5';
+    $scope.version = '0.0.6';
 
-    // Set default state value based on geolocation service.
-    Geo.getLocation().then(function (position) {
-      var lat = position.coords.latitude;
-      var lng = position.coords.longitude;
-      Geo.reverseGeocode(lat, lng).then(function (locString) {
-        $scope.data.propertyState = locString;
-        $scope.dataDefaults.propertyState = locString;
+    function onDeviceReady() {
+      // Set default state value based on geolocation service.
+      Geo.getLocation().then(function (position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        Geo.reverseGeocode(lat, lng).then(function (locString) {
+          $scope.data.propertyState = locString;
+          $scope.dataDefaults.propertyState = locString;
+        });
       });
-    });
+    }
+
+    document.addEventListener('deviceready', onDeviceReady, false);
 
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
