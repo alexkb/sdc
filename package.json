@@ -1,7 +1,7 @@
 {
   "name": "Sdc",
   "version": "0.1.0",
-  "main" : "main.js",
+  "main": "main.js",
   "private": true,
   "dependencies": {},
   "devDependencies": {

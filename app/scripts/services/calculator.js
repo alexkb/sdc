@@ -196,7 +196,7 @@ angular.module('Sdc')
        */
       processQld: function(propertyValue, propertyStatus, purpose, firstHome) {
         var results = {grants: {}};
-        results.mortgageFee = 162.9;
+        results.mortgageFee = 168.6;
         results.transferFee = this.calcTransferFeeQld(propertyValue);
         var thresholds = [];
 
@@ -374,7 +374,7 @@ angular.module('Sdc')
           ];
         }
 
-        results.grants.fhog = (firstHome && propertyStatus !== 'established' && purpose === 'residential' && properetyValue <= 750000) ? 10000 : 0;
+        results.grants.fhog = (firstHome && propertyStatus !== 'established' && purpose === 'residential' && propertyValue <= 750000) ? 10000 : 0;
         results.propertyDuty = this.dutyByThresholdRounded(propertyValue, thresholds);
         results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
@@ -532,8 +532,8 @@ angular.module('Sdc')
        */
       calcTransferFeeQld: function(propertyValue) {
         var thresholds = [
-          {min: 0, max: 180000, init: 162.9},
-          {min: 180001, max: THRESHOLD_INF, init: 162.9, plus: 30.80, denomination: 10000}
+          {min: 0, max: 180000, init: 168.6},
+          {min: 180001, max: THRESHOLD_INF, init: 168.6, plus: 31.80, denomination: 10000}
         ];
 
         return this.dutyByThresholdRounded(propertyValue, thresholds);
@@ -604,3 +604,4 @@ angular.module('Sdc')
       }
     };
   });
+
