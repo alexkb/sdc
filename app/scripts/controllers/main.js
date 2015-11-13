@@ -48,6 +48,7 @@ angular.module('Sdc')
         fhbb: -1
       },
       total: 0,
+      totalPropertyCost: 0,
       calculateTime: 0
     };
 
@@ -128,6 +129,7 @@ angular.module('Sdc')
           break;
       }
 
+      $scope.results.totalPropertyCost = Calculator.calculateTotalPropertyCost(cleansedPropertyValue, $scope.results);
       $scope.results.calculateTime = new Date();
       $scope.flags.changesMade = true;
     };

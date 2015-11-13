@@ -601,7 +601,34 @@ angular.module('Sdc')
         }
 
         return 0;
+      },
+
+      /**
+       * Calculates the true cost of the property with fees and grants summed.
+       * @param propertyValue
+       * @param results
+       * @returns {*}
+       */
+      calculateTotalPropertyCost: function(propertyValue, results) {
+        var totalCost = propertyValue + results.total; // results.total contains all fees
+
+        if (!Utils.isUndefinedOrNull(results.grants.fhog) && results.grants.fhog !== -1) {
+          totalCost -= results.grants.fhog;
+        }
+
+        if (!Utils.isUndefinedOrNull(results.grants.nhg) && results.grants.nhg !== -1) {
+          totalCost -= results.grants.nhg;
+        }
+
+        if (!Utils.isUndefinedOrNull(results.grants.fhbb) && results.grants.fhbb !== -1) {
+          totalCost -= results.grants.fhbb;
+        }
+
+        return totalCost;
       }
     };
   });
+
+
+
 
