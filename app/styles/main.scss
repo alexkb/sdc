@@ -1,0 +1,98 @@
+// Your application styles go here
+
+ion-header-bar h1.title {
+  padding-left: 6px;
+}
+
+.item-note-result {
+  color: #444;
+}
+
+.item-note-result-mark {
+  color: #000;
+  font-weight: bold;
+}
+
+.item-divider {
+  font-weight: bold;
+}
+
+.item-disabled {
+  color: #999 !important;
+}
+
+.navigation {
+  margin-top: 2em;
+}
+
+input.property-value {
+  line-height: 1em;
+  font-size: 1.2em;
+}
+
+.platform-ios {
+  // Issue discussed here: http://forum.ionicframework.com/t/ionicmodal-not-full-screen-ion-header-bar-behave-differently/17240
+  .bar-header-ionic-fix {
+    height: 44px !important;
+
+    > * {
+      margin-top: 0 !important;
+    }
+  }
+
+  .has-header {
+    top: 44px !important;
+  }
+
+  input.property-value {
+    line-height: 1.8em;
+  }
+
+  .list.historical {
+    margin-top: 1em;
+  }
+}
+
+.no-border {
+  border: 0;
+}
+
+.toggle.toggle-custom input:checked + .track {
+  //border-color: #FFAD00;
+  //background-color: #FFAD00;
+}
+
+.item-divider.note {
+  color: #444;
+  font-weight: normal;
+  font-size: 0.9em;
+}
+
+p.note {
+  padding-top: 2px;
+  color: #444;
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+.bar-darkish {
+  background-color: #555555;
+  h1.title {
+    color: #EEEEEE;
+    font-weight: bold;
+  }
+
+  .icon {
+    color: #EEEEEE;
+  }
+}
+
+img.sdc-logo {
+  float: right;
+  width: 34%;
+  margin: 1em;
+}
+
+.col-center-close {
+  text-align: center;
+}
