@@ -24,10 +24,11 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-inappbrowser",
     "ionic-plugin-keyboard",
-    "https://github.com/katzer/cordova-plugin-email-composer.git"
+    "https://github.com/katzer/cordova-plugin-email-composer.git",
+    "com.ionic.keyboard"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

@@ -5,21 +5,20 @@
 
 ionic platform rm ios
 
-rm -rf plugins/ platforms/ www/
+rm -rf plugins/ platforms/
 
-mkdir www
-
-cordova plugin add com.ionic.keyboard org.apache.cordova.device org.apache.cordova.statusbar \
-org.apache.cordova.inappbrowser org.apache.cordova.console org.apache.cordova.geolocation
+cordova plugin add cordova-plugin-device
+cordova plugin add com.ionic.keyboard
+cordova plugin add cordova-plugin-statusbar
+cordova plugin add cordova-plugin-inappbrowser
+cordova plugin add cordova-plugin-console
+cordova plugin add cordova-plugin-geolocation
 
 cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 
-
 ionic platform add ios
 
-grunt build
-
-cordova build
+ionic build
 
 rm -rf ~/Library/Developer/Xcode/DerivedData
 
