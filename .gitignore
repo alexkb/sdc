@@ -14,8 +14,9 @@ plugins
 *.DS_Store
 .idea
 .editorconfig
-www/scripts/config.js
+www/js/config.js
 resources/*.psd
 resources/android
 resources/ios
 www/app.iml
+*.css

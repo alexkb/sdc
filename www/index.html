@@ -3,14 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+    <title>Stamp Duty Calculator</title>
 
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
 
-    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <!-- compiled css output -->
     <link href="css/ionic.app.css" rel="stylesheet">
-    -->
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -19,16 +16,183 @@
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="js/config.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/services/geo.js"></script>
+    <script src="js/controllers/main.js"></script>
+    <script src="js/services/utils.js"></script>
+    <script src="js/services/calculator.js"></script>
+    <script src="js/directives/emailtemplate.js"></script>
+    <script src="js/directives/input.js"></script>
   </head>
-  <body ng-app="starter">
 
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
+  <body ng-app="Sdc">
+    <ion-pane ng-controller="MainCtrl" ng-cloak class="ng-cloak">
+      <ion-header-bar class="bar-darkish bar-header-ionic-fix">
+        <h1 class="title">Stamp Duty AU</h1>
+        <div class="buttons">
+          <button class="button button-icon icon ion-android-more-vertical" ng-click="openMenuPopover($event)"></button>
+        </div>
       </ion-header-bar>
+
       <ion-content>
+        <form>
+          <div class="item item-divider">
+            Enter your details
+          </div>
+
+          <div class="item">
+            <label class="item item-input">
+              <i class="icon ion-social-usd placeholder-icon"></i>
+              <input class="property-value" type="text" ng-change="propertyValueFormatted()" on-return="closeKeyboard();" ng-model="data.propertyValue" placeholder="Enter property value">
+            </label>
+          </div>
+
+          <label class="item item-input item-select">
+            <div class="input-label">
+              State / Territory
+            </div>
+            <select ng-model="data.propertyState">
+              <option ng-repeat="state in stateOptions" value="{{state.name}}">{{state.name}}</option>
+            </select>
+          </label>
+
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Property usage
+            </div>
+            <select ng-model="data.purpose">
+              <option value="residential">primary residence</option>
+              <option value="investment">investment</option>
+            </select>
+          </label>
+
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Property type
+            </div>
+            <select ng-model="data.propertyStatus">
+              <option value="established">established property</option>
+              <option value="newbuild">newly constructed home</option>
+              <option value="vacant" ng-show="data.propertyState != 'SA'">vacant land</option>
+            </select>
+          </label>
+
+          <ion-toggle ng-model="data.firstHome" toggle-class="toggle-energized">First home buyer</ion-toggle>
+
+          <div ng-show="data.propertyState == 'ACT' && data.purpose == 'residential'">
+            <div class="item item-divider item-text-wrap note">The following questions determine if you're eligible for a concessional rate.</div>
+
+            <label class="item item-input item-select">
+              <div class="input-label">Total income</div>
+              <select ng-model="data.income">
+                <option value="0">less than $160,000</option>
+                <option value="160001">$160,001 to $163,330</option>
+                <option value="163331">$163,331 to $166,660</option>
+                <option value="166661">$166,661 to $169,990</option>
+                <option value="169991">$169,991 to $173,320</option>
+                <option value="173321">$173,321 to $176,650</option>
+                <option value="176650">more than $176,650</option>
+              </select>
+            </label>
+
+            <label class="item item-input item-select">
+              <div class="input-label">Dependents</div>
+              <select ng-model="data.propertyDependents">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5 or more</option>
+              </select>
+            </label>
+          </div>
+
+          <div ng-show="data.propertyState == 'ACT' || data.propertyState == 'NT' || data.propertyState == 'VIC'">
+            <ion-toggle ng-model="data.pensioner" toggle-class="toggle-energized">Eligible Pensioner</ion-toggle>
+          </div>
+
+          <div ng-show="data.propertyState == 'VIC'">
+            <div class="item item-input item-select">
+              <div class="input-label">
+                Payment method
+              </div>
+              <select ng-model="data.paymentMethod">
+                <option value="paper">Paper</option>
+                <option value="electronic">Electronic</option>
+              </select>
+            </div>
+          </div>
+
+          <div ng-show="data.propertyState == 'WA' && data.firstHome">
+            <div class="item item-input item-select">
+              <div class="input-label">
+                Location
+              </div>
+              <select ng-model="data.propertyLocation">
+                <option value="south">South of Kalbarri (26&deg;)</option>
+                <option value="north">North of Denham (26&deg;)</option>
+              </select>
+            </div>
+          </div>
+          <!--button class="fauxSubmit" ng-click="fauxSubmit()"></button-->
+        </form>
+
+        <div class="item item-divider">
+          Results
+        </div>
+
+        <div class="item bar-assertive">
+          Stamp duty on Property<span class="item-note">{{results.propertyDuty | currency}}</span>
+        </div>
+        <div class="item bar-assertive">
+          Mortgage registration fee<span class="item-note">{{results.mortgageFee | currency}}</span>
+        </div>
+        <div class="item bar-assertive">
+          Transfer fee<span class="item-note">{{results.transferFee | currency}}</span>
+        </div>
+
+        <div class="item bar-assertive">
+          Total Government Fees<span class="item-note item-note-result-mark">{{ results.total | currency }}</span>
+        </div>
+
+        <div ng-show="results.grants.fhog >= 0">
+          <div class="item bar-assertive">
+            First Home Owners Grant<span class="item-note item-note-result">{{results.grants.fhog | currency}}</span>
+          </div>
+        </div>
+
+        <div ng-show="results.grants.nhg >= 0">
+          <div class="item bar-assertive">
+            New Home Grant<span class="item-note item-note-result">{{results.grants.nhg | currency}}</span>
+          </div>
+        </div>
+
+        <div ng-show="results.grants.fhbb >= 0">
+          <div class="item bar-assertive">
+            First Home Builder Boost<span class="item-note item-note-result">{{results.grants.fhbb | currency}}</span>
+          </div>
+        </div>
+
+        <div class="item bar-assertive">
+          Total Property cost<span class="item-note item-note-result-mark">{{ results.totalPropertyCost | currency }}</span>
+        </div>
+
+        <div class="row">
+          <div class="col col-center-close">
+            <button class="button button-light icon-left ion-ios-download" ng-click="storeHistory()" ng-if="flags.changesMade">Save</button>
+            <button disabled class="button button-light icon-left ion-ios-download-outline" ng-if="!flags.changesMade">Saved</button>
+            <button class="button button-light icon-left ion-forward" ng-click="emailResults()">Email results</button>
+          </div>
+        </div>
+
+        <div class="item item-text-wrap no-border">
+          <p>Please note, that the information provided by the calculator is intended to provide illustrative examples based on stated assumptions and your inputs. Calculations are meant as estimates only and it is advised that you consult with a mortgage broker about your specific circumstances.</p>
+        </div>
       </ion-content>
     </ion-pane>
   </body>
+
 </html>
