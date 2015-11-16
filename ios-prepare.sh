@@ -5,7 +5,7 @@
 
 ionic platform rm ios
 
-rm -rf plugins/ platforms/
+rm -rf plugins/ platforms/ios
 
 cordova plugin add cordova-plugin-device
 cordova plugin add com.ionic.keyboard
@@ -13,6 +13,8 @@ cordova plugin add cordova-plugin-statusbar
 cordova plugin add cordova-plugin-inappbrowser
 cordova plugin add cordova-plugin-console
 cordova plugin add cordova-plugin-geolocation
+cordova plugin add cordova-plugin-splashscreen
+cordova plugin add cordova-plugin-whitelist
 
 cordova plugin add https://github.com/katzer/cordova-plugin-email-composer.git
 

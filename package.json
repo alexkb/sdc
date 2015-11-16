@@ -19,7 +19,7 @@
     "cordova-plugin-device",
     "cordova-plugin-console",
     "cordova-plugin-whitelist",
-    "https://github.com/apache/cordova-plugin-splashscreen",
+    "cordova-plugin-splashscreen",
     "cordova-plugin-geolocation",
     "cordova-plugin-statusbar",
     "cordova-plugin-inappbrowser",
@@ -28,7 +28,7 @@
     "com.ionic.keyboard"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }
