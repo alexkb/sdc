@@ -58,7 +58,7 @@ angular.module('Sdc')
     // Version variable used in about us view.
     $scope.version = '0.0.6';
 
-    function onDeviceReady() {
+    function onReady() {
       // Set default state value based on geolocation service.
       Geo.getLocation().then(function (position) {
         var lat = position.coords.latitude;
@@ -70,7 +70,12 @@ angular.module('Sdc')
       });
     }
 
-    document.addEventListener('deviceready', onDeviceReady, false);
+    if (ionic.Platform.isWebView()) {
+      document.addEventListener('deviceready', onReady, false);
+    }
+    else {
+      onReady(); // Then we're in ionic serve mode, which is fine to run our get location.
+    }
 
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch('data', function(data) {
@@ -96,7 +101,6 @@ angular.module('Sdc')
      * Performs stamp duty calculation using calculator service.
      */
     $scope.calculate = function() {
-      console.log('Running calculate().');
       var cleansedPropertyValue = $scope.getPropertyValueCleansed();
 
       switch ($scope.data.propertyState) {
