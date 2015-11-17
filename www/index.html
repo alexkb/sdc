@@ -19,6 +19,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/services/propertyModel.js"></script>
     <script src="js/services/geo.js"></script>
     <script src="js/controllers/main.js"></script>
     <script src="js/services/utils.js"></script>
@@ -45,7 +46,7 @@
           <div class="item">
             <label class="item item-input">
               <i class="icon ion-social-usd placeholder-icon"></i>
-              <input class="property-value" type="text" ng-change="propertyValueFormatted()" on-return="closeKeyboard();" ng-model="data.propertyValue" placeholder="Enter property value">
+              <input class="property-value" type="text" on-return="closeKeyboard();" ng-model="data.propertyValueFormatted" placeholder="Enter property value">
             </label>
           </div>
 
@@ -176,7 +177,7 @@
           </div>
         </div>
 
-        <div ng-show="getPropertyValueCleansed()" class="item bar-assertive">
+        <div ng-show="data.propertyValue" class="item bar-assertive">
           Total Property cost<span class="item-note item-note-result-mark">{{ results.totalPropertyCost | currency }}</span>
         </div>
 
