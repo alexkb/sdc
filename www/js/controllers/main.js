@@ -15,24 +15,12 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator) {
+  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator, PropertyModel) {
 
-    // Set defaults:
-    $scope.data = {};
-    $scope.data.propertyState = '';
-    $scope.data.propertyValue = '';
-    $scope.data.purpose = 'residential';
-    $scope.data.propertyStatus = 'established';
-    $scope.data.propertyLocation = 'south';
-    $scope.data.firstHome = false;
-    $scope.data.pensioner = false;
-    $scope.data.paymentMethod = 'paper';
+    $scope.data = PropertyModel.data;
 
     $scope.flags = {};
     $scope.flags.changesMade = false; // Used to determine which button is shown in the footer.
-
-    // Save the default for resetting when requested.
-    $scope.dataDefaults = angular.copy($scope.data);
 
     // Initial History Array
     $scope.history = [];
@@ -64,8 +52,10 @@ angular.module('Sdc')
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
         Geo.reverseGeocode(lat, lng).then(function (locString) {
-          $scope.data.propertyState = locString;
-          $scope.dataDefaults.propertyState = locString;
+          //$scope.data.propertyState = locString;
+          PropertyModel.setPropertyState(locString);
+          // We don't need to set dataDefaults.propertyState because our $watch will do this if the model gets reset.
+          //$scope.dataDefaults.propertyState = locString;
         });
       });
     }
@@ -78,12 +68,18 @@ angular.module('Sdc')
     }
 
     // If we see changes on the model, lets recalculate the stamp duty.
-    $scope.$watch('data', function(data) {
+    $scope.$watch(function() { return PropertyModel.data; }, function(data) {
       // Get out of here if we don't have the absolute essentials
       if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('Missing required inputs: property value or state');
+
+        // Try run our geolocation again.
+        onReady();
+
         return;
       }
+
+      PropertyModel.propertyValueFormat();
 
       $scope.calculate();
     }, function() {});
@@ -101,68 +97,43 @@ angular.module('Sdc')
      * Performs stamp duty calculation using calculator service.
      */
     $scope.calculate = function() {
-      var cleansedPropertyValue = $scope.getPropertyValueCleansed();
 
-      switch ($scope.data.propertyState) {
+      switch (PropertyModel.getPropertyState()) {
         case 'ACT':
-          $scope.results = Calculator.processAct(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.pensioner, $scope.data.income, $scope.data.propertyDependents);
+          $scope.results = Calculator.processAct();
           break;
         case 'NSW':
-          $scope.results = Calculator.processNsw(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processNsw();
           break;
         case 'NT':
-          $scope.results = Calculator.processNt(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.pensioner);
+          $scope.results = Calculator.processNt();
           break;
         case 'QLD':
-          $scope.results = Calculator.processQld(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processQld();
           break;
         case 'SA':
-          $scope.results = Calculator.processSa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processSa();
           break;
         case 'TAS':
-          $scope.results = Calculator.processTas(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome);
+          $scope.results = Calculator.processTas();
           break;
         case 'VIC':
-          $scope.results = Calculator.processVic(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.paymentMethod);
+          $scope.results = Calculator.processVic();
           break;
         case 'WA':
-          $scope.results = Calculator.processWa(cleansedPropertyValue, $scope.data.propertyStatus, $scope.data.purpose, $scope.data.firstHome, $scope.data.propertyLocation);
+          $scope.results = Calculator.processWa();
           break;
         default:
           console.log('No valid property state selected.');
           break;
       }
 
-      $scope.results.totalPropertyCost = Calculator.calculateTotalPropertyCost(cleansedPropertyValue, $scope.results);
+      $scope.results.totalPropertyCost = Calculator.calculateTotalPropertyCost($scope.results);
       $scope.results.calculateTime = new Date();
       $scope.flags.changesMade = true;
     };
 
-    /**
-     * Called from view to format the property value into a more readable value, e.g. 500,000.
-     * Help from:
-     * http://stackoverflow.com/questions/9311258/how-do-i-replace-special-characters-with-regex-in-javascript
-     */
-    $scope.propertyValueFormatted = function() {
-      var formattedValue = Utils.localeString($scope.getPropertyValueCleansed());
 
-      // If the formatted value equates to zero (number or string), then lets set the model to an empty string so the user sees the placeholder again.
-      if (formattedValue === 0 || formattedValue === '0') {
-        $scope.data.propertyValue = '';
-      }
-      // Buf if the value isn't 0 and has changed since our last digest, then lets set it to the nicely formatted value :)
-      else if (formattedValue !== $scope.data.propertyValue) {
-        $scope.data.propertyValue = formattedValue;
-      }
-    };
-
-    /**
-     * Helper function to remove formatted characters in property Value.
-     * @returns {string}
-     */
-    $scope.getPropertyValueCleansed = function() {
-      return Number(String($scope.data.propertyValue).replace(/[^0-9]/g, '')); // remove the crud
-    };
 
     /**
      * Store the model in localStorage for the purposes of allowing users to load them back in later.

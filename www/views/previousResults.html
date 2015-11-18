@@ -12,7 +12,7 @@
       </div>
       <div ng-repeat="(key, value) in history">
         <a class="item item-icon-right" ng-click="loadHistory(key)">
-          ${{ value.data.propertyValue || '0' }} at {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>
+          ${{ value.data.propertyValueFormatted || '0' }} at {{ value.results.calculateTime | date : 'H:mm d MMM yyyy' }} <i class="icon ion-ios-arrow-right"></i>
         </a>
       </div>
 
