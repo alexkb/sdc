@@ -128,8 +128,6 @@ angular.module('Sdc')
           break;
       }
 
-      console.log($scope.results);
-
       $scope.results.totalPropertyCost = Calculator.calculateTotalPropertyCost($scope.results);
       $scope.results.calculateTime = new Date();
       $scope.flags.changesMade = true;
