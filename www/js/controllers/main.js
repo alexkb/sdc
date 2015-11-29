@@ -68,7 +68,7 @@ angular.module('Sdc')
     }
 
     // If we see changes on the model, lets recalculate the stamp duty.
-    $scope.$watch(function() { return PropertyModel.data; }, function(data) {
+    $scope.$watch(function(scope) { return scope.data; }, function(data) {
       // Get out of here if we don't have the absolute essentials
       if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('Missing required inputs: property value or state');
@@ -79,10 +79,11 @@ angular.module('Sdc')
         return;
       }
 
+      console.log("Watch on PropertyModel fired");
       PropertyModel.propertyValueFormat();
 
       $scope.calculate();
-    }, function() {});
+    }, true );
 
     /**
      * closeKeyboard helper function that makes sure the keyboard plugin is available before closing.
@@ -155,7 +156,8 @@ angular.module('Sdc')
      */
     $scope.loadHistory = function(index) {
       if ($scope.history[index]) {
-        $scope.data = $scope.history[index].data;
+        PropertyModel.load($scope.history[index].data);
+        console.log($scope.history[index].data);
         $scope.flags.changesMade = false;
       }
 
@@ -248,7 +250,7 @@ angular.module('Sdc')
      * Clears the form for a fresh start.
      */
     $scope.clearInputs = function() {
-      $scope.data = angular.copy($scope.dataDefaults);
+      PropertyModel.resetToDefaults();
       $scope.flags.changesMade = false;
       $scope.menuPopover.hide();
     };

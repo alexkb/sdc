@@ -25,7 +25,7 @@ describe('Service: calculator', function () {
       propertyDependents: 0
     };
     expect(calculator.processAct().propertyDuty).toEqual(7500);
-    
+
     PropertyModel.data.firstHome = true;
     expect(calculator.processAct().propertyDuty).toEqual(7500);
 

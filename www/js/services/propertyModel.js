@@ -24,9 +24,23 @@ angular.module('Sdc').factory('PropertyModel', function(Utils) {
   return {
     data: data,
 
-    getPropertyState: function () {
-      return data.propertyState;
+    resetToDefaults: function() {
+      this.load(dataDefaults);
     },
+
+    load: function(newModel) {
+      Object.keys(data).forEach(function(key) {
+        console.log(key, data[key]);
+        if (newModel[key] !== undefined) {
+          data[key] = newModel[key];
+        }
+      });
+    },
+
+    getPropertyState: function () {
+      return this.data.propertyState;
+    },
+
     setPropertyState: function (state) {
       this.data.propertyState = state;
     },
