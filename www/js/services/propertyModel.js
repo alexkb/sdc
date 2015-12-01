@@ -24,6 +24,11 @@ angular.module('Sdc').factory('PropertyModel', function(Utils) {
   return {
     data: data,
 
+    initiate: function (state) {
+      data.propertyState = state;
+      dataDefaults.propertyState = state;
+    },
+
     resetToDefaults: function() {
       this.load(dataDefaults);
     },
@@ -39,10 +44,6 @@ angular.module('Sdc').factory('PropertyModel', function(Utils) {
 
     getPropertyState: function () {
       return this.data.propertyState;
-    },
-
-    setPropertyState: function (state) {
-      this.data.propertyState = state;
     },
 
     /**

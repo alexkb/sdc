@@ -53,7 +53,7 @@ angular.module('Sdc')
         var lng = position.coords.longitude;
         Geo.reverseGeocode(lat, lng).then(function (locString) {
           //$scope.data.propertyState = locString;
-          PropertyModel.setPropertyState(locString);
+          PropertyModel.initiate(locString);
           // We don't need to set dataDefaults.propertyState because our $watch will do this if the model gets reset.
           //$scope.dataDefaults.propertyState = locString;
         });
