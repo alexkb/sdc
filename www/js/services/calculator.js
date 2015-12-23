@@ -12,6 +12,9 @@ angular.module('Sdc')
   .factory('Calculator', function (Utils, $window, PropertyModel) {
     var THRESHOLD_INF = -1; // temporary constant
     return {
+      getStates: function() {
+        return [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
+      },
       /**
        * Process ACT fees.
        * @returns {{}}

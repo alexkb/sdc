@@ -25,7 +25,7 @@ angular.module('Sdc')
     // Initial History Array
     $scope.history = [];
 
-    // Initial results Object
+    // Initial results Object @todo move into a model service.
     $scope.results = {
       mortgageFee: 0,
       transferFee: 0,
@@ -41,7 +41,7 @@ angular.module('Sdc')
     };
 
     // Set form options
-    $scope.stateOptions = [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
+    $scope.stateOptions = Calculator.getStates();
 
     // Version variable used in about us view.
     $scope.version = '0.0.6';
@@ -70,6 +70,7 @@ angular.module('Sdc')
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch(function(scope) { return scope.data; }, function(data) {
       // Get out of here if we don't have the absolute essentials
+      console.log(data.propertyValue);
       if (Utils.isUndefinedOrNull(data.propertyValue) || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('Missing required inputs: property value or state');
 
@@ -96,6 +97,7 @@ angular.module('Sdc')
 
     /**
      * Performs stamp duty calculation using calculator service.
+     * @todo Move this logic into the Calculator service. Need to create a results model first.
      */
     $scope.calculate = function() {
 
