@@ -72,7 +72,7 @@ angular.module('Sdc')
     // If we see changes on the model, lets recalculate the stamp duty.
     $scope.$watch(function(scope) { return scope.data; }, function(data) {
       // Get out of here if we don't have the absolute essentials
-      if (Utils.isUndefinedOrNull(data.propertyValue) || data.propertyValue === "" || Utils.isUndefinedOrNull(data.propertyState)) {
+      if (Utils.isUndefinedOrNull(data.propertyValueFormatted) || data.propertyValueFormatted === "" || Utils.isUndefinedOrNull(data.propertyState)) {
         console.log('Missing required inputs: property value or state');
 
         // Try run our geolocation again.
