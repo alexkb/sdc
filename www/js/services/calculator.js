@@ -164,7 +164,7 @@ angular.module('Sdc')
 
         if (PropertyModel.data.firstHome) {
           if (PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyStatus !== 'established') {
-            results.grants.fhog = PropertyModel.data.propertyValue <= 750000 ? 15000 : 0;
+            results.grants.fhog = PropertyModel.data.propertyValue <= 750000 ? 10000 : 0;
             results.grants.nhg = ((PropertyModel.data.propertyStatus === 'land' && PropertyModel.data.propertyValue < 450000) || (PropertyModel.data.propertyStatus === 'newbuild' && PropertyModel.data.propertyValue < 650000)) ? 5000 : 0;
           }
           else {
