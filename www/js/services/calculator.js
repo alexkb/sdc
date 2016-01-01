@@ -15,6 +15,46 @@ angular.module('Sdc')
       getStates: function() {
         return [{name: 'ACT'}, {name: 'NSW'}, {name: 'NT'}, {name: 'QLD'}, {name: 'SA'}, {name: 'TAS'}, {name: 'VIC'}, {name: 'WA'}];
       },
+
+      /**
+       * Main calculate function.
+       */
+      go: function() {
+        switch (PropertyModel.getPropertyState()) {
+          case 'ACT':
+            this.processAct();
+            break;
+          case 'NSW':
+            this.processNsw();
+            break;
+          case 'NT':
+            this.processNt();
+            break;
+          case 'QLD':
+            this.processQld();
+            break;
+          case 'SA':
+            this.processSa();
+            break;
+          case 'TAS':
+            this.processTas();
+            break;
+          case 'VIC':
+            this.processVic();
+            break;
+          case 'WA':
+            this.processWa();
+            break;
+          default:
+            console.log('No valid property state selected.');
+            break;
+        }
+
+        this.calculateTotalPropertyCost(); // @todo move into results?
+        $scope.results.calculateTime = new Date(); // @todo move into ResultsModel
+
+      },
+
       /**
        * Process ACT fees.
        * @returns {{}}
