@@ -360,7 +360,7 @@ angular.module('Sdc')
           {min: 725001, max: THRESHOLD_INF, init: 27810, plus: 4.5},
         ];
 
-        results.grants.fhog = PropertyModel.data.firstHome && PropertyModel.data.propertyStatus !== 'established' && PropertyModel.data.purpose === 'residential' ? 7000 : 0;
+        results.grants.fhog = PropertyModel.data.firstHome && PropertyModel.data.propertyStatus !== 'established' && PropertyModel.data.purpose === 'residential' ? 10000 : 0;
         results.grants.fhbb = PropertyModel.data.firstHome && PropertyModel.data.propertyStatus === 'newhome' && PropertyModel.data.purpose === 'residential' ? 20000 : 0;
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
 
