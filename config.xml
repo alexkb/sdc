@@ -8,11 +8,10 @@
         AKB Web Services&#xD;&#xD;
     </author>
   <content src="index.html"/>
-  <!-- As per http://stackoverflow.com/a/20672838/687274 -->
-  <access origin="*://*.googleapis.com/*" subdomains="true" />
-  <access origin="*://*.gstatic.com/*" subdomains="true" />
-  <access origin="*://*.google.com/*" subdomains="true" />
-  <access origin="*://*.googleusercontent.com/*" subdomains="true" />
+  <access origin="*://*.googleapis.com/*" subdomains="true"/>
+  <access origin="*://*.gstatic.com/*" subdomains="true"/>
+  <access origin="*://*.google.com/*" subdomains="true"/>
+  <access origin="*://*.googleusercontent.com/*" subdomains="true"/>
   <platform name="android">
     <icon src="resources/android/icon/drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources/android/icon/drawable-mdpi-icon.png" density="mdpi"/>
@@ -68,4 +67,5 @@
   <feature name="Device">
     <param name="ios-package" value="CDVDevice"/>
   </feature>
+  <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>
