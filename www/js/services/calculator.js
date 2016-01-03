@@ -463,7 +463,7 @@ angular.module('Sdc')
         }
 
         if (PropertyModel.data.firstHome) {
-          results.grants.fhog = (PropertyModel.data.propertyStatus === 'established') ? 3000 : 10000;
+          results.grants.fhog = (PropertyModel.data.propertyStatus === 'established') ? 0 : 10000;
 
           if (PropertyModel.data.propertyLocation === 'south' && PropertyModel.data.propertyValue > 750000) {
             results.grants.fhog = 0;
