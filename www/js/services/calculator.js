@@ -207,7 +207,7 @@ angular.module('Sdc')
         }
 
         if (PropertyModel.data.pensioner) {
-          concession = 8500;
+          concession = 10000;
         }
         else if (PropertyModel.data.firstHome && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyStatus !== 'established') {
           concession = 7000;
