@@ -70,7 +70,7 @@ angular.module('Sdc')
       console.log("Watch on PropertyModel fired");
       PropertyModel.propertyValueFormat();
 
-      // Performs
+      // Runs the calculator
       Calculator.go();
 
       $scope.flags.changesMade = true;

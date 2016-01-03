@@ -9,7 +9,7 @@
  * $window - so we can use Math functions.
  */
 angular.module('Sdc')
-  .factory('Calculator', function (Utils, $window, PropertyModel) {
+  .factory('Calculator', function (Utils, $window, PropertyModel, ResultsModel) {
     var THRESHOLD_INF = -1; // temporary constant
     return {
       getStates: function() {
@@ -49,10 +49,6 @@ angular.module('Sdc')
             console.log('No valid property state selected.');
             break;
         }
-
-        this.calculateTotalPropertyCost(); // @todo move into results?
-        $scope.results.calculateTime = new Date(); // @todo move into ResultsModel
-
       },
 
       /**
@@ -60,9 +56,12 @@ angular.module('Sdc')
        * @returns {{}}
        */
       processAct: function() {
-        var results = {grants: {}};
-        results.mortgageFee = 125;
-        results.transferFee = 243;
+        var results = {
+          grants: {},
+          mortgageFee: 125,
+          transferFee: 243
+        };
+
         var thresholds = [];
 
         if (PropertyModel.data.propertyValue < 550000 && PropertyModel.data.propertyStatus === 'newbuild' && PropertyModel.data.purpose === 'residential' && this.actConcessionMeansTestPass()) {
@@ -100,9 +99,8 @@ angular.module('Sdc')
         }
 
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
-        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -133,9 +131,12 @@ angular.module('Sdc')
        * @returns results
        */
       processNsw: function() {
-        var results = {grants: {}};
-        results.mortgageFee = 107;
-        results.transferFee = 214;
+        var results = {
+          grants: {},
+          mortgageFee: 107,
+          transferFee: 214
+        };
+
         var thresholds = [];
 
         if (PropertyModel.data.firstHome && PropertyModel.data.propertyStatus === 'newbuild' && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyValue < 650000) {
@@ -174,9 +175,8 @@ angular.module('Sdc')
         }
 
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
-        results.total = $window.Math.round(results.propertyDuty + results.mortgageFee + results.transferFee );
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -184,9 +184,12 @@ angular.module('Sdc')
        * @returns results
        */
       processNt: function() {
-        var results = {grants: {}};
-        results.mortgageFee = 137;
-        results.transferFee = 137;
+        var results = {
+          grants: {},
+          mortgageFee: 137,
+          transferFee: 137
+        };
+
         var thresholds = 0;
         var concession = 0;
 
@@ -216,8 +219,8 @@ angular.module('Sdc')
         results.grants.fhog = PropertyModel.data.firstHome && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyStatus !== 'established' ? 26000 : 0;
 
         results.propertyDuty = results.propertyDuty <= concession ? 0 : (results.propertyDuty - concession);
-        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
-        return results;
+
+        ResultsModel.load(results);
       },
 
       /**
@@ -225,9 +228,12 @@ angular.module('Sdc')
        * @returns results.
        */
       processQld: function() {
-        var results = {grants: {}};
-        results.mortgageFee = 168.6;
-        results.transferFee = this.calcTransferFeeQld();
+        var results = {
+          grants: {},
+          mortgageFee: 168.6,
+          transferFee: this.calcTransferFeeQld()
+        }
+
         var thresholds = [];
 
         if (PropertyModel.data.firstHome && PropertyModel.data.propertyValue <= 500000 && PropertyModel.data.propertyStatus !== 'vacant' && PropertyModel.data.purpose === 'residential') {
@@ -301,9 +307,8 @@ angular.module('Sdc')
 
         results.grants.fhog = PropertyModel.data.firstHome && PropertyModel.data.propertyValue <= 750000 && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyStatus === 'newhome' ? 15000 : 0;
         results.propertyDuty = results.propertyDuty;
-        results.total =  results.propertyDuty + results.mortgageFee + results.transferFee;
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -311,9 +316,11 @@ angular.module('Sdc')
        * @returns result
        */
       processSa: function() {
-        var results = {grants: {}};
-        results.mortgageFee = 152;
-        results.transferFee = this.calcTransferFeeSa();
+        var results = {
+          grants: {},
+          mortgageFee: 152,
+          transferFee: this.calcTransferFeeSa()
+        };
 
         var thresholds = [
           {min: 0, max: 12000, init: 0, plus: 1},
@@ -328,9 +335,8 @@ angular.module('Sdc')
 
         results.grants.fhog = PropertyModel.data.firstHome && PropertyModel.data.propertyStatus !== 'established' && PropertyModel.data.purpose === 'residential' ? 15000 : 0;
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
-        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -338,9 +344,11 @@ angular.module('Sdc')
        * @returns results
        */
       processTas: function() {
-        var results = {grants: {}};
-        results.mortgageFee = 126.54;
-        results.transferFee = 192.88;
+        var results = {
+          grants: {},
+          mortgageFee: 126.54,
+          transferFee: 192.88
+        };
 
         var thresholds = [
           {min: 0, max: 3000, init: 50, plus: 0},
@@ -355,9 +363,8 @@ angular.module('Sdc')
         results.grants.fhog = PropertyModel.data.firstHome && PropertyModel.data.propertyStatus !== 'established' && PropertyModel.data.purpose === 'residential' ? 7000 : 0;
         results.grants.fhbb = PropertyModel.data.firstHome && PropertyModel.data.propertyStatus === 'newhome' && PropertyModel.data.purpose === 'residential' ? 20000 : 0;
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
-        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -365,10 +372,13 @@ angular.module('Sdc')
        * @returns results
        */
       processVic: function() {
-        var results = {grants: {}};
+        var results = {
+          grants: {},
+          mortgageFee: (PropertyModel.data.paymentMethod === 'paper' ? 110 : 87.60),
+          transferFee: this.calcTransferFeeVic()
+        };
+
         var thresholds = [];
-        results.mortgageFee = PropertyModel.data.paymentMethod === 'paper' ? 110 : 87.60;
-        results.transferFee = this.calcTransferFeeVic();
 
         if (PropertyModel.data.firstHome && PropertyModel.data.propertyValue <= 600000 && PropertyModel.data.purpose === 'residential') {
           thresholds = [
@@ -396,9 +406,8 @@ angular.module('Sdc')
 
         results.grants.fhog = (PropertyModel.data.firstHome && PropertyModel.data.propertyStatus !== 'established' && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyValue <= 750000) ? 10000 : 0;
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
-        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -406,11 +415,13 @@ angular.module('Sdc')
        * @returns results
        */
       processWa: function() {
-        var results = {grants: {}};
+        var results = {
+          grants: {},
+          mortgageFee: 160,
+          transferFee: this.calcTransferFeeWa()
+        };
+
         var thresholds = [];
-        results.grants = {};
-        results.mortgageFee = 160;
-        results.transferFee = this.calcTransferFeeWa();
 
         if (PropertyModel.data.propertyValue <= 200000) {
           thresholds = [
@@ -463,9 +474,8 @@ angular.module('Sdc')
         }
 
         results.propertyDuty = this.dutyByThresholdRounded(thresholds);
-        results.total = $window.Math.round( results.propertyDuty + results.mortgageFee + results.transferFee );
 
-        return results;
+        ResultsModel.load(results);
       },
 
       /**
@@ -612,29 +622,6 @@ angular.module('Sdc')
 
         return 0;
       },
-
-      /**
-       * Calculates the true cost of the property with fees and grants summed.
-       * @param results
-       * @returns {*}
-       */
-      calculateTotalPropertyCost: function(results) {
-        var totalCost = PropertyModel.data.propertyValue + results.total; // results.total contains all fees
-
-        if (!Utils.isUndefinedOrNull(results.grants.fhog) && results.grants.fhog !== -1) {
-          totalCost -= results.grants.fhog;
-        }
-
-        if (!Utils.isUndefinedOrNull(results.grants.nhg) && results.grants.nhg !== -1) {
-          totalCost -= results.grants.nhg;
-        }
-
-        if (!Utils.isUndefinedOrNull(results.grants.fhbb) && results.grants.fhbb !== -1) {
-          totalCost -= results.grants.fhbb;
-        }
-
-        return totalCost;
-      }
     };
   });
 
