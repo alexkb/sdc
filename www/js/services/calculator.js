@@ -346,8 +346,8 @@ angular.module('Sdc')
       processTas: function() {
         var results = {
           grants: {},
-          mortgageFee: 126.54,
-          transferFee: 192.88
+          mortgageFee: 129.10,
+          transferFee: 197.81
         };
 
         var thresholds = [
