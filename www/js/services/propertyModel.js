@@ -18,7 +18,7 @@ angular.module('Sdc').factory('PropertyModel', function(Utils) {
   data.pensioner = false;
   data.paymentMethod = 'paper';
 
-    // Save the default for resetting when requested.
+  // Save the default for resetting when requested.
   var dataDefaults = angular.copy(data);
 
   return {

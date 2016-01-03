@@ -8,14 +8,17 @@ describe('Service: calculator', function () {
   // instantiate service
   var calculator;
   var PropertyModel;
-  beforeEach(inject(function (_Calculator_, _PropertyModel_) {
+  var ResultsModel;
+  beforeEach(inject(function (_Calculator_, _PropertyModel_, _ResultsModel_) {
     calculator = _Calculator_;
     PropertyModel = _PropertyModel_;
+    ResultsModel = _ResultsModel_;
   }));
 
   // processAct: function(propertyValue, propertyStatus, purpose, firstHome, pensioner, income, propertyDependents)
   it('should calculate ACT duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'ACT',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
@@ -24,16 +27,21 @@ describe('Service: calculator', function () {
       income: 0,
       propertyDependents: 0
     };
-    expect(calculator.processAct().propertyDuty).toEqual(7500);
+
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(7500);
 
     PropertyModel.data.firstHome = true;
-    expect(calculator.processAct().propertyDuty).toEqual(7500);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(7500);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processAct().propertyDuty).toEqual(20800);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(20800);
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processAct().propertyDuty).toEqual(44550);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(44550);
   });
 
 
@@ -41,21 +49,27 @@ describe('Service: calculator', function () {
   // processNsw: function(propertyValue, propertyStatus, purpose, firstHome)
   it('should calculate NSW duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'NSW',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true
     };
-    expect(calculator.processNsw().propertyDuty).toEqual(8990);
+
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(8990);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processNsw().propertyDuty).toEqual(8990);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(8990);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processNsw().propertyDuty).toEqual(22490);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(22490);
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processNsw().propertyDuty).toEqual(40490);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(40490);
   });
 
 
@@ -63,47 +77,59 @@ describe('Service: calculator', function () {
   // processNt: function(propertyValue, propertyStatus, purpose, firstHome, pensioner)
   it('should calculate NT duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'NT',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true,
       pensionor: false
     };
-    expect(calculator.processNt().propertyDuty).toEqual(10414);
+
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(10414);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processNt().propertyDuty).toEqual(10414);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(10414);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processNt().propertyDuty).toEqual(29700);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(29700);
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processNt().propertyDuty).toEqual(49500);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(49500);
 
     PropertyModel.data.propertyValue = 3005000;
-    expect(calculator.processNt().propertyDuty).toEqual(163772);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(163772);
   });
 
 
   // processQld: function(propertyValue, propertyStatus, purpose, firstHome)
   it('should calculate QLD duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'QLD',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true,
       pensionor: false
     };
-    expect(calculator.processQld().propertyDuty).toEqual(0);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(0);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processQld().propertyDuty).toEqual(3000);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(3000);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processQld().propertyDuty).toEqual(12850);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(12850);
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processQld().propertyDuty).toEqual(30850);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(30850);
   });
 
 
@@ -111,103 +137,129 @@ describe('Service: calculator', function () {
   it('should calculate SA duty accurately', function () {
 
     PropertyModel.data = {
+      propertyState: 'SA',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true
     };
-    expect(calculator.processSa().propertyDuty).toEqual(11330);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(11330);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processSa().propertyDuty).toEqual(11330);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(11330);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processSa().propertyDuty).toEqual(26830);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(26830);
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processSa().propertyDuty).toEqual(48830);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(48830);
   });
 
 
   // processTas: function(propertyValue, propertyStatus, purpose, firstHome)
   it('should calculate TAS duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'TAS',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true
     };
-    expect(calculator.processTas().propertyDuty).toEqual(9935);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(9935);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processTas().propertyDuty).toEqual(9935);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(9935);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processTas().propertyDuty).toEqual(22497); // Rounded up 22498
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(22497); // Rounded up 22498
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processTas().propertyDuty).toEqual(40185);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(40185);
   });
 
 
   // processVic: function(propertyValue, propertyStatus, purpose, firstHome, paymentMethod)
   it('should calculate VIC duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'VIC',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true,
       paymentMethod: 'electronic'
     };
-    expect(calculator.processVic().propertyDuty).toEqual(5685);
+
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(5685);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processVic().propertyDuty).toEqual(11370);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(11370);
 
     PropertyModel.data.propertyValue = 500000;
     PropertyModel.data.firstHome = true;
-    expect(calculator.processVic().propertyDuty).toEqual(10985);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(10985);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processVic().propertyDuty).toEqual(21970);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(21970);
 
     PropertyModel.data.propertyValue = 600000;
     PropertyModel.data.firstHome = true;
-    expect(calculator.processVic().propertyDuty).toEqual(15535);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(15535);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processVic().propertyDuty).toEqual(31070);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(31070);
 
     PropertyModel.data.firstHome = true;
     PropertyModel.data.propertyStatus = 'newhome';
-    expect(calculator.processVic().grants.fhog).toEqual(10000);
+    calculator.go();
+    expect(ResultsModel.results.grants.fhog).toEqual(10000);
 
     PropertyModel.data.propertyValue = 1000000;
     PropertyModel.data.firstHome = false;
     PropertyModel.data.propertyStatus = 'established';
-    expect(calculator.processVic().propertyDuty).toEqual(55000);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(55000);
   });
 
 
   // processWa: function(propertyValue, propertyStatus, purpose, firstHome, propertyLocation)
   it('should calculate WA duty accurately', function () {
     PropertyModel.data = {
+      propertyState: 'WA',
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
       firstHome: true,
       propertyLocation: 'south'
     };
-    expect(calculator.processWa().propertyDuty).toEqual(0);
+
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(0);
 
     PropertyModel.data.firstHome = false;
-    expect(calculator.processWa().propertyDuty).toEqual(8835);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(8835);
 
     PropertyModel.data.propertyValue = 600000;
-    expect(calculator.processWa().propertyDuty).toEqual(22515);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(22515);
 
     PropertyModel.data.propertyValue = 1000000;
-    expect(calculator.processWa().propertyDuty).toEqual(42615);
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(42615);
   });
 
 });

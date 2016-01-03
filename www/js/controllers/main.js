@@ -15,30 +15,16 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator, PropertyModel) {
+  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator, PropertyModel, ResultsModel) {
 
     $scope.data = PropertyModel.data;
+    $scope.results = ResultsModel.results;
 
     $scope.flags = {};
     $scope.flags.changesMade = false; // Used to determine which button is shown in the footer.
 
     // Initial History Array
     $scope.history = [];
-
-    // Initial results Object @todo move into a model service.
-    $scope.results = {
-      mortgageFee: 0,
-      transferFee: 0,
-      propertyDuty: 0,
-      grants: {
-        fhog: -1,
-        nhg: -1,
-        fhbb: -1
-      },
-      total: 0,
-      totalPropertyCost: 0,
-      calculateTime: 0
-    };
 
     // Set form options
     $scope.stateOptions = Calculator.getStates();
@@ -84,7 +70,10 @@ angular.module('Sdc')
       console.log("Watch on PropertyModel fired");
       PropertyModel.propertyValueFormat();
 
-      $scope.calculate();
+      // Runs the calculator
+      Calculator.go();
+
+      $scope.flags.changesMade = true;
     }, true );
 
     /**
@@ -95,48 +84,6 @@ angular.module('Sdc')
         cordova.plugins.Keyboard.close();
       }
     };
-
-    /**
-     * Performs stamp duty calculation using calculator service.
-     * @todo Move this logic into the Calculator service. Need to create a results model first.
-     */
-    $scope.calculate = function() {
-
-      switch (PropertyModel.getPropertyState()) {
-        case 'ACT':
-          $scope.results = Calculator.processAct();
-          break;
-        case 'NSW':
-          $scope.results = Calculator.processNsw();
-          break;
-        case 'NT':
-          $scope.results = Calculator.processNt();
-          break;
-        case 'QLD':
-          $scope.results = Calculator.processQld();
-          break;
-        case 'SA':
-          $scope.results = Calculator.processSa();
-          break;
-        case 'TAS':
-          $scope.results = Calculator.processTas();
-          break;
-        case 'VIC':
-          $scope.results = Calculator.processVic();
-          break;
-        case 'WA':
-          $scope.results = Calculator.processWa();
-          break;
-        default:
-          console.log('No valid property state selected.');
-          break;
-      }
-
-      $scope.results.totalPropertyCost = Calculator.calculateTotalPropertyCost($scope.results);
-      $scope.results.calculateTime = new Date();
-      $scope.flags.changesMade = true;
-    };
-
 
 
     /**
