@@ -230,7 +230,7 @@ angular.module('Sdc')
       processQld: function() {
         var results = {
           grants: {},
-          mortgageFee: 168.6,
+          mortgageFee: 169,
           transferFee: this.calcTransferFeeQld()
         }
 
@@ -555,8 +555,8 @@ angular.module('Sdc')
        */
       calcTransferFeeQld: function() {
         var thresholds = [
-          {min: 0, max: 180000, init: 168.6},
-          {min: 180001, max: THRESHOLD_INF, init: 168.6, plus: 31.80, denomination: 10000}
+          {min: 0, max: 180000, init: 169},
+          {min: 180001, max: THRESHOLD_INF, init: 169, plus: 32, denomination: 10000}
         ];
 
         return this.dutyByThresholdRounded(thresholds);
