@@ -58,34 +58,34 @@ angular.module('Sdc')
       processAct: function() {
         var results = {
           grants: {},
-          mortgageFee: 125,
-          transferFee: 243
+          mortgageFee: 130,
+          transferFee: 252
         };
 
         var thresholds = [];
 
-        if (PropertyModel.data.propertyValue < 550000 && PropertyModel.data.propertyStatus === 'newbuild' && PropertyModel.data.purpose === 'residential' && this.actConcessionMeansTestPass()) {
+        if (PropertyModel.data.propertyValue < 562000 && PropertyModel.data.propertyStatus === 'newbuild' && PropertyModel.data.purpose === 'residential' && this.actConcessionMeansTestPass()) {
           thresholds = [
-            {min: 0, max: 446100, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
-            {min: 446101, max: 550000, init: 0, plus: 17.55}
+            {min: 0, max: 442600, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
+            {min: 442601, max: 562000, init: 0, plus: 14.80}
           ];
         }
-        else if (PropertyModel.data.propertyValue < 298300 && PropertyModel.data.propertyStatus === 'land' && PropertyModel.data.purpose === 'residential' && this.actConcessionMeansTestPass()) {
+        else if (PropertyModel.data.propertyValue < 304900 && PropertyModel.data.propertyStatus === 'land' && PropertyModel.data.purpose === 'residential' && this.actConcessionMeansTestPass()) {
           thresholds = [
-            {min: 0, max: 266800, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
-            {min: 266800, max: 298300, init: 0, plus: 23.50}
+            {min: 0, max: 264800, init: 20, plus: 0}, // extra $100 to cover the min $20 fee.
+            {min: 264801, max: 304900, init: 0, plus: 26.9}
           ];
         }
         else {
           thresholds = [
-            {min: 0, max: 1000, init: 20, plus: 0},
-            {min: 1001, max: 200000, init: 0, plus: 2},
-            {min: 200001, max: 300001, init: 4000, plus: 3.5},
-            {min: 300001, max: 500000, init: 7500, plus: 4.15},
-            {min: 500001, max: 750001, init: 15800, plus: 5},
-            {min: 750001, max: 1000000, init: 28300, plus: 6.5},
-            {min: 1000001, max: 1455000, init: 44550, plus: 7},
-            {min: 1455001, max: THRESHOLD_INF, init: 0, plus: 5.25}
+            {min: 0, max: 1100, init: 20, plus: 0},
+            {min: 1101, max: 200000, init: 0, plus: 1.8},
+            {min: 200001, max: 300001, init: 3600, plus: 3},
+            {min: 300001, max: 500000, init: 6600, plus: 4},
+            {min: 500001, max: 750001, init: 14600, plus: 5},
+            {min: 750001, max: 1000000, init: 27100, plus: 6.5},
+            {min: 1000001, max: 1455000, init: 43350, plus: 7},
+            {min: 1455001, max: THRESHOLD_INF, init: 0, plus: 5.17}
           ];
         }
 
