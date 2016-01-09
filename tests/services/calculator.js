@@ -22,26 +22,42 @@ describe('Service: calculator', function () {
       propertyValue: 300000,
       purpose: 'residential',
       propertyStatus: 'established',
-      firstHome: true,
+      firstHome: false,
       pensionor: false,
       income: 0,
       propertyDependents: 0
     };
 
     calculator.go();
-    expect(ResultsModel.results.propertyDuty).toEqual(7500);
+    expect(ResultsModel.results.propertyDuty).toEqual(6600);
 
     PropertyModel.data.firstHome = true;
     calculator.go();
-    expect(ResultsModel.results.propertyDuty).toEqual(7500);
+    expect(ResultsModel.results.propertyDuty).toEqual(6600);
 
+    PropertyModel.data.pensioner = true;
+    PropertyModel.data.firstHome = false;
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(20);
+
+    PropertyModel.data.propertyStatus = 'land';
+    PropertyModel.data.propertyValue = 350000;
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(2904);
+
+    PropertyModel.data.propertyStatus = 'established';
+    PropertyModel.data.propertyValue = 700000;
+    calculator.go();
+    expect(ResultsModel.results.propertyDuty).toEqual(12433);
+
+    PropertyModel.data.pensioner = false;
     PropertyModel.data.propertyValue = 600000;
     calculator.go();
-    expect(ResultsModel.results.propertyDuty).toEqual(20800);
+    expect(ResultsModel.results.propertyDuty).toEqual(19600);
 
     PropertyModel.data.propertyValue = 1000000;
     calculator.go();
-    expect(ResultsModel.results.propertyDuty).toEqual(44550);
+    expect(ResultsModel.results.propertyDuty).toEqual(43350);
   });
 
 

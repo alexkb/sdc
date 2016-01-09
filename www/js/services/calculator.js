@@ -76,6 +76,18 @@ angular.module('Sdc')
             {min: 264801, max: 304900, init: 0, plus: 26.9}
           ];
         }
+        else if (PropertyModel.data.propertyValue < 807000 && PropertyModel.data.pensioner === true && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyStatus !== 'land') {
+            thresholds = [
+              {min: 0, max: 627500, init: 20, plus: 0},
+              {min: 627501, max: 807000, init: 0, plus: 17.15}
+            ];
+        }
+        else if (PropertyModel.data.propertyValue < 391700 && PropertyModel.data.pensioner === true && PropertyModel.data.purpose === 'residential' && PropertyModel.data.propertyStatus === "land") {
+          thresholds = [
+            {min: 0, max: 333500, init: 20, plus: 0},
+            {min: 333500, max: 391700, init: 0, plus: 17.60}
+          ];
+        }
         else {
           thresholds = [
             {min: 0, max: 1100, init: 20, plus: 0},
