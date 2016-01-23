@@ -30,7 +30,7 @@ angular.module('Sdc')
     $scope.stateOptions = Calculator.getStates();
 
     // Version variable used in about us view.
-    $scope.version = '0.0.6';
+    $scope.version = '0.0.7';
 
     function onReady() {
       // Set default state value based on geolocation service.
