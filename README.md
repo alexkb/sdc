@@ -15,6 +15,7 @@ Any feedback on the code, concepts or ideas, are very much welcome  - either ope
 
 ## Help & Resources
 
+ * Ip2location services provided by https://freegeoip.net/
  * Geolocation code based on [github.com/driftyco/ionic-weather/](https://github.com/driftyco/ionic-weather/).
  * Ionic development setup guide: [alexbergin.com/2014/setting-ionic-linux-vm-windows-host](http://alexbergin.com/2014/setting-ionic-linux-vm-windows-host).
  * Calculations are based on freely published duty data such as [those found on homeloanadvicecentre](http://www.homeloanadvicecentre.com.au/tools/fhogandstampduty.php).

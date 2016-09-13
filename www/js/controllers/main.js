@@ -15,7 +15,7 @@
  * Controller of the Sdc
  */
 angular.module('Sdc')
-  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, Geo, Utils, Calculator, PropertyModel, ResultsModel) {
+  .controller('MainCtrl', function ($scope, $filter, $localstorage, $ionicModal, $ionicPopover, ip2location, Utils, Calculator, PropertyModel, ResultsModel) {
 
     $scope.data = PropertyModel.data;
     $scope.results = ResultsModel.results;
@@ -34,15 +34,8 @@ angular.module('Sdc')
 
     function onReady() {
       // Set default state value based on geolocation service.
-      Geo.getLocation().then(function (position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        Geo.reverseGeocode(lat, lng).then(function (locString) {
-          //$scope.data.propertyState = locString;
-          PropertyModel.initiate(locString);
-          // We don't need to set dataDefaults.propertyState because our $watch will do this if the model gets reset.
-          //$scope.dataDefaults.propertyState = locString;
-        });
+      ip2location.getRegion().then(function(region) {
+        PropertyModel.initiate(region);
       });
     }
 
